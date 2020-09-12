@@ -9,6 +9,8 @@ front_codes
 backend_codes
     - platfrom code
     REAMDE.md
+test_codes
+    - 테스트 디렉터리들
 ```
 
 - master branch에서 각자 브랜치를 따서 작업한다.
