@@ -21,16 +21,16 @@ jobs:
             ${{ runner.OS }}-
             
       - name: Display the path
-        run: echo ${env:PATH}
+        run: pwd && ls
 
       - name: change directory # 디렉터리 이동
         run: cd front_codes/my-app
 
       - name: Install Dependencies    # 의존 파일 설치
-        run: npm install
+        run: cd front_codes/my-app && npm install
 
       - name: Build                   # React Build
-        run: npm run build
+        run: cd front_codes/my-app && npm run build
 
       - name: Deploy                  # S3에 배포하기
         env:
@@ -40,4 +40,4 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            build s3://sehwan96.com # 
+            front_codes/my-app/build s3://sehwan96.com # 
