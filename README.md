@@ -24,13 +24,13 @@ test_codes
 
 - 본인의 작업이 완료 되면 본인 브랜치에 Push 하고 PR을 작성한다.
 ```
-git bracnh feature/back/fix-aws-resources
+git branch feature/back/fix-aws-resources
 git checkout feature/back/fix-aws-resources
-git pull origin master --rebaswe
+git pull origin master --rebase
 - 본인의 작업 실시 -
 - 완료 되었을 경우-
 git add *
-git commit -m "add some vaildation logic"
+git commit -m "add some validation logic"
 git push origin feature/back/fix-aws-resources
 - 이후 깃헙에 들어가서 PR 작성 및 리뷰 리퀘스트 -
 ```
