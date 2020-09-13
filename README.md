@@ -1,5 +1,8 @@
 # 산기대 졸업작품 팀 레포지토리
 
+url : http://sehwan96.com.s3-website.ap-northeast-2.amazonaws.com/
+
+
 * 디렉터리 구성
 ```
 /
