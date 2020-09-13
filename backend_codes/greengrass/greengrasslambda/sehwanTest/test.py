@@ -7,8 +7,6 @@ import datetime
 from time import sleep
 from random import randint
 
-
-
 TOPIC = os.environ.get('TOPIC_EDGE')
 message_format = {
     "fields" : [

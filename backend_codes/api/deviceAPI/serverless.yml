@@ -1,0 +1,81 @@
+service: "appsync-api-cariot-dev"
+
+provider:
+  name: aws
+  runtime: python3.7
+
+plugins:
+  - serverless-appsync-plugin
+
+custom:
+  appSync:
+    name: cariot-api-dev
+    authenticationType: API_KEY
+    mappingTemplatesLocation: mapping-templates
+    schema: 
+      - schema.gql
+    dataSources:
+      - type: AMAZON_DYNAMODB
+        name: ProfileTable
+        config:
+          tableName: ProfileTable
+      - type: AMAZON_DYNAMODB
+        name: UserTable
+        config:
+          tableName: UserTable
+
+
+    mappingTemplates:
+      - dataSource: ProfileTable
+        type: Query 
+        field: getProfile
+        request: Profile.getProfile.request.vtl
+        response: Profile.getProfile.response.vtl
+
+      - dataSource: ProfileTable
+        type: Mutation 
+        field: createProfile
+        request: Profile.createProfile.request.vtl
+        response: Profile.createProfile.response.vtl
+
+      #- dataSource: ProfileTable
+      #  type: Mutation 
+      #  field: updateProfile
+      #  request: Profile.updateProfile.request.vtl
+      #  response: Profile.updateProfile.response.vtl
+
+      #- dataSource: ProfileTable
+      #  type: Mutation 
+      #  field: deleteProfile
+      #  request: Profile.deleteProfile.request.vtl
+      #  response: Profile.deleteProfile.response.vtl
+
+resources:
+  Resources:
+    ProfileTable: # name of the resource to be use later
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ProfileTable # name of the table
+        AttributeDefinitions:
+          - AttributeName: userID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userID # partition key
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    UserTable: # name of the resource to be use later
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: UserTable # name of the table
+        AttributeDefinitions:
+          - AttributeName: userID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userID # partition key
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
