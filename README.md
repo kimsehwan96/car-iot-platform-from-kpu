@@ -37,6 +37,57 @@ git push origin feature/back/fix-aws-resources
 
 - 팀장(김세환)의 Review를 받고 PR 머지를 한다.
 
+## 배포
+
+- front code는 github action 을 이용해 deploy (master 브랜치에 푸시 이벤트 발생 시 마다 S3버킷에 업로드 함)
+
+```yml
+
+name: React build
+on: 
+  push:                               # master Branch에서 push 이벤트가 일어났을 때만 실행
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout source code.   # 레포지토리 체크아웃
+        uses: actions/checkout@master
+
+      - name: Cache node modules      # node modules 캐싱
+        uses: actions/cache@v1
+        with:
+          path: front_codes/my-app/node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+            
+      - name: Display the path
+        run: pwd && ls
+
+      - name: change directory # 디렉터리 이동
+        run: cd front_codes/my-app
+
+      - name: Install Dependencies    # 의존 파일 설치
+        run: cd front_codes/my-app && npm install
+
+      - name: Build                   # React Build
+        run: cd front_codes/my-app && npm run build
+
+      - name: Deploy                  # S3에 배포하기
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            front_codes/my-app/build s3://sehwan96.com # 
+
+```
 
 ## 사용 기술 스택
 
