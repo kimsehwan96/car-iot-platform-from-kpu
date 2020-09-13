@@ -1,0 +1,52 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query{
+    getProfile(userID: String!): Profile
+    getUser(userID: String!): User
+}
+
+type Mutation {
+    createProfile(input: ProfileInput): Profile
+    deleteProfile(input: deleteProfileInput): Profile
+    updateProfile(input: updateProfileInput): Profile
+    createUser(input: createUserInput): User
+}
+
+type Profile {
+    userID: ID!
+    fields: [String]
+    carType: String
+    madeAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type User{
+    userID: ID!
+    email: AWSEmail
+    phoneNumber: AWSPhone
+}
+
+input createUserInput{
+    email: AWSEmail
+    phoneNumber: AWSPhone
+}
+
+input ProfileInput {
+    userID: ID!
+    fields: [String]
+    carType: String
+}
+
+input deleteProfileInput {
+    userID: ID!
+}
+
+input updateProfileInput {
+    userID: ID!
+    fields: [String]
+    carType: String
+    updatedAt: AWSDateTime
+}
