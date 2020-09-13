@@ -1,0 +1,16 @@
+{
+    "payload" : [
+        {
+            "field" : "RPM",
+            "Data" : 2000
+        },
+        {
+            "field" : "Speed",
+            "Data" : 3000
+        },
+        {
+            "field" : "Brake",
+            "Data" : 1000
+        }
+    ]
+}
