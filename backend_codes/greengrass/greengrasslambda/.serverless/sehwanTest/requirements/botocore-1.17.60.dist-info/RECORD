@@ -1,11 +1,11 @@
-botocore-1.17.59.dist-info/DESCRIPTION.rst,sha256=cTxid6H_5auIYvCNNs9yg7C66aYYMV8tcpWqSxnvOLM,3574
-botocore-1.17.59.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
-botocore-1.17.59.dist-info/METADATA,sha256=e96-MmCh1h2VfifMBkWG30AakZPCY8fAPQcT0PBDYfc,4749
-botocore-1.17.59.dist-info/RECORD,,
-botocore-1.17.59.dist-info/WHEEL,sha256=AvR0WeTpDaxT645bl5FQxUK6NPsTls2ttpcGJg3j1Xg,110
-botocore-1.17.59.dist-info/metadata.json,sha256=KoYEPLvRR8f8_qyfMmNhulslkOZERCLFnItHbswOY1Q,1286
-botocore-1.17.59.dist-info/top_level.txt,sha256=IdlNr9dnwi3lQt66dKnShE5HBUhIqBFqJmVhm11aijk,9
-botocore/__init__.py,sha256=3Do4g2aRsTe7z3_0yxROhOJukUeQI5QBA7kLhsfLCHE,3487
+botocore-1.17.60.dist-info/DESCRIPTION.rst,sha256=cTxid6H_5auIYvCNNs9yg7C66aYYMV8tcpWqSxnvOLM,3574
+botocore-1.17.60.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+botocore-1.17.60.dist-info/METADATA,sha256=YkxnYZTPptMUFgO2gg7ezhh9D1OHfsgox11ifq2gt1Y,4749
+botocore-1.17.60.dist-info/RECORD,,
+botocore-1.17.60.dist-info/WHEEL,sha256=AvR0WeTpDaxT645bl5FQxUK6NPsTls2ttpcGJg3j1Xg,110
+botocore-1.17.60.dist-info/metadata.json,sha256=xYIiHrcuX0Bx6P5Xzd1yp-xVrJ375wOgxTGY2mAYc38,1286
+botocore-1.17.60.dist-info/top_level.txt,sha256=IdlNr9dnwi3lQt66dKnShE5HBUhIqBFqJmVhm11aijk,9
+botocore/__init__.py,sha256=OuJ0d0i25VOCkMqJRd66D8rEz_laDpmKnS9E11pWDgk,3487
 botocore/__pycache__/__init__.cpython-37.pyc,,
 botocore/__pycache__/args.cpython-37.pyc,,
 botocore/__pycache__/auth.cpython-37.pyc,,
@@ -380,7 +380,7 @@ botocore/data/emr/2009-03-31/examples-1.json,sha256=K3b6mgYkitvcecSlJT-iV_EQATmv
 botocore/data/emr/2009-03-31/paginators-1.json,sha256=EcH5P9yIR3xwQrUrLa_dUZ2XF1WHmiphiVpvNpB36fs,1093
 botocore/data/emr/2009-03-31/service-2.json,sha256=d9Krh__ELM93SARuZBU_AvH3GJmuisGHtN-vyQl-jO0,207763
 botocore/data/emr/2009-03-31/waiters-2.json,sha256=pMh5RSVHgFU-DlrH0dSf4IibHo9Hddmg9DvaR4a0Z90,2073
-botocore/data/endpoints.json,sha256=HZBFVxkp2k0z0IgDyuiKqLznqiWCLnFQ_VpPeTXIfBc,259523
+botocore/data/endpoints.json,sha256=4FjkompxPtryC-0xZRHYpyhlRYuxptQ4N5Z84BKB9ec,260627
 botocore/data/es/2015-01-01/examples-1.json,sha256=K3b6mgYkitvcecSlJT-iV_EQATmvOySs66iKJI5qx0g,44
 botocore/data/es/2015-01-01/paginators-1.json,sha256=sbfve7QYejJgHClHTY4PgdwH4A-PJlY2y0XZ0qRCq9Q,1022
 botocore/data/es/2015-01-01/service-2.json,sha256=LfK49HFbVSAu2-2Dzf7EiiE0OKEBOSQohEj-hX0ktc0,155283
@@ -778,7 +778,7 @@ botocore/data/workmailmessageflow/2019-05-01/paginators-1.json,sha256=hIQ7AbLBsY
 botocore/data/workmailmessageflow/2019-05-01/service-2.json,sha256=4sXLkKzlGfW9YKRpQQ02yFWrUgQXyWIeG51FaskzZss,2165
 botocore/data/workspaces/2015-04-08/examples-1.json,sha256=K3b6mgYkitvcecSlJT-iV_EQATmvOySs66iKJI5qx0g,44
 botocore/data/workspaces/2015-04-08/paginators-1.json,sha256=0zFVdQOhyRVmZBxS34a0_4YjrhYOGT5rRZB-NM2Fjcg,1334
-botocore/data/workspaces/2015-04-08/service-2.json,sha256=m324CaAM6P8wIbes9tveB7Pei1yX6GMsNa2wrke3aVM,114173
+botocore/data/workspaces/2015-04-08/service-2.json,sha256=skbubAtk5Zh3weZh5B9d3x0fj462cnFTrDeguY2Q0ng,134245
 botocore/data/xray/2016-04-12/examples-1.json,sha256=K3b6mgYkitvcecSlJT-iV_EQATmvOySs66iKJI5qx0g,44
 botocore/data/xray/2016-04-12/paginators-1.json,sha256=tSrFKg6DSoVm8MhrLX1557JrZ1uL_1EOaObu_pGOqx4,1508
 botocore/data/xray/2016-04-12/service-2.json,sha256=IuN5Ne8oVi2jPVMIsm28LkWp-j3cJ97ajd3VXX6_PsE,90050

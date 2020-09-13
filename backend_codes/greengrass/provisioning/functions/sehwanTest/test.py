@@ -13,7 +13,8 @@ TOPIC = os.environ.get('TOPIC_EDGE')
 message_format = {
     "fields" : [
         "Rpm",
-        "Speed"
+        "Speed",
+        "Brake"
     ],
     "payload" : [],
     "propety" : "K7 2019"

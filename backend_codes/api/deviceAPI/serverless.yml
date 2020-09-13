@@ -1,0 +1,63 @@
+service: "appsync-api-car-iot-dev"
+
+provider:
+  name: aws
+  runtime: python3.7
+
+plugins:
+  - serverless-appsync-plugin
+
+custom:
+  appSync:
+    name: device-api-dev
+    authenticationType: API_KEY
+    mappingTemplatesLocation: mapping-templates
+    schema: 
+      - schema.graphql
+    dataSources:
+      - type: AMAZON_DYNAMODB
+        name: postTable
+        config:
+          tableName: postTable
+
+
+    mappingTemplates:
+      - dataSource: postTable
+        type: Query 
+        field: listPost
+        request: list_todo/Post.listPost.request.vtl
+        response: list_todo/Post.listPost.response.vtl
+
+      - dataSource: postTable
+        type: Mutation 
+        field: createPost
+        request: put_todo/Post.createPost.request.vtl
+        response: put_todo/Post.createPost.response.vtl
+
+      - dataSource: postTable
+        type: Mutation 
+        field: updatePost
+        request: update_todo/Post.updatePost.request.vtl
+        response: update_todo/Post.updatePost.response.vtl
+
+      - dataSource: postTable
+        type: Mutation 
+        field: deletePost
+        request: delete_todo/Post.deletePost.request.vtl
+        response: delete_todo/Post.deletePost.response.vtl
+
+resources:
+  Resources:
+    postTable: # name of the resource to be use later
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: postTable # name of the table
+        AttributeDefinitions:
+          - AttributeName: postId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: postId # partition key
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

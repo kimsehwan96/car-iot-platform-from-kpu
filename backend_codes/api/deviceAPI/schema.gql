@@ -1,0 +1,45 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query{
+    listPost: [Post]
+    getProfile(userID: String!): Profile
+}
+
+type Mutation {
+    createProfile(input: PostInput): Post
+    deleteProfile(input: deletePostInput): Post
+    updateProfile(input: updatePostInput): Post
+}
+
+type Post {
+    postId: ID!
+    textTodo: String!
+    postedAt: AWSDateTime
+    updatedAt: AWSDateTime
+    username: String!
+}
+
+type User {
+    userID: ID!
+    email: AWSEmail
+    phoneNumber: AWSPhone
+}
+
+input PostInput {
+    #username: String!
+    textTodo: String!
+}
+
+input deletePostInput {
+    postId: ID!
+}
+
+input updatePostInput {
+    postId: ID!
+    textTodo: String!
+    #username: String!
+    updatedAt: AWSDateTime
+}
