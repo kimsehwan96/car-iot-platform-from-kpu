@@ -39,7 +39,7 @@ git push origin feature/back/fix-aws-resources
 
 ## 배포
 
-- front code는 github action 을 이용해 deploy (master 브랜치에 푸시 이벤트 발생 시 마다 S3버킷에 업로드 함)
+- front code는 github action 을 이용해 자동을고 deploy 된다. (master 브랜치에 푸시 이벤트 발생 시 마다 S3버킷에 업로드 함)
 
 ```yml
 
