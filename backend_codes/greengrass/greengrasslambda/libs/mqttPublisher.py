@@ -29,6 +29,7 @@ class Publisher:
         self.profile = profile # 센싱할 데이터 개수/ 필드등을 정의 할 예정임.
         self.publish_topic = get_publish_topic() # edge/{groupName}/data/raw
         self.send_buffer = []
+        self.fields = self.profile.get('Fields')
         try:
             self.mqtt_client = greengrasssdk.client('iot-data')
         except Exception as e:
@@ -43,12 +44,9 @@ class Publisher:
         self.send_buffer = []
 
     def make_payload(self):
-        if payload != None:
-            payload = {}
-        else:
-            pass
 
         payload = {
+            'Fields' : self.fields,
             'data' : self.send_buffer,
             'timestamp' : time.time()
         }
@@ -56,7 +54,7 @@ class Publisher:
 
         return payload
 
-    def get__topic(self):
+    def get_topic(self):
         return get_publish_topic()
 
     def publising_data(self, data):
@@ -67,8 +65,6 @@ class Publisher:
         t. start()
         
         self.get_raw_data()
-        if message != None:
-            message = {} # reset message
 
         message = {
             'device_id' : self.device_id,
