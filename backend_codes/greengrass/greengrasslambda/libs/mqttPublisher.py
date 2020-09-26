@@ -26,7 +26,7 @@ TEST_JSON = {
 class Publisher:
     def __init__(self, device_id, profile, pluginCls, option = {}) :
         self.device_id = device_id
-        self.profile = profile
+        self.profile = profile # 센싱할 데이터 개수/ 필드등을 정의 할 예정임.
         self.publish_topic = get_publish_topic() # edge/{groupName}/data/raw
         self.send_buffer = []
         try:
@@ -43,13 +43,15 @@ class Publisher:
         self.send_buffer = []
 
     def make_payload(self):
-        payload = {}
+        if payload != None:
+            payload = {}
+        else:
+            pass
 
         payload = {
             'data' : self.send_buffer,
             'timestamp' : time.time()
         }
-
         self.reset_buffer()
 
         return payload
@@ -65,23 +67,25 @@ class Publisher:
         t. start()
         
         self.get_raw_data()
-        message = {} # reset message
+        if message != None:
+            message = {} # reset message
+
         message = {
             'device_id' : self.device_id,
             'payload' : self.make_payload()
         }
+
         if message.get('payload') == None:
             print("error occured , there is no data")
         else:
-            pass
-
-        print(message)
+            print(message)
 
         try:
             self.mqtt_client.publish(
                 topic = self.publish_topic,
                 payload = json.dumps(message)
             )
+
         except Exception as e:
             print("publishing error occured as {}".format(e))
 

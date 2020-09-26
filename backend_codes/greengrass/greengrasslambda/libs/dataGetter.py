@@ -1,6 +1,9 @@
 import abc
 import traceback
 import threading
+import time
+import can
+
 from random import randint
 #import logging
 
@@ -46,8 +49,15 @@ class TestClass(GetterBaseClass):
     
     def get_data(self):
         self.front_buffer = [randint(1,200) for x in range(3)]
+
+class CanClass(GetterBaseClass):
+
+    def get_data(self):
+        pass
     
 if __name__ == "__main__":
     tc = TestClass(TEST_JSON)
     tc.get_data()
     print(tc.push_data())
+
+
