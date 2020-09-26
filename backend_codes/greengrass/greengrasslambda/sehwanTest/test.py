@@ -6,6 +6,7 @@ import time
 import datetime
 from time import sleep
 from random import randint
+from libs.dataGetter import TestClass
 
 TOPIC = os.environ.get('TOPIC_EDGE')
 message_format = {
@@ -23,6 +24,7 @@ def handler():
     print('test plugin')
 
 #return json.dumps(message)
+
 def fill_data(message: dict):
     if message_format.get('payload') != []:
         message_format['payload'] = []
