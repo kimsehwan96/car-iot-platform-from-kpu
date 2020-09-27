@@ -5,9 +5,9 @@ import os
 import time
 import datetime
 import threading
-from util import get_publish_topic
+from .util import get_publish_topic
 from datetime import datetime, timedelta
-from dataGetter import TestClass
+from .dataGetter import TestClass
 
 TEST_JSON = {
     "Fields" : [
@@ -32,6 +32,7 @@ class Publisher:
         self.fields = self.profile.get('Fields')
         try:
             self.mqtt_client = greengrasssdk.client('iot-data')
+            print(self.mqtt_client)
         except Exception as e:
             print("error occured when make iot client {}".format(e))
         self.pluginCls = pluginCls
