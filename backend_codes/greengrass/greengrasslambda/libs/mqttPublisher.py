@@ -5,7 +5,7 @@ import os
 import time
 import datetime
 import threading
-from .util import get_publish_topic
+from .util import *
 from datetime import datetime, timedelta
 from .dataGetter import TestClass
 from .storageManager import *

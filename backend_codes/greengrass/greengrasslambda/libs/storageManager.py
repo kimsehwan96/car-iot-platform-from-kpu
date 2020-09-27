@@ -62,8 +62,13 @@ class BaseStorageManager:
         self.fields = []
         self.data = []
 
-    def make_csv(self):
-        pass
+    def make_csv_format(self):
+        data = []
+        fields = ['timestamp']
+        for v in self.fields:
+            fields.append(v)
+        # fields = ['timestamp', 'a' , 'b', 'c']
+        
 
     #TODO: datetime 오브젝트에서, 기준이 되는 minutes를 정하고, 다음 minutes가 되기 전까지의
     # 데이터를 배열로 저장, csv에 쓰면 될 듯 하다.
@@ -73,7 +78,7 @@ class BaseStorageManager:
     # 시간   9   0    2    1
     # 시간   2   1    3    4
     # 시간   4   2    1    3
-
+# 개어려워..
 
 class LocalStorageManager(BaseStorageManager):
     pass
