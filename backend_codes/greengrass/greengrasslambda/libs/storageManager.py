@@ -4,7 +4,7 @@ import csv
 import datetime
 import time
 import threading
-from .util import timestamp_to_datetime
+from .util import *
 
 LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata') # 원본 데이터를 저장할 디바이스 상의 경로.
 # 테스트 코드는 현재 경로에다 저장할래요.
@@ -24,6 +24,8 @@ class BaseStorageManager:
         self.fields = []
         self.data  =  []
         self.timestamp = None 
+        self.csv_buffer = [] #iter 객체 생성. csv파일을 위해.
+        self.base_dt_min = 0
     
     def get_payload(self):
         return self.payload
@@ -61,6 +63,15 @@ class BaseStorageManager:
         self.payload = {}
         self.fields = []
         self.data = []
+
+    def merge_data(self, data):
+        dt = timestamp_to_datetime(self.timestamp)
+        tmp_dt_min = get_min(dt)
+        #TODO: tmp_dt_min과 self.base_dt_min 비교해서
+        # 다르다면 1분 넘어간것이기 때문에 csv_buffer 에 계속 append된 데이터를
+        # make_csv_format 호출해서 csv 파일 포맷을 만들고, csv파일을 생각해서 저장
+        # dt 관련한 코드는 util.py 에 구현
+
 
     def make_csv_format(self):
         data = []

@@ -73,6 +73,7 @@ class Publisher:
         return get_publish_topic()
 
     def start_threading(self):
+        # 1초마다 실행되는 로직
         t = threading.Timer(1.0, self.start_threading)
         t. start()
         self.get_raw_data()
