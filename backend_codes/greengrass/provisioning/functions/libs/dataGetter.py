@@ -48,12 +48,12 @@ class GetterBaseClass(abc.ABC):
 class TestClass(GetterBaseClass):
     
     def get_data(self):
-        self.front_buffer = [randint(1,200) for x in range(20)]
+        self.front_buffer = [randint(1,200) for x in range(3)]
 
 class CanClass(GetterBaseClass):
 
     def get_data(self):
-        pass #logic here.
+        pass
     
 if __name__ == "__main__":
     tc = TestClass(TEST_JSON)

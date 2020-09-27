@@ -11,13 +11,9 @@ from .dataGetter import TestClass
 
 TEST_JSON = {
     "Fields" : [
-        "rpm",
-        "speed",
-        "brake",
-        "oilTemp",
-        "oilStatus",
-        "missionOil",
-        "brakeOil"
+        "RPM",
+        "Speed",
+        "Brake"
     ],
     "Payload" :[
         1000,

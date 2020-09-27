@@ -11,11 +11,19 @@ from libs.mqttPublisher import Publisher
 
 TEST_JSON = {
     "Fields" : [
-        "RPM",
-        "Speed",
-        "Brake"
+        "rpm",
+        "speed",
+        "brake",
+        "oilTemp",
+        "oilStatus",
+        "missionOil",
+        "brakeOil"
     ]
 }
+
+TOPIC = os.environ.get('TOPIC_EDGE')
+
+
 def handler():
     print('test plugin')
 
