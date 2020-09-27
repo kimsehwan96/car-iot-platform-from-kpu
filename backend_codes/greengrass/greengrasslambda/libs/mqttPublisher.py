@@ -8,6 +8,7 @@ import threading
 from .util import get_publish_topic
 from datetime import datetime, timedelta
 from .dataGetter import TestClass
+from .storageManager import *
 
 TEST_JSON = {
     "Fields" : [
@@ -71,31 +72,25 @@ class Publisher:
     def get_topic(self):
         return get_publish_topic()
 
-    def publising_data(self, data):
-        pass
-
     def start_threading(self):
         t = threading.Timer(1.0, self.start_threading)
         t. start()
-        
         self.get_raw_data()
-
+        payload = {}
+        payload = self.make_payload()
         message = {
             'device_id' : self.device_id,
-            'payload' : self.make_payload()
+            'payload' : payload
         }
-
         if message.get('payload') == None:
             print("error occured , there is no data")
         else:
             print(message)
-
         try:
             self.mqtt_client.publish(
                 topic = self.publish_topic,
                 payload = json.dumps(message)
             )
-
         except Exception as e:
             print("publishing error occured as {}".format(e))
 
