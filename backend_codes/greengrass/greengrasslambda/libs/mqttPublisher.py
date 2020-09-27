@@ -18,11 +18,6 @@ TEST_JSON = {
         "oilStatus",
         "missionOil",
         "brakeOil"
-    ],
-    "Payload" :[
-        1000,
-        2000,
-        3000
     ]
 }
 
