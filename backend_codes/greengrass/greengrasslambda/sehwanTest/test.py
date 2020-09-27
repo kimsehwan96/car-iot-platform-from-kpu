@@ -11,9 +11,11 @@ from libs.mqttPublisher import Publisher
 
 TEST_JSON = {
     "Fields" : [
-        "RPM",
-        "Speed",
-        "Brake"
+        "rpm",
+        "speed",
+        "brake",
+        "oilTemp",
+        "oilStatus"
     ]
 }
 def handler():

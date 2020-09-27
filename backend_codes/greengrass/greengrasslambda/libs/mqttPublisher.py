@@ -15,9 +15,7 @@ TEST_JSON = {
         "speed",
         "brake",
         "oilTemp",
-        "oilStatus",
-        "missionOil",
-        "brakeOil"
+        "oilStatus"
     ]
 }
 
@@ -36,6 +34,14 @@ class Publisher:
             print("error occured when make iot client {}".format(e))
         self.pluginCls = pluginCls
 
+    def vaildating_profile(self, fields, data):
+        if len(fields) == len(data):
+            return True
+        else:
+            print("fields & data is not matching")
+            print("fields :", fields, "data" , data)
+            return False
+
     def get_raw_data(self):
         self.pluginCls.get_data()
         self.send_buffer = self.pluginCls.push_data()
@@ -50,9 +56,17 @@ class Publisher:
             'data' : self.send_buffer,
             'timestamp' : time.time()
         }
-        self.reset_buffer()
 
-        return payload
+        if self.vaildating_profile(payload.get('Fields'), payload.get('data')):
+            self.reset_buffer()
+            return payload
+        else:
+            print("there is error occured in vaildating fields & data")
+            return {
+                'Fields' : "Null",
+                'data' : "Null",
+                'timestamp' : time.time()
+            }
 
     def get_topic(self):
         return get_publish_topic()
