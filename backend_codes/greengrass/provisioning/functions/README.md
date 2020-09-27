@@ -1,1 +1,0 @@
-../../greengrasslambda/README.md
