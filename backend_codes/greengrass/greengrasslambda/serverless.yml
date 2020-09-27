@@ -8,6 +8,7 @@ provider:
   resourcesStackName: ${self:custom.sehwan}-resources-${self:provider.stage}
   #profile: ${self:custom.profiles.${self:provider.stage}}
   runtimeArtifactBucket: ${self:service}-${opt:stage}-runtime-artifact
+  rawdataBucket: ${self:service}-${opt:stage}-rawdata
   versionFunctions: true
 
 package:
@@ -34,11 +35,28 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.runtimeArtifactBucket}
+    RawdataBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.rawdataBucket}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+              MaxAge: 3000
   Outputs:
     RuntimeArtifactBucketRef:
       Value: { Ref: RuntimeArtifactBucket }
       Export:
         Name: RuntimeArtifactBucketRef
+    RawdataBucketRef:
+      Value: { Ref: RawdataBucket }
+      Export:
+        Name: RawdataBucketRef
 
 functions:
   sehwanTest:
