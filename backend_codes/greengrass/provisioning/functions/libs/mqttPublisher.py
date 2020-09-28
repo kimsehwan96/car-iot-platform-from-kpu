@@ -5,20 +5,18 @@ import os
 import time
 import datetime
 import threading
-from .util import get_publish_topic
+from util import timestamp_to_datetime, get_min, get_publish_topic
 from datetime import datetime, timedelta
-from .dataGetter import TestClass
+from dataGetter import TestClass
+from storageManager import BaseStorageManager
 
 TEST_JSON = {
     "Fields" : [
-        "RPM",
-        "Speed",
-        "Brake"
-    ],
-    "Payload" :[
-        1000,
-        2000,
-        3000
+        "rpm",
+        "speed",
+        "brake",
+        "oilTemp",
+        "oilStatus"
     ]
 }
 
@@ -30,12 +28,21 @@ class Publisher:
         self.publish_topic = get_publish_topic() # edge/{groupName}/data/raw
         self.send_buffer = []
         self.fields = self.profile.get('Fields')
+        self.storageManger =BaseStorageManager('hello')
         try:
             self.mqtt_client = greengrasssdk.client('iot-data')
             print(self.mqtt_client)
         except Exception as e:
             print("error occured when make iot client {}".format(e))
         self.pluginCls = pluginCls
+
+    def vaildating_profile(self, fields, data):
+        if len(fields) == len(data):
+            return True
+        else:
+            print("fields & data is not matching")
+            print("fields :", fields, "data" , data)
+            return False
 
     def get_raw_data(self):
         self.pluginCls.get_data()
@@ -51,38 +58,43 @@ class Publisher:
             'data' : self.send_buffer,
             'timestamp' : time.time()
         }
-        self.reset_buffer()
 
-        return payload
+        if self.vaildating_profile(payload.get('Fields'), payload.get('data')):
+            self.reset_buffer()
+            return payload
+        else:
+            print("there is error occured in vaildating fields & data")
+            return {
+                'Fields' : "Null",
+                'data' : "Null",
+                'timestamp' : time.time()
+            }
 
     def get_topic(self):
         return get_publish_topic()
 
-    def publising_data(self, data):
-        pass
-
     def start_threading(self):
+        # 1초마다 실행되는 로직
         t = threading.Timer(1.0, self.start_threading)
         t. start()
-        
         self.get_raw_data()
-
+        payload = {}
+        payload = self.make_payload()
+        self.storageManger.relay(payload) #for tossing data to storageManager -> interface
+        self.storageManger.merge_data(payload) # every 1 seconds merge data for storing csv file
         message = {
             'device_id' : self.device_id,
-            'payload' : self.make_payload()
+            'payload' : payload
         }
-
         if message.get('payload') == None:
             print("error occured , there is no data")
         else:
             print(message)
-
         try:
             self.mqtt_client.publish(
                 topic = self.publish_topic,
                 payload = json.dumps(message)
             )
-
         except Exception as e:
             print("publishing error occured as {}".format(e))
 

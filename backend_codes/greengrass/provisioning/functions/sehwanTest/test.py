@@ -15,15 +15,9 @@ TEST_JSON = {
         "speed",
         "brake",
         "oilTemp",
-        "oilStatus",
-        "missionOil",
-        "brakeOil"
+        "oilStatus"
     ]
 }
-
-TOPIC = os.environ.get('TOPIC_EDGE')
-
-
 def handler():
     print('test plugin')
 
