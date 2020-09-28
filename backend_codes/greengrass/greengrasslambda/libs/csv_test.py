@@ -14,7 +14,7 @@ if __name__ == "__main__":
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
         csvwriter.writerows(data)
-        
+
 # 데이터 구조
 # timestamp 필드1번 필드2번 필드3번
 # 시간        데이터   데이터  데이터

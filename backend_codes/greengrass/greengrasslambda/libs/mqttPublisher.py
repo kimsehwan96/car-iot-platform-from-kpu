@@ -5,10 +5,10 @@ import os
 import time
 import datetime
 import threading
-from .util import *
+from util import timestamp_to_datetime, get_min, get_publish_topic
 from datetime import datetime, timedelta
-from .dataGetter import TestClass
-from .storageManager import *
+from dataGetter import TestClass
+from storageManager import BaseStorageManager
 
 TEST_JSON = {
     "Fields" : [
@@ -28,6 +28,7 @@ class Publisher:
         self.publish_topic = get_publish_topic() # edge/{groupName}/data/raw
         self.send_buffer = []
         self.fields = self.profile.get('Fields')
+        self.storageManger =BaseStorageManager('hello')
         try:
             self.mqtt_client = greengrasssdk.client('iot-data')
             print(self.mqtt_client)
@@ -79,6 +80,8 @@ class Publisher:
         self.get_raw_data()
         payload = {}
         payload = self.make_payload()
+        self.storageManger.relay(payload)
+        self.storageManger.merge_data(payload)
         message = {
             'device_id' : self.device_id,
             'payload' : payload
