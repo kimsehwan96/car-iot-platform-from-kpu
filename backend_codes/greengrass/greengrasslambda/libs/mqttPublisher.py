@@ -80,8 +80,8 @@ class Publisher:
         self.get_raw_data()
         payload = {}
         payload = self.make_payload()
-        self.storageManger.relay(payload)
-        self.storageManger.merge_data(payload)
+        self.storageManger.relay(payload) #for tossing data to storageManager -> interface
+        self.storageManger.merge_data(payload) # every 1 seconds merge data for storing csv file
         message = {
             'device_id' : self.device_id,
             'payload' : payload

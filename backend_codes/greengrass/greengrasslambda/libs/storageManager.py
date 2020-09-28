@@ -12,6 +12,7 @@ LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata
 #TODO: 1. dataGetter 하는 클래스로부터 데이터를 전달 받고, profile 상의 필드와 데이터를 매칭시켜서 csv 파일로 저장
 
 #TODO: S3 에 1분간 저장된 원본 데이터를 저장하는 로직이 들어 갈 예정
+S3_SAVE_BUCKET = os.environ.get('S3_SAVE_BUCKET', 'sehwan-an2-edge-dev-rawdata')
 DEVICE_ID = os.environ.get("AWS_IOT_THING_NAME", 'test_id')
 s3 = boto3.resource('s3')
 
@@ -95,7 +96,6 @@ class BaseStorageManager:
         # make_csv_format 호출해서 csv 파일 포맷을 만들고, csv파일을 생각해서 저장
         # dt 관련한 코드는 util.py 에 구현
 
-
     def save_csv_data(self, data):
         rows = data
         fields = ['timestamp']
@@ -105,15 +105,25 @@ class BaseStorageManager:
         dt_day = get_day(dt)
         dt_hour = get_hour(dt)
         dt_min = get_min(dt)
+        fileName = 'rawdata_{}_{}_{}_{}_{}.csv'.format(dt_year, dt_month, dt_day, dt_hour, dt_min - 1)
 
         for v in self.fields:
             fields.append(v)
-        with open ('rawdata_{}_{}_{}_{}_{}.csv'.format(dt_year, dt_month, dt_day, dt_hour, dt_min - 1), 'w') as csvfile:
+        with open (fileName, 'w') as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(fields)
             csvwriter.writerows(rows)
+        self.save_to_s3(fileName)
         # fields = ['timestamp', 'a' , 'b', 'c']
-        
+        # TODO: 저장된 데이터를 어떻게 S3에 넘길지 고민해보기.... 개어려워....
+
+    def save_to_s3(self, fileName):
+        s3.meta.client.upload_file(
+            os.getcwd() + '/' + fileName,
+            S3_SAVE_BUCKET,
+            DEVICE_ID + '/' + fileName
+        )
+        print("save local csv file into S3 !! {}".format(fileName))
 
     #TODO: datetime 오브젝트에서, 기준이 되는 minutes를 정하고, 다음 minutes가 되기 전까지의
     # 데이터를 배열로 저장, csv에 쓰면 될 듯 하다.
