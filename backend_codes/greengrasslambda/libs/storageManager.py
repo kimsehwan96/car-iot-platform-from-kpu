@@ -129,8 +129,33 @@ class BaseStorageManager:
     # 시간   4   2    1    3
 # 개어려워..
 
-class LocalStorageManager(BaseStorageManager):
-    pass
+class LocalStorageManager(BaseStorageManager): #Local 환경 테스트 클래스
+    pass #그대로 사용하기
+
+class DeviceStorageManager(BaseStorageManager): #실제 디바이스 환경 테스트 클래스
+    # 위 메서드들 오버라이드 하기
+    #LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata')
+    def save_csv_data(self, data):
+        rows = data
+        fields = ['timestamp']
+        dt = timestamp_to_datetime(self.timestamp)
+        fileName = 'rawdata_{}.csv'.format(dt.strftime('%Y-%m-%d-%H-%M'))
+        for v in self.fields:
+            fields.append(v)
+        with open (LOCAL_DATA_STORE_PATH + '/' + fileName, 'w') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(fields)
+            csvwriter.writerows(rows)
+        self.save_to_s3(fileName)
+
+
+    def save_to_s3(self, fileName):
+        s3.meta.client.upload_file(
+            LOCAL_DATA_STORE_PATH + '/' + fileName,
+            S3_SAVE_BUCKET,
+            DEVICE_ID + '/' + fileName
+        )
+        print("save local csv file into S3 !! {}".format(fileName))
 
 
 if __name__ == "__main__":
