@@ -27,6 +27,7 @@ class BaseStorageManager:
         self.timestamp = None 
         self.csv_buffer = [] #iter 객체 생성. csv파일을 위해.
         self.base_dt_min = 0
+
     
     def get_payload(self):
         return self.payload
@@ -135,6 +136,17 @@ class LocalStorageManager(BaseStorageManager): #Local 환경 테스트 클래스
 class DeviceStorageManager(BaseStorageManager): #실제 디바이스 환경 테스트 클래스
     # 위 메서드들 오버라이드 하기
     #LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata')
+    def __init__(self, **kwargs):
+        super(DeviceStorageManager, self).__init__(**kwargs) # inherit from base class.
+        try:
+            if not(os.path.isdir(LOCAL_DATA_STORE_PATH)):
+                print("try to make directory....!!")
+                os.makedirs(LOCAL_DATA_STORE_PATH)
+        except OSError as e:
+            print("Failed to create directory!!!!!")
+            raise
+        # /rawcar/rawdata 디렉터리가 없으면 최초에 생성.
+
     def save_csv_data(self, data):
         rows = data
         fields = ['timestamp']
