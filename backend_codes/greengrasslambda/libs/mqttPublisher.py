@@ -8,7 +8,7 @@ import threading
 from .util import timestamp_to_datetime, get_min, get_publish_topic
 from datetime import datetime, timedelta
 from .dataGetter import TestClass
-from .storageManager import BaseStorageManager
+from .storageManager import BaseStorageManager, LocalStorageManager, DeviceStorageManager
 
 TEST_JSON = {
     "Fields" : [
@@ -20,6 +20,10 @@ TEST_JSON = {
     ]
 }
 
+OPT = {
+    "IS_LOCAL" : True
+}
+
 
 class Publisher:
     def __init__(self, device_id, profile, pluginCls, option = {}) :
@@ -28,7 +32,13 @@ class Publisher:
         self.publish_topic = get_publish_topic() # edge/{groupName}/data/raw
         self.send_buffer = []
         self.fields = self.profile.get('Fields')
-        self.storageManger =BaseStorageManager('hello')
+        self.option = option
+        if self.option.get("IS_LOCAL"):
+            self.storageManger = LocalStorageManager('hello')
+            print("Local runtime")
+        else:
+            self.storageManger = DeviceStorageManager('hello')
+            print("Device runtime")
         try:
             self.mqtt_client = greengrasssdk.client('iot-data')
             print(self.mqtt_client)
@@ -107,6 +117,7 @@ class Publisher:
 # 아래는 로컬 테스트 코드
 
 if __name__ == "__main__":
+    opt = {'IS_LOCAL' : True}
     tc = TestClass(TEST_JSON)
-    pc = Publisher('hello', TEST_JSON, tc)
+    pc = Publisher('hello', TEST_JSON, tc, option=opt)
     pc.start_threading()
