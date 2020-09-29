@@ -5,10 +5,10 @@ import os
 import time
 import datetime
 import threading
-from util import timestamp_to_datetime, get_min, get_publish_topic
+from .util import timestamp_to_datetime, get_min, get_publish_topic
 from datetime import datetime, timedelta
-from dataGetter import TestClass
-from storageManager import BaseStorageManager
+from .dataGetter import TestClass
+from .storageManager import BaseStorageManager
 
 TEST_JSON = {
     "Fields" : [

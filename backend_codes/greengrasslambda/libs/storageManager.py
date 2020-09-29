@@ -4,7 +4,7 @@ import csv
 import datetime
 import time
 import threading
-from util import timestamp_to_datetime, get_year, get_month, get_day, get_hour, get_min
+from .util import timestamp_to_datetime, get_year, get_month, get_day, get_hour, get_min
 
 LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata') # 원본 데이터를 저장할 디바이스 상의 경로.
 # 테스트 코드는 현재 경로에다 저장할래요.
