@@ -100,13 +100,7 @@ class BaseStorageManager:
         rows = data
         fields = ['timestamp']
         dt = timestamp_to_datetime(self.timestamp)
-        dt_year = get_year(dt)
-        dt_month = get_month(dt)
-        dt_day = get_day(dt)
-        dt_hour = get_hour(dt)
-        dt_min = get_min(dt)
-        fileName = 'rawdata_{}_{}_{}_{}_{}.csv'.format(dt_year, dt_month, dt_day, dt_hour, dt_min - 1)
-
+        fileName = 'rawdata_{}.csv'.format(dt.strftime('%Y-%m-%d-%H-%M'))
         for v in self.fields:
             fields.append(v)
         with open (fileName, 'w') as csvfile:
