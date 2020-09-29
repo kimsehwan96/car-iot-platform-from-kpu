@@ -136,8 +136,8 @@ class LocalStorageManager(BaseStorageManager): #Local 환경 테스트 클래스
 class DeviceStorageManager(BaseStorageManager): #실제 디바이스 환경 테스트 클래스
     # 위 메서드들 오버라이드 하기
     #LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata')
-    def __init__(self, **kwargs):
-        super(DeviceStorageManager, self).__init__(**kwargs) # inherit from base class.
+    def __init__(self,*args, **kwargs):
+        super(DeviceStorageManager, self).__init__(*args, **kwargs) # inherit from base class.
         try:
             if not(os.path.isdir(LOCAL_DATA_STORE_PATH)):
                 print("try to make directory....!!")
