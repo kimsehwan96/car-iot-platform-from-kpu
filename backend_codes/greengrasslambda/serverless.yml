@@ -27,7 +27,7 @@ custom:
 
 plugins:
   - serverless-python-requirements
-  #- serverless-aws-alias
+  - serverless-aws-alias
 resources:
   Description: "Edge Resource Stack"
   Resources:
