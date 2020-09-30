@@ -14,16 +14,16 @@ LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata
 #TODO: S3 에 1분간 저장된 원본 데이터를 저장하는 로직이 들어 갈 예정
 S3_SAVE_BUCKET = os.environ.get('S3_SAVE_BUCKET', 'sehwan-an2-edge-dev-rawdata')
 DEVICE_ID = os.environ.get("AWS_IOT_THING_NAME", 'test_id')
-Network_flag = False
+network_flag = False
 
 try:
     s3 = boto3.resource('s3')
-    Network_flag = True
+    network_flag = True
 except Exception as e:
     print("error occured when make s3 resource {}".format(e))
-    Network_flag = False
+    network_flag = False
     # 찾았다. 네트워크 안될 때 죽는 이유
-print("inital status of Network flag {}".format(Network_flag))
+print("inital status of Network flag {}".format(network_flag))
 
 
 class BaseStorageManager:
@@ -37,7 +37,7 @@ class BaseStorageManager:
         self.timestamp = None 
         self.csv_buffer = [] #iter 객체 생성. csv파일을 위해.
         self.base_dt_min = 0
-        self.network_status = False
+        self.network_status = network_flag #최초 리소스 실행 결과인 network_flag를 가져온다.
 
     
     def get_payload(self):
