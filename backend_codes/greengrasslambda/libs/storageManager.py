@@ -14,7 +14,12 @@ LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata
 #TODO: S3 에 1분간 저장된 원본 데이터를 저장하는 로직이 들어 갈 예정
 S3_SAVE_BUCKET = os.environ.get('S3_SAVE_BUCKET', 'sehwan-an2-edge-dev-rawdata')
 DEVICE_ID = os.environ.get("AWS_IOT_THING_NAME", 'test_id')
-s3 = boto3.resource('s3')
+try:
+    s3 = boto3.resource('s3')
+except Exception as e:
+    print("error occured when make s3 resource {}".format(e))
+    # 찾았다. 네트워크 안될 때 죽는 이유
+
 
 
 class BaseStorageManager:
