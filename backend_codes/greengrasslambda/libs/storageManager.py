@@ -14,15 +14,20 @@ LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata
 #TODO: S3 에 1분간 저장된 원본 데이터를 저장하는 로직이 들어 갈 예정
 S3_SAVE_BUCKET = os.environ.get('S3_SAVE_BUCKET', 'sehwan-an2-edge-dev-rawdata')
 DEVICE_ID = os.environ.get("AWS_IOT_THING_NAME", 'test_id')
+Network_flag = False
+
 try:
     s3 = boto3.resource('s3')
+    Network_flag = True
 except Exception as e:
     print("error occured when make s3 resource {}".format(e))
+    Network_flag = False
     # 찾았다. 네트워크 안될 때 죽는 이유
 
 
 
 class BaseStorageManager:
+    global s3
 
     def __init__(self, device_id):
         self.payload = {}
@@ -32,6 +37,7 @@ class BaseStorageManager:
         self.timestamp = None 
         self.csv_buffer = [] #iter 객체 생성. csv파일을 위해.
         self.base_dt_min = 0
+        self.network_status = False
 
     
     def get_payload(self):
@@ -116,8 +122,22 @@ class BaseStorageManager:
         self.save_to_s3(fileName)
         # fields = ['timestamp', 'a' , 'b', 'c']
         # TODO: 저장된 데이터를 어떻게 S3에 넘길지 고민해보기.... 개어려워....
+    def check_s3_status(self):
+        if not(self.network_status):
+            try:
+                s3 = boto3.resource('s3')
+                try:
+                    if s3:
+                        self.network_status = True
+                except NameError as e:
+                    print("Error occured when making s3 resource")
+                    self.network_status = False
+            except Exception as e:
+                print("General error occured {}".format(e))
+                    
 
     def save_to_s3(self, fileName):
+        self.check_s3_status()
         s3.meta.client.upload_file(
             os.getcwd() + '/' + fileName,
             S3_SAVE_BUCKET,
@@ -167,6 +187,7 @@ class DeviceStorageManager(BaseStorageManager): #실제 디바이스 환경 테�
 
 
     def save_to_s3(self, fileName):
+        self.check_s3_status()
         s3.meta.client.upload_file(
             LOCAL_DATA_STORE_PATH + '/' + fileName,
             S3_SAVE_BUCKET,
