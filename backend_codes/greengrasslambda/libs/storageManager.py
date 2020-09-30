@@ -14,10 +14,20 @@ LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata
 #TODO: S3 에 1분간 저장된 원본 데이터를 저장하는 로직이 들어 갈 예정
 S3_SAVE_BUCKET = os.environ.get('S3_SAVE_BUCKET', 'sehwan-an2-edge-dev-rawdata')
 DEVICE_ID = os.environ.get("AWS_IOT_THING_NAME", 'test_id')
-s3 = boto3.resource('s3')
+Network_flag = False
+
+try:
+    s3 = boto3.resource('s3')
+    Network_flag = True
+except Exception as e:
+    print("error occured when make s3 resource {}".format(e))
+    Network_flag = False
+    # 찾았다. 네트워크 안될 때 죽는 이유
+print("inital status of Network flag {}".format(Network_flag))
 
 
 class BaseStorageManager:
+    global s3
 
     def __init__(self, device_id):
         self.payload = {}
@@ -27,6 +37,8 @@ class BaseStorageManager:
         self.timestamp = None 
         self.csv_buffer = [] #iter 객체 생성. csv파일을 위해.
         self.base_dt_min = 0
+        self.network_status = False
+
     
     def get_payload(self):
         return self.payload
@@ -100,13 +112,7 @@ class BaseStorageManager:
         rows = data
         fields = ['timestamp']
         dt = timestamp_to_datetime(self.timestamp)
-        dt_year = get_year(dt)
-        dt_month = get_month(dt)
-        dt_day = get_day(dt)
-        dt_hour = get_hour(dt)
-        dt_min = get_min(dt)
-        fileName = 'rawdata_{}_{}_{}_{}_{}.csv'.format(dt_year, dt_month, dt_day, dt_hour, dt_min - 1)
-
+        fileName = 'rawdata_{}.csv'.format(dt.strftime('%Y-%m-%d-%H-%M'))
         for v in self.fields:
             fields.append(v)
         with open (fileName, 'w') as csvfile:
@@ -116,8 +122,24 @@ class BaseStorageManager:
         self.save_to_s3(fileName)
         # fields = ['timestamp', 'a' , 'b', 'c']
         # TODO: 저장된 데이터를 어떻게 S3에 넘길지 고민해보기.... 개어려워....
+    def check_s3_status(self):
+        print("Check s3 status logic executed !!!!!")
+        if not(self.network_status):
+            try:
+                s3 = boto3.resource('s3')
+                if s3:
+                    self.network_status = True
+                    print("Retring to make S3 resource is Success")
+            except NameError as e:
+                print("Error occured when making s3 resource")
+                self.network_status = False
+            except Exception as e:
+                print("General error occured {}".format(e))
+                self.network_status = False
+                    
 
     def save_to_s3(self, fileName):
+        self.check_s3_status()
         s3.meta.client.upload_file(
             os.getcwd() + '/' + fileName,
             S3_SAVE_BUCKET,
@@ -135,8 +157,45 @@ class BaseStorageManager:
     # 시간   4   2    1    3
 # 개어려워..
 
-class LocalStorageManager(BaseStorageManager):
-    pass
+class LocalStorageManager(BaseStorageManager): #Local 환경 테스트 클래스
+    pass #그대로 사용하기
+
+class DeviceStorageManager(BaseStorageManager): #실제 디바이스 환경 테스트 클래스
+    # 위 메서드들 오버라이드 하기
+    #LOCAL_DATA_STORE_PATH = os.environ.get('LOCAL_DATA_STORE_PATH', '/rawcar/rawdata')
+    def __init__(self,*args, **kwargs):
+        super(DeviceStorageManager, self).__init__(*args, **kwargs) # inherit from base class.
+        try:
+            if not(os.path.isdir(LOCAL_DATA_STORE_PATH)):
+                print("try to make directory....!!")
+                os.makedirs(LOCAL_DATA_STORE_PATH)
+        except OSError as e:
+            print("Failed to create directory!!!!!")
+            raise
+        # /rawcar/rawdata 디렉터리가 없으면 최초에 생성.
+
+    def save_csv_data(self, data):
+        rows = data
+        fields = ['timestamp']
+        dt = timestamp_to_datetime(self.timestamp)
+        fileName = 'rawdata_{}.csv'.format(dt.strftime('%Y-%m-%d-%H-%M'))
+        for v in self.fields:
+            fields.append(v)
+        with open (LOCAL_DATA_STORE_PATH + '/' + fileName, 'w') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(fields)
+            csvwriter.writerows(rows)
+        self.save_to_s3(fileName)
+
+
+    def save_to_s3(self, fileName):
+        self.check_s3_status()
+        s3.meta.client.upload_file(
+            LOCAL_DATA_STORE_PATH + '/' + fileName,
+            S3_SAVE_BUCKET,
+            DEVICE_ID + '/' + fileName
+        )
+        print("save local csv file into S3 !! {}".format(fileName))
 
 
 if __name__ == "__main__":

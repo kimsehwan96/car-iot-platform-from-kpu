@@ -111,7 +111,8 @@ TEMP_CONTAINER=$(docker create timmattison/aws-greengrass-provisioner:$TAG)
 
 docker cp $PWD/foundation $TEMP_CONTAINER:/foundation
 docker cp $PWD/deployments $TEMP_CONTAINER:/deployments
-docker cp $PWD/functions $TEMP_CONTAINER:/functions
+docker cp --follow-link $PWD/functions $TEMP_CONTAINER:/functions # 심볼릭 링크 functions에 달아줬자나
+# 그러니까 cp --follow-link 옵션을 달아줘야 심볼릭 링크 따라가서 cp를 한다 이말씀.
 docker cp $PWD/connectors $TEMP_CONTAINER:/connectors
 
 TEMP_IMAGE=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
