@@ -23,7 +23,7 @@ except Exception as e:
     print("error occured when make s3 resource {}".format(e))
     Network_flag = False
     # 찾았다. 네트워크 안될 때 죽는 이유
-
+print("inital status of Network flag {}".format(Network_flag))
 
 
 class BaseStorageManager:
@@ -123,17 +123,19 @@ class BaseStorageManager:
         # fields = ['timestamp', 'a' , 'b', 'c']
         # TODO: 저장된 데이터를 어떻게 S3에 넘길지 고민해보기.... 개어려워....
     def check_s3_status(self):
+        print("Check s3 status logic executed !!!!!")
         if not(self.network_status):
             try:
                 s3 = boto3.resource('s3')
-                try:
-                    if s3:
-                        self.network_status = True
-                except NameError as e:
-                    print("Error occured when making s3 resource")
-                    self.network_status = False
+                if s3:
+                    self.network_status = True
+                    print("Retring to make S3 resource is Success")
+            except NameError as e:
+                print("Error occured when making s3 resource")
+                self.network_status = False
             except Exception as e:
                 print("General error occured {}".format(e))
+                self.network_status = False
                     
 
     def save_to_s3(self, fileName):
