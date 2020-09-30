@@ -61,6 +61,6 @@ resources:
 functions:
   sehwanTest:
     module: sehwanTest
-    handler: test.handler
+    handler: main.handler
     name: ${self:provider.stackName}-sehwanTest
  
