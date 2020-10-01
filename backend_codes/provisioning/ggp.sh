@@ -1,23 +1,5 @@
 #!/usr/bin/env bash
 
-JAR_NAME="AwsGreengrassProvisioner.jar"
-JAR_LOCATION_1="../aws-greengrass-provisioner/build/libs/$JAR_NAME"
-JAR_LOCATION_2="./$JAR_NAME"
-
-if [ -f "$JAR_LOCATION_1" ]; then
-  JAR_LOCATION=$JAR_LOCATION_1
-elif [ -f "$JAR_LOCATION_2" ]; then
-  JAR_LOCATION=$JAR_LOCATION_2
-fi
-
-if [ ! -z "$JAR_LOCATION" ]; then
-  echo "JAR found, running with Java"
-  set -e
-  java -jar $JAR_LOCATION $@
-  exit 0
-fi
-
-echo "JAR not found, running with Docker"
 TAG=$(cd ../aws-greengrass-provisioner 2>/dev/null && git symbolic-ref --short HEAD | tr -cd '[:alnum:]._-')
 
 if [ $? -ne 0 ]; then
@@ -109,11 +91,11 @@ docker pull timmattison/aws-greengrass-provisioner:$TAG
 
 TEMP_CONTAINER=$(docker create timmattison/aws-greengrass-provisioner:$TAG)
 
-docker cp $PWD/foundation $TEMP_CONTAINER:/foundation
+
 docker cp $PWD/deployments $TEMP_CONTAINER:/deployments
 docker cp --follow-link $PWD/functions $TEMP_CONTAINER:/functions # 심볼릭 링크 functions에 달아줬자나
 # 그러니까 cp --follow-link 옵션을 달아줘야 심볼릭 링크 따라가서 cp를 한다 이말씀.
-docker cp $PWD/connectors $TEMP_CONTAINER:/connectors
+
 
 TEMP_IMAGE=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
 
