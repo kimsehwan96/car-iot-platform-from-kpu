@@ -120,8 +120,7 @@ class BaseStorageManager:
             csvwriter.writerow(fields)
             csvwriter.writerows(rows)
         self.save_to_s3(fileName)
-        # fields = ['timestamp', 'a' , 'b', 'c']
-        # TODO: 저장된 데이터를 어떻게 S3에 넘길지 고민해보기.... 개어려워....
+
     def check_s3_status(self):
         print("Check s3 status logic executed !!!!!")
         if not(self.network_status):
