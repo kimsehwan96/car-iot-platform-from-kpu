@@ -53,13 +53,23 @@ if __name__=="__main__":
     #print(raw_ary) # 이거 가지고 pandas 이용 처리를 해볼거임
     fields = raw_ary[0][0].split(',')
     #print(fields)
-    new_ary = [x.split(',') for x in raw_ary[0]]
+    
     #print(new_ary)
 
+    new_ary = [x.split(',') for x in raw_ary[0]]
     df = pd.DataFrame(
-        new_ary[1:]    
+        new_ary[:]    
     )
     df.columns=fields
+    for i in range(1, len(raw_ary)):
+        new_ary = [x.split(',') for x in raw_ary[i]]
+        new_df = pd.DataFrame(
+            new_ary[:]
+        )
+        new_df.columns=fields
+        df.append(new_df)
+
+        
     print(df)
     for v in fields[1:]: # 타임스탬프를 제외한 필드를 숫자 데이터로 변환함.
         df[v]= pd.to_numeric(df[v])
