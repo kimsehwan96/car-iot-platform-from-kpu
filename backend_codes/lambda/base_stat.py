@@ -6,11 +6,11 @@ import time
 
 BUCKET_NAME = os.environ.get('RAW_DATA_BUCKET_NAME', 'sehwan-an2-edge-dev-rawdata')
 DEVICE_ID = os.environ.get('AWS_THING_NAME', 'test-group_Core')
+os.environ['TZ'] = 'Asia/Seoul'
 
 s3 = boto3.client('s3')
 
 class BaseStatClass(abc.ABC):
-
     def __init__(self):
         self.raw_data_bucket_name = BUCKET_NAME
         self.device_id = DEVICE_ID

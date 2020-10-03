@@ -3,6 +3,7 @@ import datetime
 import time
 import boto3
 
+os.environ['TZ'] = 'Asia/Seoul'
 
 def handler(event, context):
     print("this lambda has been invoked !")
@@ -31,12 +32,11 @@ def make_s3_key_ary(datetime_object):
     dt_hour = datetime_object.hour
     dt_minute = datetime_object.minute
     # 2020-09-29-22-00 ~ 2020-09-29-59 의 string array를 만들기
-    time_format = '{}-{}-{}-{}-{}'.format(
+    time_format = '{}-{}-{}-{}'.format(
         dt_year,
         dt_month,
         dt_day,
-        dt_hour,
-        dt_minute
+        dt_hour
     )
     ary = [ 'rawdata_' + time_format + '-' + '0' + str(x) 
             if x < 10 

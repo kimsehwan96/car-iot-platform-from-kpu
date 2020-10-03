@@ -10,36 +10,68 @@ BUCKET_NAME = 'sehwan-an2-edge-dev-rawdata'
 s3 = boto3.client('s3')
 
 
-def make_stream_obj_to_ary(raw_data):
+def make_stream_obj_to_ary(raw_data): #raw_data <- s3.get_ojbject(**kwargs).get('Body').read()
     data = raw_data.decode()
     ary = []
     ary = data.split('\r\n')
     if ary[-1] == '':
         ary.pop() #마지막 '' 요소 삭제.
-    print(ary)
+    else:
+        pass
+    #print(ary)
+    return ary
 
 if __name__=="__main__":
-    try:
-        obj = s3.get_object(
-            Bucket = BUCKET_NAME,
-            Key = '{}/rawdata_2020-09-29-22-20.csv'.format(AWS_THINS_NAME)
-        )
-    except s3.exceptions.NoSuchKey as e:
-        print("error occured , No such Key") #key 없을 때 예외 처리 로직.
+    S3_KEYS = [
+        'test-group_Core/rawdata_2020-09-29-22-20.csv',
+        'test-group_Core/rawdata_2020-09-29-22-21.csv',
+        'test-group_Core/rawdata_2020-09-29-22-23.csv',
+        'test-group_Core/rawdata_2020-09-29-22-24.csv'
+    ] # 향후 트리거된 람다로부터 이 키들을 생성 할 예정임.
+    raw_ary = []
+    for v in S3_KEYS:
+        try:
+            obj = s3.get_object(
+                Bucket = BUCKET_NAME,
+                #Key = '{}/rawdata_2020-09-29-22-20.csv'.format(AWS_THINS_NAME)
+                Key = v
+            )
+        except s3.exceptions.NoSuchKey as e:
+            print("error occured , No such Key") #key 없을 때 예외 처리 로직.
+        try:
+            raw_data = obj.get('Body').read()
+            raw_ary.append(make_stream_obj_to_ary(raw_data))
+        except Exception as e:
+            print("error occured {}".format(e))
+
+    
+    #print(raw_ary) # 이거 가지고 pandas 이용 처리를 해볼거임
+    fields = raw_ary[0][0].split(',')
+    #print(fields)
+    new_ary = [x.split(',') for x in raw_ary[0]]
+    #print(new_ary)
+
+    df = pd.DataFrame(
+        new_ary[1:]    
+    )
+    df.columns=fields
+    print(df)
+    #df.describe().mean().rpm
+
     #s3.exceptions.NoSuchKey
 
 # lambda가 임의로 invoke 되었을 때 dt 받아서 출력해보기.
 
 
-    print(obj)
-    body = obj.get('Body')
-    print(dir(body))
-    raw_data = body.read()
-    print(raw_data)
-    print(raw_data.decode('utf-8')) # can detect with csv file?
-    print(type(raw_data.decode('utf-8')))
+    #print(obj)
+    #body = obj.get('Body')
+    #print(dir(body))
+    #raw_data = body.read()
+    #print(raw_data)
+    #print(raw_data.decode('utf-8')) # can detect with csv file?
+    #print(type(raw_data.decode('utf-8')))
 
-    make_stream_obj_to_ary(raw_data) # 마지막에 ''가 들어오네
+    #make_stream_obj_to_ary(raw_data) # 마지막에 ''가 들어오네
 
 
 

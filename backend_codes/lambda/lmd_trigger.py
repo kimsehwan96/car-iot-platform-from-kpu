@@ -13,6 +13,7 @@ import json
 
 BUCKET_NAME = os.environ.get('RAW_BUCKET', 'if this texts show, Env var wasnt detectd')
 TRIGGERD_LAMDA = os.environ.get('TRIGGERD_LAMDA', 'batch-lambda-dev-stat-get-trigger')
+os.environ['TZ'] = 'Asia/Seoul'
 
 lmd = boto3.client('lambda')
 
