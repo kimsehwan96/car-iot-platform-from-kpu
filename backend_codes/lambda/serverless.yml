@@ -1,21 +1,47 @@
+service: batch-lambda-dev
 
+provider:
+  name: aws
+  runtime: python3.7
+  memorySiz: 1024
+  timeout: 900 # seconds
+  stage: ${opt:stage, self:custom.defaultStage}
+  stackName: ${self:service}-${self:provider.stage}
+  versionFunctions: true
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:*"
+        - "dynamodb:*"
+        - "lambda:*"
+        - "s3:*"
+      Resource: "*" 
+  environment:
+    RAW_BUCKET: "sehwan-an2-edge-dev-rawdata"
 
+package:
+  individually: true
+  exclude:
+    - node_modules/**
 
+plugins:
+  - serverless-python-requirements
 
+custom:
+  defaultStage: dev
+  regionAbbr:
+    ap-northeast-2: an2
+  pythonRequirements:
+    dockerizePip: true
+    useDownloadCache: false 
+    useStaticCache: false
 
-# 예제 : cron 을 이용해 주기적 lambda 인보크 하는 방법.
+resources:
+  Description: "batch lambdas"
 
 functions:
-  functionTrigger:
-    module: module_name
-    handler: main.handler
-    name: here_is_name
+  lmd_trigger:
+    handler: lmd_trigger.handler
+    name: ${self:service}-stat-trigger
     events:
-      - schedule: cron(0 * * * ? *)  # every 1 hours ?
-      # cron(0/1 * * * ? *) -> every 1 mins.
-# 람다 주기적 인보크(호출) 방법
-# events에 (트리거 할 방법을 명시하는 거죠)
-# - schedule 이라고 하고, aws 에서 제공하는 cron 표현식을 이용해 주기를 설정하면 된다
-# ex ) cron(0 * * * ? *) -> 매 1시간 마다 람다 인보크
-# ex ) cron(0/5 * * * ? *) -> 매 5분마다 람다 인보크
-# 인보크 할 때 인자도 같이 넘겨 줄 수 있다. readme에 설명 작성하겠다.
+      - schedule: cron(0/1 * * * ? *) # every 1 mins
