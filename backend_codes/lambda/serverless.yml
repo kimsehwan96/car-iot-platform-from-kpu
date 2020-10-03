@@ -45,3 +45,6 @@ functions:
     name: ${self:service}-stat-trigger
     events:
       - schedule: cron(0/1 * * * ? *) # every 1 mins
+  lmd_get_trigger:
+    handler: lmd_get_trigger.handler
+    name: ${self:service}-stat--get-trigger

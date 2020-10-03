@@ -19,8 +19,8 @@ def handler(event, context):
     print("this lambda has invoked!! (cron test lambda)")
     print("this is BUCKET_NAME {}".format(BUCKET_NAME))
 
-    dt = timenow_dt()
-
+    #dt = timenow_dt()
+    dt = datetime.datetime(2020,9, 29, 22, 20)
     print(dt.strftime('%Y-%m-%d-%H-%M'))
 
 # lambda 트리거 될 때 dt 오브젝트를 event 요소로 넘겨주면 괜찮을 것 같다. (현재 invoke 된 시간.)

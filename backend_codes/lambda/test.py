@@ -19,10 +19,17 @@ def make_stream_obj_to_ary(raw_data):
     print(ary)
 
 if __name__=="__main__":
-    obj = s3.get_object(
-        Bucket = BUCKET_NAME,
-        Key = '{}/rawdata_2020-09-29-22-20.csv'.format(AWS_THINS_NAME)
-    )
+    try:
+        obj = s3.get_object(
+            Bucket = BUCKET_NAME,
+            Key = '{}/rawdata_2020-09-29-22-20.csv'.format(AWS_THINS_NAME)
+        )
+    except s3.exceptions.NoSuchKey as e:
+        print("error occured , No such Key") #key 없을 때 예외 처리 로직.
+    #s3.exceptions.NoSuchKey
+
+# lambda가 임의로 invoke 되었을 때 dt 받아서 출력해보기.
+
 
     print(obj)
     body = obj.get('Body')
