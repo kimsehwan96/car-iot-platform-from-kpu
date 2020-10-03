@@ -18,6 +18,8 @@ provider:
       Resource: "*" 
   environment:
     RAW_BUCKET: "sehwan-an2-edge-dev-rawdata"
+    TRIGGERD_LAMDA: ${self:service}-stat-get-trigger
+
 
 package:
   individually: true
@@ -47,4 +49,4 @@ functions:
       - schedule: cron(0/1 * * * ? *) # every 1 mins
   lmd_get_trigger:
     handler: lmd_get_trigger.handler
-    name: ${self:service}-stat--get-trigger
+    name: ${self:service}-stat-get-trigger
