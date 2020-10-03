@@ -44,7 +44,12 @@ if __name__=="__main__":
         except Exception as e:
             print("error occured {}".format(e))
 
-    
+    if not(raw_ary): # 만약 어레이에 어떤 데이터도 들어오지 않았다면 람다 종료.
+        print("there is no data for processing")
+        exit(0)
+    else:
+        pass
+
     #print(raw_ary) # 이거 가지고 pandas 이용 처리를 해볼거임
     fields = raw_ary[0][0].split(',')
     #print(fields)
@@ -56,7 +61,9 @@ if __name__=="__main__":
     )
     df.columns=fields
     print(df)
-    #df.describe().mean().rpm
+    for v in fields[1:]: # 타임스탬프를 제외한 필드를 숫자 데이터로 변환함.
+        df[v]= pd.to_numeric(df[v])
+    print(df.describe())
 
     #s3.exceptions.NoSuchKey
 
