@@ -13,10 +13,10 @@ TRIGGERD_LAMDA = os.environ.get('TRIGGERD_LAMDA', 'batch-lambda-dev-stat-get-tri
 
 lmd = boto3.client('lambda')
 
-def timenow_dt():
+def timenow_dt_strftime():
     time_now = time.time()
     dt = datetime.datetime.fromtimestamp(time_now)
-    return dt
+    return dt.strftime('%Y-%m-%d-%H-%M')
     #invoke 요청 할 당시의 datetime object
     
 def handler(event, context):

@@ -1,0 +1,79 @@
+# dynamoDB 테이블 배포 템플릿
+
+service: dynamodb-resources
+
+provider:
+  name: aws
+  stage: ${opt:stage, self:custom.defaultStage}
+  stackName: ${self:service}-${self:provider.stage}
+
+custom:
+  defaultStage: dev
+  regionAbbr:
+    ap-northeast-2: an2
+
+resources:
+  Resources:
+    HourTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-Hour-stat
+        KeySchema:
+          - AttributeName: deviceId
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: deviceId
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
+        #ProvisionedThroughput:
+        #  ReadCapacityUnits: 5
+        #  WriteCapacityUnits: 5
+        BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
+    DayTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-Day-stat
+        KeySchema:
+          - AttributeName: deviceId
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: deviceId
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
+        #ProvisionedThroughput:
+        #  ReadCapacityUnits: 5
+        #  WriteCapacityUnits: 5
+        BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
+    MonthTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-Month-stat
+        KeySchema:
+          - AttributeName: deviceId
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        AttributeDefinitions:
+          - AttributeName: deviceId
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
+        #ProvisionedThroughput:
+        #  ReadCapacityUnits: 5
+        #  WriteCapacityUnits: 5
+        BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
