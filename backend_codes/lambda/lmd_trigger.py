@@ -27,13 +27,13 @@ def handler(event, context):
     print("this is BUCKET_NAME {}".format(BUCKET_NAME))
 
     #dt = timenow_dt()
-    dt = datetime.datetime(2020,9, 29, 22, 20)
-    print(dt.strftime('%Y-%m-%d-%H-%M'))
+    #dt = datetime.datetime(2020,9, 29, 22, 20)
+    print(timenow_dt_strftime())
 
     try:
         lmd.invoke(
             FunctionName=TRIGGERD_LAMDA,
-            InvocationType='Event', Payload=json.dumps({'dt' : dt.strftime('%Y-%m-%d-%H-%M')}))
+            InvocationType='Event', Payload=json.dumps({'dt' : timenow_dt_strftime()}))
     except  Exception as e:
         print("Error occured when triggering another lambda! {}".format(e))
 

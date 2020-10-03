@@ -46,7 +46,7 @@ functions:
     handler: lmd_trigger.handler
     name: ${self:service}-stat-trigger
     events:
-      - schedule: cron(0/5 * * * ? *) # every 5 mins
+      - schedule: cron(0 * * * ? *) # every 60 mins
   lmd_get_trigger:
     handler: lmd_get_trigger.handler
     name: ${self:service}-stat-get-trigger
