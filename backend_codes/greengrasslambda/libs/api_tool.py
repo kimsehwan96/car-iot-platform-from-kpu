@@ -7,6 +7,7 @@ import traceback
 
 TARGET_URL = os.environ.get("TARGET_URL")
 API_KEY = os.environ.get("API_KEY")
+DEVICE_ID = os.environ.get("AWS_IOT_THING_NAME")
 
 class API_BaseClass(abc.ABC):
 
@@ -39,7 +40,7 @@ class ProfileManager(API_BaseClass):
 
     def get_profile(self):
         return {
-            "device_id" : "kimsehwan",
+            "device_id" : DEVICE_ID,
             "Fields" : [
                 "rpm",
                 "speed",
