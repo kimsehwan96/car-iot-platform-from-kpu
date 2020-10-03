@@ -38,7 +38,11 @@ def make_s3_key_ary(datetime_object):
         dt_hour,
         dt_minute
     )
-    ary = [ 'rawdata_' + time_format + '-' + str(x) for x in range(60)]
+    ary = [ 'rawdata_' + time_format + '-' + '0' + str(x) 
+            if x < 10 
+            else 'rawdata_' + time_format + '-' + str(x) 
+            for x in range(60)
+            ]
     return ary
 
 if __name__ == "__main__":
