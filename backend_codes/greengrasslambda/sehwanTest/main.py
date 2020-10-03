@@ -35,7 +35,7 @@ def run_local():
     field_profile = profile.get('Fields')
     opt = {'IS_LOCAL' : True}
     tc = TestClass(field_profile)
-    pc = Publisher(device_id, field_profile, tc, option=opt)
+    pc = Publisher(device_id, profile, tc, option=opt)
     pc.start_threading()
 
 def run():
@@ -43,7 +43,7 @@ def run():
     device_id = profile.get('device_id')
     field_profile = profile.get('Fields')
     tc = TestClass(field_profile)
-    pc = Publisher(device_id , field_profile, tc)
+    pc = Publisher(device_id , profile, tc)
     pc.start_threading()
 
 if __name__ == "__main__":
