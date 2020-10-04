@@ -9,7 +9,6 @@ AWS_THINS_NAME = os.environ.get('AWS_THING_NAME', 'test-group_Core')
 BUCKET_NAME = 'sehwan-an2-edge-dev-rawdata'
 s3 = boto3.client('s3')
 
-
 def make_stream_obj_to_ary(raw_data): #raw_data <- s3.get_ojbject(**kwargs).get('Body').read()
     data = raw_data.decode()
     ary = []
@@ -20,6 +19,51 @@ def make_stream_obj_to_ary(raw_data): #raw_data <- s3.get_ojbject(**kwargs).get(
         pass
     #print(ary)
     return ary
+
+def concat_dataFrame(raw_ary, fields):  # 분마다 데이터프레임으로 만들어서 합침
+    df_ary = []
+    for idx in range(len(raw_ary)):
+        tmp_ary = [x.split(',') for x in raw_ary[idx]]
+        df_ary.append(pd.DataFrame(
+         tmp_ary[1:]
+            )
+        )
+        df_ary[idx].columns=fields
+    result = pd.concat(df_ary)
+    return result
+
+def cal_avg(result, fields):   # 평균 계산 
+    col = fields[1:]
+    avg_pd = result.mean(axis = 0)
+    avg_dict = {}
+    for v in col:
+        avg_dict[v] = avg_pd[v]
+    return avg_dict
+
+def cal_max(result, fields):   # 최대값 계산 
+    col = fields[1:]
+    max_pd = result.max(axis = 0)
+    max_dict = {}
+    for v in col:
+       max_dict[v] = max_pd[v]
+    return max_dict
+
+def cal_min(result, fields):   # 최소값 계산 
+    col = fields[1:]
+    min_pd = result.min(axis = 0)
+    min_dict = {}
+    for v in col:
+       min_dict[v] = min_pd[v]
+    return min_dict
+
+def cal_std(result, fields):   # 표준편차 계산 
+    col = fields[1:]
+    std_pd = result.std(axis = 0)
+    std_dict = {}
+    for v in col:
+       std_dict[v] = std_pd[v]
+    return std_dict
+
 
 if __name__=="__main__":
     S3_KEYS = [
@@ -54,26 +98,18 @@ if __name__=="__main__":
     fields = raw_ary[0][0].split(',')
     #print(fields)
     
-    #print(new_ary)
-
-    new_ary = [x.split(',') for x in raw_ary[0]]
-    df = pd.DataFrame(
-        new_ary[:]    
-    )
-    df.columns=fields
-    for i in range(1, len(raw_ary)):
-        new_ary = [x.split(',') for x in raw_ary[i]]
-        new_df = pd.DataFrame(
-            new_ary[:]
-        )
-        new_df.columns=fields
-        df.append(new_df)
-
+    result = concat_dataFrame(raw_ary, fields)   #데이터프레임으로 합치기
         
-    print(df)
     for v in fields[1:]: # 타임스탬프를 제외한 필드를 숫자 데이터로 변환함.
-        df[v]= pd.to_numeric(df[v])
-    print(df.describe())
+        result[v]= pd.to_numeric(result[v])
+    #print(result.describe())
+    
+    avg_result = cal_avg(result, fields)
+    max_result = cal_max(result, fields)
+    min_result = cal_min(result, fields)
+    std_result = cal_std(result, fields)
+
+    print(avg_result, max_result, min_result, std_result)
 
     #s3.exceptions.NoSuchKey
 
