@@ -19,6 +19,9 @@ provider:
   environment:
     RAW_BUCKET: "sehwan-an2-edge-dev-rawdata"
     TRIGGERD_LAMDA: ${self:service}-stat-get-trigger
+    HOUR_STAT_TABLE: 'dynamodb-resources-Hour-stat'
+    DAY_STAT_TABLE: 'dynamodb-resources-Day-stat'
+    MONTH_STAT_TABLE: 'dynamodb-resources-Month-stat'
 
 
 package:
