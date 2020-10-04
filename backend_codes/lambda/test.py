@@ -8,7 +8,7 @@ import datetime
 import json
 from decimal import Decimal
 
-AWS_THINS_NAME = os.environ.get('AWS_THING_NAME', 'test-group_Core')
+AWS_THING_NAME = os.environ.get('AWS_THING_NAME', 'test-group_Core')
 BUCKET_NAME = 'sehwan-an2-edge-dev-rawdata'
 HOUR_STAT_TABLE = os.environ.get('HOUR_STAT_TABLE', 'dynamodb-resources-Hour-stat')
 s3 = boto3.client('s3')
@@ -72,7 +72,7 @@ def cal_datetime():
 
 def save_to_dynamodb(fields, avg, min, max, std):
     data = {
-        'deviceId' : 'test-group_Core',
+        'deviceId' : AWS_THING_NAME,
         'timestamp' : cal_datetime().strftime('%Y-%m-%d-%H'),
         'fields' : fields,
         'avg' : avg,
