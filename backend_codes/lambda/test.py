@@ -40,7 +40,7 @@ def cal_avg(result, fields):   # 평균 계산
     avg_dict = {}
     for v in col:
         avg_dict[v] = avg_pd[v]
-    return avg_dict
+    return list(map(int , list(avg_dict.values()))) #각 원소가 int인 리스트 형태로 리턴하기 위함..
 
 def cal_max(result, fields):   # 최대값 계산 
     col = fields[1:]
@@ -48,7 +48,7 @@ def cal_max(result, fields):   # 최대값 계산
     max_dict = {}
     for v in col:
        max_dict[v] = max_pd[v]
-    return max_dict
+    return list(map(int , list(max_dict.values()))) #각 원소가 int인 리스트 형태로 리턴하기 위함..
 
 def cal_min(result, fields):   # 최소값 계산 
     col = fields[1:]
@@ -56,7 +56,7 @@ def cal_min(result, fields):   # 최소값 계산
     min_dict = {}
     for v in col:
        min_dict[v] = min_pd[v]
-    return min_dict
+    return list(map(int , list(min_dict.values()))) #각 원소가 int인 리스트 형태로 리턴하기 위함..
 
 def cal_std(result, fields):   # 표준편차 계산 
     col = fields[1:]
@@ -64,25 +64,24 @@ def cal_std(result, fields):   # 표준편차 계산
     std_dict = {}
     for v in col:
        std_dict[v] = std_pd[v]
-    return std_dict
+    return list(map(int , list(std_dict.values()))) #각 원소가 int인 리스트 형태로 리턴하기 위함..
 
 def cal_datetime():
-    return datetime.datetime(2020,9, 29, 22) #tempary..
+    return datetime.datetime(2020,9, 29, 21) #tempary..
 
 
-def save_to_dynamodb(avg, min, max, std):
+def save_to_dynamodb(fields, avg, min, max, std):
     data = {
-        'deviceid' : 'test-group_Core',
+        'deviceId' : 'test-group_Core',
         'timestamp' : cal_datetime().strftime('%Y-%m-%d-%H'),
+        'fields' : fields,
         'avg' : avg,
         'min' : min,
         'max' : max,
         'std' : std
     }
     table.put_item(
-        Item = {
-            json.dumps(data) #지금 안되네요 테스트중
-        }
+        Item = data
     )
     #print(payload)
 
@@ -128,4 +127,4 @@ if __name__=="__main__":
     std_result = cal_std(result, fields)
 
     print(avg_result, max_result, min_result, std_result)
-    save_to_dynamodb(avg_result, max_result, min_result, std_result)
+    save_to_dynamodb(fields[1:], avg_result, max_result, min_result, std_result)
