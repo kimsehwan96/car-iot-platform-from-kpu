@@ -3,7 +3,7 @@ import traceback
 import threading
 import time
 import can
-from Profiler import TestProfiler
+from .Profiler import TestProfiler
 
 from random import randint
 #import logging
@@ -19,7 +19,6 @@ TEST_JSON = {
 profiler = TestProfiler("kim")
 
 class GetterBaseClass(abc.ABC):
-
     def __init__(self, profile):
         self.profile = profile
         self.back_buffer = []
@@ -52,7 +51,6 @@ class TestClass(GetterBaseClass):
         self.front_buffer = [randint(1,200) for x in range(5)]
 
 class CanClass(GetterBaseClass):
-
     def get_data(self):
         pass #logic here.
     

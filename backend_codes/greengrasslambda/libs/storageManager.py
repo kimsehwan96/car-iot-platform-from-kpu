@@ -28,7 +28,7 @@ print("inital status of Network flag {}".format(network_flag))
 
 class BaseStorageManager:
     global s3
-
+    
     def __init__(self, device_id):
         self.payload = {}
         self.device_id = device_id
@@ -39,12 +39,8 @@ class BaseStorageManager:
         self.base_dt_min = 0
         self.network_status = network_flag #최초 리소스 실행 결과인 network_flag를 가져온다.
 
-    
     def get_payload(self):
         return self.payload
-
-    def failed_save(self):
-        pass
 
     def check_payload(self, payload):
         if (payload.get('Fields') != None) & (payload.get('data') != None) & (payload.get('timestamp') !=None):
@@ -53,26 +49,21 @@ class BaseStorageManager:
             print("there is missing data in data {}".format(payload))
             return False
 
+    def make_format(self, data):
+        if self.check_payload(data):
+            self.payload = data
+            self.fields = self.payload.get('Fields')
+            self.data = self.payload.get('data')
+            self.timestamp = self.payload.get('timestamp')
+        else:
+            print("error occured when check payload" , self.payload)
+        
     def relay(self, data):
         if self.payload:
             self.reset_buffers()
-            if self.check_payload(data):
-                self.payload = data
-                self.fields = self.payload.get('Fields')
-                self.data = self.payload.get('data')
-                self.timestamp = self.payload.get('timestamp')
-                print("this is relayed payload {}".format(self.payload))
-            else:
-                print("error occured")
+            self.make_format()
         else:
-            if self.check_payload(data):
-                self.payload = data
-                self.fields = self.payload.get('Fields')
-                self.data = self.payload.get('data')
-                self.timestamp = self.payload.get('timestamp')
-                print("this is relayed payload {}".format(self.payload))
-            else:
-                print("errror occured")
+            self.make_format()
 
     def reset_buffers(self):
         self.payload = {}
