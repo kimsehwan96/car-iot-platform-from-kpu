@@ -30,28 +30,6 @@ class API_BaseClass(abc.ABC):
             }
         }
 
-class ProfileManager(API_BaseClass):
-
-    def fetch(self):
-        pass
-
-    def make_body(self):
-        pass
-
-    def get_profile(self):
-        return {
-            "device_id" : DEVICE_ID,
-            "Fields" : [
-                "rpm",
-                "speed",
-                "brake",
-                "oilTemp",
-                "oilStatus"
-             ]
-        }
-
-        #TODO: 추후에 실제 dynamoDB에 있는 값을 땡겨올것..
-
 class graphqlManager(API_BaseClass):
 
     def fetch(self):
