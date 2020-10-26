@@ -8,29 +8,20 @@ from time import sleep
 from random import randint
 from libs.dataGetter import TestClass
 from libs.mqttPublisher import Publisher
-from libs.api_tool import ProfileManager
-
-TEST_JSON = {
-    "Fields" : [
-        "rpm",
-        "speed",
-        "brake",
-        "oilTemp",
-        "oilStatus"
-    ]
-}
-
+from libs.Profiler import TestProfiler as ProfileManager
+########### 구현한 클래스의 인스턴스들 생성해서 돌아가는 메인 로직 ##############
 target_url = "http://kimsehwanZZang.com"
 api_key = "1234"
+device_id = 'kim'
 
-pm = ProfileManager(target_url, api_key)
+pm = ProfileManager(device_id)
 
 def handler():
     print('test plugin')
 
 
 def run_local():
-    profile = pm.get_profile()
+    profile = pm.push_profile()
     device_id = profile.get('device_id')
     field_profile = profile.get('Fields')
     opt = {'IS_LOCAL' : True}
@@ -39,7 +30,7 @@ def run_local():
     pc.start_threading()
 
 def run():
-    profile = pm.get_profile()
+    profile = pm.push_profile()
     device_id = profile.get('device_id')
     field_profile = profile.get('Fields')
     tc = TestClass(field_profile)
