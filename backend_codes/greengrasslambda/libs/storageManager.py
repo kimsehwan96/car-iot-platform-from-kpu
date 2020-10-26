@@ -61,9 +61,9 @@ class BaseStorageManager:
     def relay(self, data):
         if self.payload:
             self.reset_buffers()
-            self.make_format()
+            self.make_format(data)
         else:
-            self.make_format()
+            self.make_format(data)
 
     def reset_buffers(self):
         self.payload = {}
