@@ -38,11 +38,8 @@ def make_s3_key_ary(datetime_object):
         dt_day,
         dt_hour
     )
-    ary = [ 'rawdata_' + time_format + '-' + '0' + str(x) 
-            if x < 10 
-            else 'rawdata_' + time_format + '-' + str(x) 
-            for x in range(60)
-            ]
+    ary = [ 'rawdata_' + time_format + '-' + str(x).zfill(2) for x in range(60)]
+    #str(object).zfill(number) -> number 만큼 문자열 앞에 0을 채워줌
     return ary
 
 if __name__ == "__main__":
