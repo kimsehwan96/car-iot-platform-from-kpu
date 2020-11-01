@@ -80,7 +80,7 @@ def save_to_dynamodb(fields, avg, min, max, std):
         'max' : max,
         'std' : std
     }
-    table.put_item(
+    return table.put_item(
         Item = data
     )
     #print(payload)
@@ -127,4 +127,5 @@ if __name__=="__main__":
     std_result = cal_std(result, fields)
 
     print(avg_result, max_result, min_result, std_result)
-    save_to_dynamodb(fields[1:], avg_result, max_result, min_result, std_result)
+    res = save_to_dynamodb(fields[1:], avg_result, max_result, min_result, std_result)
+    print(res)

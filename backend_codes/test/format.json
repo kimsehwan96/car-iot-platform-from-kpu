@@ -1,0 +1,26 @@
+{
+    "deviceId" : "test-group",
+    "payload" : {
+        "numberData" : {
+            "data" : [
+                1,
+                2
+            ],
+            "field" :[
+                "speed",
+                "rpm"
+            ]
+        },
+        "errorCode" : {
+            "data" : [
+                1,
+                0
+            ],
+            "field" : [
+                "engine",
+                "tire"
+            ]
+        },
+        "timestamp" : "16042123124214.12421"
+    }
+}
