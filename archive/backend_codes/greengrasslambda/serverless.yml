@@ -59,8 +59,8 @@ resources:
         Name: RawdataBucketRef
 
 functions:
-  testLambda:
-    module: testLambda
+  sehwanTest:
+    module: sehwanTest
     handler: main.handler
-    name: ${self:provider.stackName}-testLambda
+    name: ${self:provider.stackName}-sehwanTest
  
