@@ -14,7 +14,7 @@ jobs:
       - name: Cache node modules      # node modules 캐싱
         uses: actions/cache@v1
         with:
-          path: front_codes/my-app/node_modules
+          path: front_codes/project-app/node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-build-
@@ -24,13 +24,13 @@ jobs:
         run: pwd && ls
 
       - name: change directory # 디렉터리 이동
-        run: cd front_codes/my-app
+        run: cd front_codes/project-app
 
       - name: Install Dependencies    # 의존 파일 설치
-        run: cd front_codes/my-app && npm install
+        run: cd front_codes/project-appp && npm install
 
       - name: Build                   # React Build
-        run: cd front_codes/my-app && npm run build
+        run: cd front_codes/project-app && npm run build
 
       - name: Deploy                  # S3에 배포하기
         env:
