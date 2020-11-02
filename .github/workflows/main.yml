@@ -27,7 +27,7 @@ jobs:
         run: cd front_codes/project-app
 
       - name: Install Dependencies    # 의존 파일 설치
-        run: cd front_codes/project-appp && npm install
+        run: cd front_codes/project-app && npm install
 
       - name: Build                   # React Build
         run: cd front_codes/project-app && npm run build
