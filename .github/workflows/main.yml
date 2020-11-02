@@ -40,4 +40,4 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            front_codes/my-app/build s3://sehwan96.com # 
+            front_codes/project-app/build s3://sehwan96.com # 
