@@ -1,0 +1,5 @@
+boto3
+greengrasssdk
+
+# additional
+can

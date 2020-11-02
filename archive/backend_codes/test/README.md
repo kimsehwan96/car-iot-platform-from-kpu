@@ -1,3 +1,9 @@
+# front - backend 소통 내용
+
+- 2020-11-01
+    - 실제 사용할 데이터 포맷 정의 완료 (mqtt)
+
+```json
 {
     "deviceId" : "test-group",
     "payload" : {
@@ -24,3 +30,4 @@
         "timestamp" : "16042123124214.12421"
     }
 }
+```
