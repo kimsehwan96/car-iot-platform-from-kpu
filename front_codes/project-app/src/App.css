@@ -1,11 +1,4 @@
 @import '~antd/dist/antd.css';
-
-.logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.3);
-}
-
 .site-layout .site-layout-background {
   background: #fff;
   
@@ -19,4 +12,33 @@
 }
 .ant-typography {
   color: whitesmoke;
+}
+
+h1.ant-typography {
+  color: whitesmoke;
+  font-size: x-large;
+  float: left;
+}
+
+.ant-page-header-ghost {
+  background-color: #001529;
+}
+
+.ant-page-header-heading-title {
+  color: whitesmoke;
+}
+.ant-page-header-heading-sub-title {
+  color: seashell;
+}
+
+.ant-btn {
+  background-color: #001529;
+  color: whitesmoke;
+}
+.ant-btn ::selection {
+  background-color: #001529;
+  height: 0;
+}
+.ant-btn:hover, .ant-btn:focus {
+  background-color: #001529;
 }
