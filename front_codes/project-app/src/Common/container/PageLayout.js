@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Layout } from 'antd';
-import CardItem from './CardItem';
-import MenuItem from '../component/MenuList';
+import { Route } from 'react-router-dom';
+import CardItem from '../../Dashbord/container/CardItem';
+import MenuList from '../component/MenuList';
+import PatternAnal from '../../PatternAnalysis/container/PatternAnal';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 
 export default function PageLayout() {
@@ -16,15 +18,15 @@ export default function PageLayout() {
         <>
         <Layout style={{ minHeight: '100vh'}}>
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-            <MenuItem />
+            <MenuList />
         </Sider>
         <Layout className="site-layout">
           <Header>
           </Header>
           <Content style ={{margin: '0 16px'}}>
-            <CardItem />
+            <Route path="/dashboard"><CardItem /></Route>
+            <Route path="/pattern"><PatternAnal/></Route>
           </Content>
-          <Footer>Footer</Footer>
         </Layout>
       </Layout>
       </>

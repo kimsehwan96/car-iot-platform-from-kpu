@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import './App.css'
-import PageLayout from './Dashbord/container/PageLayout';
+import PageLayout from './Common/container/PageLayout';
 
 
 function App() {  
