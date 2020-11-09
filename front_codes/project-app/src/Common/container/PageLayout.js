@@ -1,41 +1,16 @@
 import React, { useState } from 'react';
-import { Layout, PageHeader, Dropdown, Button, Menu } from 'antd';
+import { Layout, PageHeader } from 'antd';
 import { Route } from 'react-router-dom';
-import CardItem from '../../Dashbord/container/CardItem';
+import CardItem from '../../dashbord/container/CardItem';
 import MenuList from '../component/MenuList';
-import PatternAnal from '../../PatternAnalysis/container/PatternAnal';
-import { CarFilled, SettingOutlined} from '@ant-design/icons';
+import PatternAnal from '../../pattern/container/PatternAnal';
+import { CarFilled } from '@ant-design/icons';
+
+import Settings from '../component/Settings';
+import AuthForm from '../auth/AuthForm';
+import Signup from '../auth/Signup';
 
 const { Sider, Content } = Layout;
-
-const menu = (
-  <Menu>
-    <Menu.Item>
-      로그 아웃
-    </Menu.Item>
-  </Menu>
-)
-
-const DropdownMenu = () => {
-  return (
-    <Dropdown key="more" overlay={menu}>
-      <Button
-        style={{
-          border: 'none',
-          padding: 0,
-        }}
-      >
-        <SettingOutlined 
-          style={{
-            fontSize: 20,
-            verticalAlign: 'top',
-            backgroundColor:'#001529',
-          }}
-        />
-      </Button>
-    </Dropdown>
-  );
-};
 
 export default function PageLayout() {
     const [collapsed, setCollapsed] = useState(false);
@@ -52,7 +27,7 @@ export default function PageLayout() {
           subTitle="운전 실력 향상 앱"
           avatar= {<CarFilled />} 
           extra ={
-            <DropdownMenu />
+            <Settings />
           }
         />
         <Layout className="site-layout">
@@ -60,8 +35,10 @@ export default function PageLayout() {
             <MenuList />
           </Sider>
           <Content style ={{margin: '0 16px'}}>
-            <Route path="/dashboard"><CardItem /></Route>
-            <Route path="/pattern"><PatternAnal/></Route>
+            <Route path="/dashboard" component ={CardItem} />
+            <Route path="/pattern" component={PatternAnal} />
+            <Route path="/login" component={AuthForm} />
+            <Route path="/signup" component={Signup} />
           </Content>
         </Layout>
       </Layout>
