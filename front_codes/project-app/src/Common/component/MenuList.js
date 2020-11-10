@@ -15,10 +15,10 @@ export default function MenuList() {
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode='inline'>
           <Menu.Item key="1" >
-            <Link to="/dashboard"><DashboardFilled /><Text>Dashbord</Text></Link>
+            <Link to="/user/dashboard"><DashboardFilled /><Text>Dashbord</Text></Link>
             </Menu.Item>
           <Menu.Item key="2" >
-            <Link to="/pattern"><PieChartFilled /><Text>Pattern Analysis</Text></Link> 
+            <Link to="/user/pattern"><PieChartFilled /><Text>Pattern Analysis</Text></Link> 
           </Menu.Item>
         </Menu>
     </>

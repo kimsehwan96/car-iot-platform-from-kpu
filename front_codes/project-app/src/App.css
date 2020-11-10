@@ -19,6 +19,7 @@ h1.ant-typography {
   font-size: x-large;
   float: left;
 }
+.ant-typography.auth-title { color: black; }
 
 .ant-page-header-ghost { background-color: #001529; }
 
