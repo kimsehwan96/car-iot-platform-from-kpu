@@ -59,7 +59,7 @@ export default function Settings() {
             <Button style={{float: 'right'}} shape='circle' icon={<SettingFilled />} />
         </Dropdown>
         <Modal
-            title="로그인 하기"
+            title="로그인"
             visible={visible.onmodal}
             onCancel={handleCancel}   
             footer={[
@@ -90,7 +90,7 @@ export default function Settings() {
                         취소
                     </Button>
                     <Button onClick={closeDrawer} type="primary">
-                        제출
+                        승인요청
                     </Button>
                 </div>
             }
