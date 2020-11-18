@@ -65,9 +65,7 @@ const Score = () => {
                 },
             },
         },
-        // 开启面积
         area: {},
-        // 开启辅助点
         point: {},
     };
     return (

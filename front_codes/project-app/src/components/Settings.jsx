@@ -74,7 +74,7 @@ export default function Settings() {
                 </Button>,
             ]}
         >
-            <LoginForm />
+            <LoginForm SuccessLogin={handleCancel} />
         </Modal>
             <Drawer
             title="회원가입"
@@ -82,18 +82,6 @@ export default function Settings() {
             visible={visible.ondrawer}
             onClose={closeDrawer}
             bodyStyle={{paddingBottom: 80}}
-            footer ={
-                <div 
-                    style={{textAlign: 'right'}}
-                >
-                    <Button onClick={closeDrawer} style={{ marginRight: 8}}>
-                        취소
-                    </Button>
-                    <Button onClick={closeDrawer} type="primary">
-                        승인요청
-                    </Button>
-                </div>
-            }
         >
             <SignupForm />
         </Drawer>
