@@ -1,13 +1,12 @@
 import React from 'react'
 import { Radar } from '@ant-design/charts';
 import { DataSet } from '@antv/data-set';
+import { Typography } from 'antd';
 
 const data = [
-    {"item" : "급가속 횟수", 'userAverage': 13, 'kimsehwan': 24 },
-    {"item" : "급정거 횟수", 'userAverage': 17, 'kimsehwan': 31 },
-    {"item" : "급핸들링 횟수", 'userAverage': 21, 'kimsehwan': 38 },
-    {"item" : "욕설 횟수", 'userAverage': 14, 'kimsehwan': 18 },
-    {"item" : "경적 횟수", 'userAverage': 21, 'kimsehwan': 24},
+    {"item" : "급가속 횟수", 'userAverage': 13, 'kimsehwan': 24, 'leeyongbeom': 30},
+    {"item" : "급제동 횟수", 'userAverage': 17, 'kimsehwan': 31,  'leeyongbeom': 40},
+    {"item" : "급핸들링 횟수", 'userAverage': 21, 'kimsehwan': 38, 'leeyongbeom': 30},
 ]
 
 const Score = () => {
@@ -16,7 +15,7 @@ const Score = () => {
     //     asyncFetch();
     // }, []);
     // const asyncFetch = () => {
-    //     fetch('https://gw.alipayobjects.com/os/bmw-prod/bda695a8-cd9f-4b78-a423-3d6d547c10c3.json')
+    //     fetch('https://gw.alipayobjects.com/os/bmw-prod/safe/${userId}')
     //         .then((response) => response.json())
     //         .then((json) => setData(json))
     //         .catch((error) => {
@@ -27,7 +26,7 @@ const Score = () => {
     const dv = new DataView().source(data);
     dv.transform({
         type: 'fold',
-        fields: ['userAverage', 'kimsehwan'],
+        fields: ['userAverage', 'kimsehwan', 'leeyongbeom'],
         key: 'user',
         value: 'score',
     });
@@ -71,6 +70,12 @@ const Score = () => {
         // 开启辅助点
         point: {},
     };
-    return <Radar {...config}/>;
+    return (
+    <>
+    <Radar {...config}/>
+    <br/>
+    <Typography.Text>[Total Score] 사용자 평균: 75점 김세환: 58점</Typography.Text>
+    </>
+    );
 };
 export default Score;
