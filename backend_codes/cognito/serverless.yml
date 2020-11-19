@@ -1,0 +1,258 @@
+service: kpu-iot-car-cognito
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.7
+  memorySiz: 1024
+  timeout: 900 # seconds
+  stage: ${opt:stage, self:custom.defaultStage}
+  stackName: ${self:service}-${self:provider.stage}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:*"
+        - "dynamodb:*"
+        - "lambda:*"
+        - "s3:*"
+      Resource: "*" 
+  environment: #congito user table.
+    RAW_BUCKET: "sehwan-an2-edge-dev-rawdata"
+  #apiBaseStackName: api-base-${self:provider.stage} <- with api
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+
+custom:
+  defaultStage: dev
+  regionAbbr:
+    ap-northeast-2: an2
+  service: ingkle-${self:custom.regionAbbr.${self:provider.region}}-cognito
+  tableName: 'users-table-${self:provider.stage}'
+  wsgi:
+    app: app.app
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: true
+    useDownloadCache: false 
+    useStaticCache: false
+
+resources:
+  Description: "Cognito ${self:provider.stage}"
+  Resources:
+    authUserIotPolicy:
+      Type: AWS::IoT::Policy
+      Properties:
+        PolicyName: ${self:custom.service}-auth-user-${self:provider.stage}-policy
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action: iot:*
+              Resource: "*"
+    customerUserPoolSmsRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:custom.service}-customer-userpool-sms-role
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal: 
+              Service:
+                - cognito-idp.amazonaws.com
+            Action:
+              - sts:AssumeRole
+        Policies:
+          - PolicyName: ${self:service}-customer-userpool-sms-role-policy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Action: "sns:publish"
+                  Resource: "*"
+                  Effect: Allow
+    customerUserPoolAuthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:custom.service}-customer-userpool-auth-role
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal: 
+              Federated:
+                - cognito-identity.amazonaws.com
+            Action:
+              - sts:AssumeRoleWithWebIdentity
+            Condition:
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": authenticated
+        Policies:
+          - PolicyName: ${self:custom.service}-customer-userpool-auth-role-policy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Action: 
+                    - mobileanalytics:PutEvents
+                    - cognito-sync:*
+                    - cognito-identity:*
+                  Resource: "*"
+                  Effect: Allow
+                - Action: 
+                    - "iot:*"
+                  Resource: "*"
+                  Effect: Allow
+    customerUserPoolUnauthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:custom.service}-customer-userpool-unauth-role
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Federated:
+                - cognito-identity.amazonaws.com
+            Action:
+              - sts:AssumeRoleWithWebIdentity
+            Condition:
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated
+        Policies:
+          - PolicyName: ${self:custom.service}-customer-userpool-unauth-role-policy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Action: 
+                    - mobileanalytics:PutEvents
+                    - cognito-sync:*
+                  Resource: "*"
+                  Effect: Allow
+                - Action: 
+                    - "iot:*"
+                  Resource: "*"
+                  Effect: Allow
+    customerUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:service}-${self:provider.stage}-customer-userpool
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+        MfaConfiguration: OFF
+        #LambdaConfig:
+        #  CustomMessage: ${cf:${self:provider.apiBaseStackName}.CognitoTriggerLambdaFunctionArn}
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+            RequireNumbers: True
+    customMessageLambdaInvokePermission:
+       Type: AWS::Lambda::Permission
+       Properties:
+         Action: lambda:InvokeFunction
+         FunctionName: ${self:service}-coginto-handler
+         Principal: cognito-idp.amazonaws.com
+         SourceArn: !GetAtt customerUserPool.Arn
+    appUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: kpu-app-client
+        GenerateSecret: false
+        UserPoolId: !Ref customerUserPool
+        PreventUserExistenceErrors: LEGACY
+        ExplicitAuthFlows:
+          - ALLOW_ADMIN_USER_PASSWORD_AUTH
+          - ALLOW_CUSTOM_AUTH
+          - ALLOW_USER_PASSWORD_AUTH
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+        ReadAttributes:
+          - address
+          - birthdate
+          - email
+          - email_verified
+          - family_name
+          - gender
+          - given_name
+          - locale
+          - middle_name
+          - name
+          - nickname
+          - phone_number
+          - phone_number_verified
+          - picture
+          - preferred_username
+          - profile
+          - updated_at
+          - website
+          - zoneinfo
+        WriteAttributes:
+          - address
+          - birthdate
+          - email
+          - family_name
+          - gender
+          - given_name
+          - locale
+          - middle_name
+          - name
+          - nickname
+          - picture
+          - preferred_username
+          - profile
+          - updated_at
+          - website
+          - zoneinfo
+
+    customerIdentityPool:
+      DependsOn: 
+        - appUserPoolClient
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        IdentityPoolName: cognito_${self:provider.stage}_customer_identitypool
+        AllowClassicFlow: true
+        AllowUnauthenticatedIdentities: true
+        CognitoIdentityProviders:
+          - ClientId: !Ref appUserPoolClient
+            ProviderName: !GetAtt customerUserPool.ProviderName
+    
+    customerIdentityPoolRoleMapping:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      DependsOn: 
+        - customerIdentityPool
+        - customerUserPoolAuthRole
+        - customerUserPoolUnauthRole
+      Properties:
+        IdentityPoolId: !Ref customerIdentityPool
+        Roles:
+          authenticated: !GetAtt customerUserPoolAuthRole.Arn
+          unauthenticated: !GetAtt customerUserPoolUnauthRole.Arn
+  Outputs:
+    CustomerUserPoolRef:
+      Value: !Ref customerUserPool
+      Export:
+        Name: CustomerUserPoolRef
+    CustomerUserPoolArn:
+      Value: !GetAtt customerUserPool.Arn
+      Export:
+        Name: CustomerUserPoolArn
+    CustomerUserPoolProviderName:
+      Value: !GetAtt customerUserPool.ProviderName
+      Export:
+        Name: CustomerUserPoolProviderName
+    CustomerUserPoolProviderURL:
+      Value: !GetAtt customerUserPool.ProviderURL
+      Export:
+        Name: CustomerUserPoolProviderURL
+    AppUserPoolClientRef:
+      Value: !Ref appUserPoolClient
+      Export:
+        Name: AppUserPoolClientRef
+
+### cognito lambda
+functions:
+  main:
+    handler: main.handler
+    name: ${self:service}-coginto-handler

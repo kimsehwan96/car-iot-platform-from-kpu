@@ -11,16 +11,4 @@
 5. 어플리케이션은 DB에서 리턴받은 값을 서비스에 활용한다.
 
 
-## 세환이가 만든 코그니토 사용자풀 및 앱 클라이언트
-
-- 풀 ID
-    - ap-northeast-2_qVmKETXns
-- 풀 ARN
-    - arn:aws:cognito-idp:ap-northeast-2:671221010754:userpool/ap-northeast-2_qVmKETXns
-
-- 앱 클라이언트 ID
-    - 3l6o3amne8vj8vt7ki1pouu9ma
-
-
-- Identity pool id
-    - ap-northeast-2:40715c21-99d7-4340-a883-dfea3f41a305
+## deploy with serverless 
