@@ -1,8 +1,4 @@
-# lambda 배포 테스트
+# Greengrass Lambdas
 
-* 이 디렉터리는 greengrass lambda 를 위한 테스트 디렉터리 임.
-
-* 로컬에서 작성한 lambda를 servewrless를 이용하여 AWS에 배포 할 예정.
-
-
-## 오늘 한 삽질
+- 각 람다는 각각의 프로세스로 뜨게 된다.
+- IPC. 프로세스간 통신을 어떻게 할지 결정하기
