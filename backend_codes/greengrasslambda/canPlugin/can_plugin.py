@@ -33,7 +33,7 @@ class CanPlugin:
 
         # 응답에 대한 데이터만 response를 받아야 함
         def is_valid_reply(message):
-            if message.arbitration_id != CanDataType.PID_REPLY:
+            if message.arbitration_id != CanDataType.PID_REPLY.value:
                 return False
             else:
                 return True
