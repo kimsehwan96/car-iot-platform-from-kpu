@@ -23,10 +23,10 @@ jobs:
       - name: Display the path
         run: pwd && ls
 
-      - name: inject .env step 1# .env 주입
-        env:
-          ENV: ${{ secrets.ENV }}
-        run: cd front_codes/project-app && echo $ENV >> .env && cat .env
+#       - name: inject .env step 1# .env 주입
+#         env:
+#           ENV: ${{ secrets.ENV }}
+#         run: cd front_codes/project-app && echo $ENV >> .env && cat .env
       
       - name: check .env 
         env:
