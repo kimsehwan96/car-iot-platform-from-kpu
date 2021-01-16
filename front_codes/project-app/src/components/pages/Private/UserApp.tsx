@@ -8,9 +8,10 @@ import useStyles from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
 import { setSuccess, signout } from '../../../store/actions/authActions';
-import { Route } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
-import Analysis from './components/Analysis';
+import { NavLink, Route } from 'react-router-dom';
+import Dashboard from './contents/Dashboard';
+import Analysis from './contents/Analysis';
+import HandleTheme from './components/HandleTheme';
 
 export default function UserApp() {
   const classes = useStyles();
@@ -52,6 +53,7 @@ export default function UserApp() {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
           </Typography>
+          <HandleTheme />
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <Notifications />
@@ -63,8 +65,8 @@ export default function UserApp() {
           <IconButton color="inherit" onClick={logoutHandler}>
             <ExitToApp />
           </IconButton>
-          <Avatar>{/* User Image */}</Avatar>
-          <Typography>{user?.firstName}</Typography>
+          <Avatar style={{ marginRight: 10 }}>{/* User Image */}</Avatar>
+          <Typography>안녕하세요 {user?.firstName}님</Typography>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -86,10 +88,17 @@ export default function UserApp() {
           >Reports
           </ListSubheader>
             { ListItemData.map((item, index) => (
-              <ListItem button key={index}>
-                <ListItemIcon><Icon component={item.icon} /></ListItemIcon>
-                <ListItemText>{item.title}</ListItemText>
-              </ListItem>
+              <NavLink 
+                to={item.path} 
+                style={{ textDecoration: 'none', color: 'rgba(0, 0, 0, 0.54)'}}
+                activeClassName={ 'active' }
+                activeStyle={{ color: '#3f51b5'}}
+              >
+                <ListItem button key={index}>
+                  <ListItemIcon><Icon component={item.icon} /></ListItemIcon>
+                  <ListItemText>{item.title}</ListItemText>
+                </ListItem>
+              </NavLink>
             ))}
         </List>
       </Drawer>
