@@ -24,7 +24,23 @@ jobs:
         run: pwd && ls
 
       - name: change directory # 디렉터리 이동
-        run: cd front_codes/project-app
+        env:
+          REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+          REACT_APP_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
+          REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
+          REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }}
+          REACT_APP_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }} 
+          REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
+          REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }}
+        run: cd front_codes/project-app \
+             && echo $REACT_APP_FIREBASE_API_KEY >> .env \
+             && echo $REACT_APP_FIREBASE_APP_ID >> .env \
+             && echo $REACT_APP_FIREBASE_AUTH_DOMAIN >> .env \
+             && echo $REACT_APP_FIREBASE_MEASUREMENT_ID >> .env \
+             && echo $REACT_APP_FIREBASE_MESSAGING_SENDER_ID >> .env \
+             && echo $REACT_APP_FIREBASE_PROJECT_ID >> .env \
+             && echo $REACT_APP_FIREBASE_STORAGE_BUCKET >> .env \
+             && cat .env
 
       - name: Install Dependencies    # 의존 파일 설치
         run: cd front_codes/project-app && npm install
