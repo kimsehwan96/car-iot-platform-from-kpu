@@ -103,12 +103,16 @@ jobs:
     - CloudWatch
 
 2. Front
-    - React.js
+    - React
+    - Typescript
     - Material UI
-    - D3.js
     - webpack
     - yarn
     - npm
+    - Firebase
+    - Grafana
+    - ContextAPI
+    - Redux
 
 3. DevOps
     - Jenkins
