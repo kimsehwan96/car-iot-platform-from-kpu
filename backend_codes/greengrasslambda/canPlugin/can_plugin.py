@@ -4,7 +4,8 @@ import os
 from collections import deque
 from threading import Thread
 from time import sleep
-from libs.canutil import CanDataType, CanRequestMessage
+from libs.canutil import CanDataType, CanRequestMessage, CanDataConvert
+from lib.plugin import run_plugin_thread
 
 '''data source
 {
@@ -26,13 +27,14 @@ class CanPlugin:
         ## data types에 있는 데이터를 호출하기 위한 메시지들 생성
 
         self.recv_buffer = deque() #데이터를 받기위한 덱
+        self.return_buffer = deque()
         self.bus = can.interface.Bus(channel='can0', bustype='socketcan_native')
 
     def send_request(self) -> list: #return으로 데이터를 받아온다.
         # 우리가 요구한 데이터는 모두 요청 메시지를 전송한다.
 
         # 응답에 대한 데이터만 response를 받아야 함
-        def is_valid_reply(message):
+        def is_valid_reply(message) -> bool:
             if message.arbitration_id != CanDataType.PID_REPLY.value:
                 return False
             else:
@@ -51,7 +53,20 @@ class CanPlugin:
             else:
                 print("Not reply data, throw away : {}".format(recv_data))
         print("message recv done.")
-        #데이터 가공 로직이 필요함.
+        #데이터를 다 받았으면 각 리스트 원소 (원소 또한 리스트)에 대해서 컨버팅 로직을 수행
+        while self.recv_buffer:
+            self.return_buffer.append(CanDataConvert.convert(self.recv_buffer.popleft()))
+        
+        return self.return_buffer
+        #실제 데이터로 변환 완료됨.
+
+        #캔 플러그인 클래스는 데이터를 실제 데이터로 변환하고, 리스트로 반환하는 역할까지만 수행
+
+
+            
+
+        
+
 
 def handler():
     print('test plugin')
@@ -67,6 +82,6 @@ if __name__ == '__main__':
         ]   
     }
 
-canplugin = CanPlugin(data_source)
-print(canplugin.req_messages)
+    canplugin = CanPlugin(data_source)
+    print(canplugin.req_messages)
 
