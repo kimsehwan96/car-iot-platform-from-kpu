@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import useStyles from '../../styles';
 import ContentHeader from '../../components/ContentHeader/ContentHeader';
+import RoadRecord from './components/RoadRecord/RoadRecord';
 
 const Dashboard: FC = () => {
   const classes = useStyles();
@@ -14,16 +15,19 @@ const Dashboard: FC = () => {
       <Container maxWidth="lg" className={classes.container}>
         <ContentHeader />
         <Grid container spacing={3}>
-          {/* Chart */}
-          <Grid item xs={12} md={8} lg={9}>
+          <Grid item xs={12} md={6} lg={4}>
             <Paper className={fixedHeightPaper}>
-              {/* <Chart /> */}
+              <RoadRecord />
             </Paper>
           </Grid>
-          {/* Recent Deposits */}
-          <Grid item xs={12} md={4} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <Paper className={fixedHeightPaper}>
-              {/* <Deposits /> */}
+              {/* <Data /> */}
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <Paper className={fixedHeightPaper}>
+              {/* <Data /> */}
             </Paper>
           </Grid>
           {/* Recent Orders */}
