@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { AppBar, Avatar, Badge, createMuiTheme, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, ThemeProvider, Toolbar, Typography } from '@material-ui/core';
-import { ChevronLeft, ExitToApp, Menu, Notifications, Settings,  } from '@material-ui/icons';
-import ListItemData from './listItemData';
+import { AppBar, Avatar, Badge, createMuiTheme, CssBaseline, IconButton, ThemeProvider, Toolbar, Typography } from '@material-ui/core';
+import { ExitToApp, Menu, Notifications, Settings,  } from '@material-ui/icons';
 
 import useStyles from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
 import { setSuccess, signout } from '../../../store/actions/authActions';
-import { NavLink, Route } from 'react-router-dom';
-import Dashboard from './contents/Dashboard';
+import { Route } from 'react-router-dom';
+import Dashboard from './contents/Dashboard/Dashboard';
 import Analysis from './contents/Analysis';
 import SettingModal from './components/Setting/SettingModal';
+import userImg from './img/userImg.jpg'
+import Navbar from './components/Navbar/Navbar';
 
 export default function UserApp() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
   const { success, user } = useSelector((state: RootState) => state.auth);
 
@@ -69,7 +70,7 @@ export default function UserApp() {
             <Menu />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            UserApp
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -88,43 +89,11 @@ export default function UserApp() {
           <IconButton color="inherit" onClick={logoutHandler}>
             <ExitToApp />
           </IconButton>
-          <Avatar style={{ marginRight: 10 }}>{/* User Image */}</Avatar>
           <Typography>안녕하세요 {user?.firstName}님</Typography>
+          <Avatar style={{ marginLeft: 10 }} src={userImg} />
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeft />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          <ListSubheader
-            className={clsx(!open && classes.hide)}
-          >Reports
-          </ListSubheader>
-            { ListItemData.map((item, index) => (
-              <NavLink 
-                to={item.path} 
-                style={{ textDecoration: 'none', color: 'rgba(0, 0, 0, 0.54)'}}
-                activeClassName={ 'active' }
-                activeStyle={{ color: '#3f51b5'}}
-              >
-                <ListItem button key={index}>
-                  <ListItemIcon><Icon component={item.icon} /></ListItemIcon>
-                  <ListItemText>{item.title}</ListItemText>
-                </ListItem>
-              </NavLink>
-            ))}
-        </List>
-      </Drawer>
+      <Navbar open={open} handleDrawerClose={handleDrawerClose} />
       <Route path="/app/dashboard" component={Dashboard} />
       <Route path="/app/analysis" component={Analysis} />
     </div>
