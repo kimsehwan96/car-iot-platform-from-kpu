@@ -49,8 +49,20 @@ export default function UserApp() {
     palette : {
       type: darkMode ? 'dark' : 'light',
       primary: {
-        main: darkMode? '#202020' : '#3f50b5',
+        main: darkMode? '#3F51B5' : '#3f50b5',
       },
+    },
+    overrides: {
+      MuiAppBar: {
+        colorPrimary: {
+          backgroundColor :'#202020',
+        }
+      },
+      MuiTab: {
+        root: {
+          minWidth: '110px',
+        }
+      }
     }
   });
 
