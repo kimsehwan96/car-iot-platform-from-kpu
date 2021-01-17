@@ -1,7 +1,8 @@
 import { Container, Grid, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC } from 'react';
-import useStyles from '../styles';
+import useStyles from '../../styles';
+import ContentHeader from '../../components/ContentHeader/ContentHeader';
 
 const Dashboard: FC = () => {
   const classes = useStyles();
@@ -11,6 +12,7 @@ const Dashboard: FC = () => {
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
       <Container maxWidth="lg" className={classes.container}>
+        <ContentHeader />
         <Grid container spacing={3}>
           {/* Chart */}
           <Grid item xs={12} md={8} lg={9}>
