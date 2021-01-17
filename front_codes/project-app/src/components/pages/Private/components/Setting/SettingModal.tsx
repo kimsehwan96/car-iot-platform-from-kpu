@@ -1,5 +1,6 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Modal } from '@material-ui/core'
+import { getModalStyle, useStyles } from './styles'
 
 interface SettingModalProps {
   onModal: boolean;
@@ -7,6 +8,9 @@ interface SettingModalProps {
 }
 
 const SettingModal: FC<SettingModalProps> = ({ onModal, setOnModal }) => {
+  const classes = useStyles();
+  const [modalStyle] = useState(getModalStyle);
+
   return (
     <Modal
       open={onModal}
@@ -14,7 +18,9 @@ const SettingModal: FC<SettingModalProps> = ({ onModal, setOnModal }) => {
       aria-labelledby="Settings"
       aria-describedby="simple-modal-description"
     >
-      <div>Settings Contents</div>
+      <div style={modalStyle} className={classes.paper}>
+        Settings Contents
+      </div>
     </Modal>
   )
 }

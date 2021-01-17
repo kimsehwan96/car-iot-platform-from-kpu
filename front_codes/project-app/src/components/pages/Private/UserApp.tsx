@@ -12,7 +12,7 @@ import { NavLink, Route } from 'react-router-dom';
 import Dashboard from './contents/Dashboard';
 import Analysis from './contents/Analysis';
 import { darkTheme, lightTheme } from '../../../theme/theme';
-import SettingModal from './components/SettingModal';
+import SettingModal from './components/Setting/SettingModal';
 
 export default function UserApp() {
   const classes = useStyles();
