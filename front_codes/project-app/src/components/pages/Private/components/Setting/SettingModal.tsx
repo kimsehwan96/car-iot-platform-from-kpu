@@ -1,13 +1,15 @@
 import React, { FC, useState } from 'react'
-import { Modal } from '@material-ui/core'
+import { Modal, Switch, Typography } from '@material-ui/core'
 import { getModalStyle, useStyles } from './styles'
 
 interface SettingModalProps {
   onModal: boolean;
   setOnModal : any;
+  darkMode : any;
+  setDarkMode : any;
 }
 
-const SettingModal: FC<SettingModalProps> = ({ onModal, setOnModal }) => {
+const SettingModal: FC<SettingModalProps> = ({ onModal, setOnModal, darkMode , setDarkMode }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
@@ -19,7 +21,9 @@ const SettingModal: FC<SettingModalProps> = ({ onModal, setOnModal }) => {
       aria-describedby="simple-modal-description"
     >
       <div style={modalStyle} className={classes.paper}>
-        Settings Contents
+        <Typography variant="h4">Settings</Typography>
+        <Typography>Dark Mode?</Typography>
+        <Switch checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
       </div>
     </Modal>
   )

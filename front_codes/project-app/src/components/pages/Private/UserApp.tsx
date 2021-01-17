@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { AppBar, Avatar, Badge, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, ThemeProvider, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Avatar, Badge, createMuiTheme, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, ThemeProvider, Toolbar, Typography } from '@material-ui/core';
 import { ChevronLeft, ExitToApp, Menu, Notifications, Settings,  } from '@material-ui/icons';
 import ListItemData from './listItemData';
 
@@ -11,7 +11,6 @@ import { setSuccess, signout } from '../../../store/actions/authActions';
 import { NavLink, Route } from 'react-router-dom';
 import Dashboard from './contents/Dashboard';
 import Analysis from './contents/Analysis';
-import { darkTheme, lightTheme } from '../../../theme/theme';
 import SettingModal from './components/Setting/SettingModal';
 
 export default function UserApp() {
@@ -39,19 +38,20 @@ export default function UserApp() {
   
   // Theme Handler
   const [onModal, setOnModal] = useState(false);
-  const [ theme, setTheme ] = useState(darkTheme)
+  const [darkMode , setDarkMode] = useState(true);
 
   const openModal = () => {
     setOnModal(true);
   }
 
-  const handleThemeChange = ( e: React.ChangeEvent<HTMLInputElement>, value: string ) => {
-    if ( value === 'Dark' ) {
-      setTheme(darkTheme);
-    } else if ( value === 'Light') {
-      setTheme(lightTheme);
+  const theme = createMuiTheme({
+    palette : {
+      type: darkMode ? 'dark' : 'light',
+      primary: {
+        main: darkMode? '#202020' : '#3f50b5',
+      },
     }
-  }
+  });
 
   return (
   <ThemeProvider theme={theme}>
@@ -79,7 +79,12 @@ export default function UserApp() {
           <IconButton color="inherit" onClick={openModal}>
             <Settings />
           </IconButton>
-          <SettingModal onModal={onModal} setOnModal={setOnModal} />
+          <SettingModal 
+            onModal={onModal} 
+            setOnModal={setOnModal} 
+            darkMode={darkMode} 
+            setDarkMode={setDarkMode} 
+          />
           <IconButton color="inherit" onClick={logoutHandler}>
             <ExitToApp />
           </IconButton>
