@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { AppBar, Avatar, Badge, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Avatar, Badge, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, ThemeProvider, Toolbar, Typography } from '@material-ui/core';
 import { ChevronLeft, ExitToApp, Menu, Notifications, Settings,  } from '@material-ui/icons';
 import ListItemData from './listItemData';
 
@@ -11,7 +11,8 @@ import { setSuccess, signout } from '../../../store/actions/authActions';
 import { NavLink, Route } from 'react-router-dom';
 import Dashboard from './contents/Dashboard';
 import Analysis from './contents/Analysis';
-import HandleTheme from './components/HandleTheme';
+import { darkTheme, lightTheme } from '../../../theme/theme';
+import SettingModal from './components/SettingModal';
 
 export default function UserApp() {
   const classes = useStyles();
@@ -36,7 +37,24 @@ export default function UserApp() {
     setOpen(false);
   };
   
+  // Theme Handler
+  const [onModal, setOnModal] = useState(false);
+  const [ theme, setTheme ] = useState(darkTheme)
+
+  const openModal = () => {
+    setOnModal(true);
+  }
+
+  const handleThemeChange = ( e: React.ChangeEvent<HTMLInputElement>, value: string ) => {
+    if ( value === 'Dark' ) {
+      setTheme(darkTheme);
+    } else if ( value === 'Light') {
+      setTheme(lightTheme);
+    }
+  }
+
   return (
+  <ThemeProvider theme={theme}>
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -53,15 +71,15 @@ export default function UserApp() {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
           </Typography>
-          <HandleTheme />
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <Notifications />
             </Badge>
           </IconButton>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={openModal}>
             <Settings />
           </IconButton>
+          <SettingModal onModal={onModal} setOnModal={setOnModal} />
           <IconButton color="inherit" onClick={logoutHandler}>
             <ExitToApp />
           </IconButton>
@@ -105,5 +123,6 @@ export default function UserApp() {
       <Route path="/app/dashboard" component={Dashboard} />
       <Route path="/app/analysis" component={Analysis} />
     </div>
+  </ThemeProvider>
   );
 }
