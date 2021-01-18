@@ -1,33 +1,15 @@
 import { Container, Grid, Paper } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import useStyles from '../../styles';
 import ContentHeader from '../../components/ContentHeader/ContentHeader';
 import RoadRecord from './components/RoadRecord/RoadRecord';
 import FuelEfficiencyTrend from './components/FuelEfficiencyTrend/FuelEfficiencyTrend';
-
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
+import KakaoMap from './components/KaKaoMap/KakaoMap';
 
 const Dashboard: FC = () => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  useEffect(() => {
-    let container = document.getElementById('map');
-    let options = {
-      center: new window.kakao.maps.LatLng(37.34490572458397, 126.73239490408842),
-      level: 3,
-    };
-
-    let map = new window.kakao.maps.Map(container, options);
-    console.log(map);
-  }, []);
-  
-
 
   return (
     <main className={classes.content}>
@@ -53,7 +35,7 @@ const Dashboard: FC = () => {
           {/* Recent Orders */}
           <Grid item xs={8}>
             <Paper className={classes.paper}>
-              <div id='map' style={{ width: '100%', height:'80vh' }} />
+              <KakaoMap />
             </Paper>
           </Grid>
           <Grid item xs={4}>
