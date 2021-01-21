@@ -62,12 +62,6 @@ class CanPlugin:
 
         #캔 플러그인 클래스는 데이터를 실제 데이터로 변환하고, 리스트로 반환하는 역할까지만 수행
 
-
-            
-
-        
-
-
 def handler():
     print('test plugin')
 
