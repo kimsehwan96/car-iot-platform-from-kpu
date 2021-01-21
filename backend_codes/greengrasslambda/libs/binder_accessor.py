@@ -1,5 +1,7 @@
 import socket
-from . import BinderBaseClass
+import json
+from time import sleep
+from binder_base import BinderBaseClass
 
 IPC_PORT = 15882 #임의 지정
 IPC_IP = '127.0.0.1'
@@ -18,4 +20,17 @@ class BinderAccessor(BinderBaseClass):
     def push_data(self, data):
         encoded_data = Encoder.convert_data(data)
         #Blocking 되는지 안되는지는 확인해봐야것네
-        self.sock.sendall(encoded_data)
+        self.sock.sendto(encoded_data, self.sock_info)
+
+if __name__ == "__main__":
+    ba = BinderAccessor(is_server=False)
+    data = json.dumps({
+        "test" : [
+            1,
+            2,
+            3
+        ]
+    })
+    while True:
+        sleep(1)
+        ba.push_data(data)
