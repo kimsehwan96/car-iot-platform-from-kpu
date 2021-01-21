@@ -1,0 +1,12 @@
+{
+    "edge_id" :  "sehwan_test_k3",
+    "datasource" : {
+        "fields" : [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+        ]
+    }
+}
