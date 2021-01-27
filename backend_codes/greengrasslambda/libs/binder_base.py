@@ -5,7 +5,7 @@ IPC_IP = '127.0.0.1'
 ENCODING = 'latin-1'
 
 class BinderBaseClass:
-    def __init__(self, is_server = False): #Binder는 True, Accesor는 False로 생성.
+    def __init__(self, is_server = False) -> None: #Binder는 True, Accesor는 False로 생성.
         self.sock = socket.socket(
             family=socket.AF_INET,
             type=socket.SOCK_DGRAM
@@ -23,5 +23,5 @@ class BinderBaseClass:
     def push_data(self):
         pass
 
-    def get_data(self):
+    def get_data(self) -> str:
         return self.sock.recvfrom(4096)[0].decode(ENCODING)

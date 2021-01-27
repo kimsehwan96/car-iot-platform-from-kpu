@@ -17,7 +17,7 @@ class BinderAccessor(BinderBaseClass):
     #binder_accessor는 오직 데이터 전달의 역할만 할 것.
     #플러그인에서 dict 데이터를 받아오고
     #Encoder를 통해 byte로 변환 이후 바인더에게 푸시함
-    def push_data(self, data):
+    def push_data(self, data) -> None:
         encoded_data = Encoder.convert_data(data)
         #Blocking 되는지 안되는지는 확인해봐야것네
         self.sock.sendto(encoded_data, self.sock_info)
