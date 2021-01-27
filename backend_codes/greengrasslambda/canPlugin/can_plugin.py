@@ -74,4 +74,13 @@ if __name__ == '__main__':
     data_source = pm.get_profile()
     canplugin = CanPlugin(data_source)
     print(canplugin.req_messages_for_data)
+else: #실제 프로덕션 환경에서 수행될 코드
+    pass
+    #이 플러그인 코드에서 binder_accessor 인스턴스를 생성
+    #그리고 바인더 엑세서의 스케쥴러를 실행 (이 스케쥴러는 1초마다 받은 데이터를 처리하는 메서드)
+    #그리고, 바인더 엑세서에 push_data를 계속해서 한다.
+    #스케쥴러는 데이터를 받으면 받은 데이터에 타임스탬프를 찍고 바인더에 IPC로 데이터를 보내준다.
+    #최종적으로 바인더 코드에서 각 dispatcher로 relay하여 하나는 mqtt 송신
+    #하나는 csv파일 생성 및 업로드
+    #하나는 socketio로 앱에서 사용 가능하도록(로컬 앱) 브로드캐스팅
 

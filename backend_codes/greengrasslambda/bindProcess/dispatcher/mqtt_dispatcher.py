@@ -9,8 +9,8 @@ IS_LOCAL = os.environ.get('LOCAL_RUNTIME')
 mqtt = greengrasssdk.client('iot-data') if not IS_LOCAL else None
 
 class MqttDispatcher(BaseDispatcher):
-    def __init__(self, edge_id, target):
-        super().__init__(edge_id, target)
+    def __init__(self, edge_id):
+        super().__init__(edge_id)
         self.topic = get_publish_topic
     
     def publish(self, data):
@@ -20,7 +20,7 @@ class MqttDispatcher(BaseDispatcher):
             print(data)
         
     def relay(self, data):
-        print('dispatcher type: {}, target: {}'.format(self.edge_id, self.target))
+        print('dispatcher type: {}'.format(self.edge_id))
         if data.get('values') is None:
             print('empty buffer is not sent to cloud....')
         else:

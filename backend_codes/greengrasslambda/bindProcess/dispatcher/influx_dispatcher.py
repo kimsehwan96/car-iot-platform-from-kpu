@@ -19,8 +19,8 @@ BUCKET = os.environ.get('INFLUX_BUCKET', None)
 URL = os.environ.get('INFLUX_URL', None)
 
 class InfluxDispatcher(BaseDispatcher):
-    def __init__(self, edge_id, target):
-        super().__init__(edge_id, target)
+    def __init__(self, edge_id):
+        super().__init__(edge_id)
         self.queue = deque([])
         self.token = TOKEN
         self.org = ORG

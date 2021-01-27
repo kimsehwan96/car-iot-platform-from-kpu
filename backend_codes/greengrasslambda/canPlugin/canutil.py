@@ -38,20 +38,17 @@ class CanRequestMessage:
 #TODO: How we can check the response data length ?
 
 class CanDataConvert: #데이터 컨버팅할 스태틱 메서드들 생성
-    def __init__(self):
-        pass
     # message의 3번째 데이터(인덱스2)가  데이터 타입을 갖고있음
     @staticmethod
-    def convert(recv_msg: list):
+    def convert(recv_msg: list) -> int:
         data_type = recv_msg.data[2] # 0x17 과 같은 hex.
-        if data_type == CanDataType.ENGINE_LOAD.value:
-            CalculateData.engine_load(recv_msg)
-        elif data_type == CanDataType.ENGINE_COOLANT_TEMP.value:
-            CalculateData.engine_coolant_temp(recv_msg)
-        else:
-            pass
-    
-    #위 로직이 너무 길어지는데 고민해보기 어떤 구조가 코드를 좀 더 간결하게 할까?
+        try:
+            hanlder = getattr(CalculateData, CanDataType(data_type).name) #핸들러를 갖고옴
+            return hanlder(recv_msg)
+        except AttributeError as e:
+            print("there is no data type like that..")
+            return 0
+
 
         
 
@@ -65,7 +62,7 @@ class CanDataConvert: #데이터 컨버팅할 스태틱 메서드들 생성
 class CalculateData:
 #every round need to 2 point decimal
     @staticmethod
-    def engine_coolant_temp(recv_msg):
+    def engine_coolant_temp(recv_msg)->int:
         return recv_msg[3] - 40
 
     @staticmethod
@@ -106,7 +103,7 @@ class CalculateData:
     
     @staticmethod
     def fuel_tank_level(recv_msg):
-        return ((100/255) * recv_msg[3], 2)
+        return round((100/255) * recv_msg[3], 2)
     
     @staticmethod
     def ambient_air_temperature(recv_msg):
