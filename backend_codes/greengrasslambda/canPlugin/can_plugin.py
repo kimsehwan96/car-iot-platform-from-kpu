@@ -57,7 +57,8 @@ class CanPlugin:
         print("message recv done.")
         #데이터를 다 받았으면 각 리스트 원소 (원소 또한 리스트)에 대해서 컨버팅 로직을 수행
         while self.recv_buffer:
-            self.return_buffer.append(CanDataConvert.convert(self.recv_buffer.popleft()))
+            self.return_buffer.append(
+                CanDataConvert.convert(self.recv_buffer.popleft()))
         
         return self.return_buffer
         #실제 데이터로 변환 완료됨.
@@ -80,7 +81,8 @@ else: #실제 프로덕션 환경에서 수행될 코드
     #그리고 바인더 엑세서의 스케쥴러를 실행 (이 스케쥴러는 1초마다 받은 데이터를 처리하는 메서드)
     #그리고, 바인더 엑세서에 push_data를 계속해서 한다.
     #스케쥴러는 데이터를 받으면 받은 데이터에 타임스탬프를 찍고 바인더에 IPC로 데이터를 보내준다.
-    #최종적으로 바인더 코드에서 각 dispatcher로 relay하여 하나는 mqtt 송신
+    #최종적으로 바인더 매니저 코드에서 각 dispatcher로 relay하여 하나는 mqtt 송신
+    #바인더 코드에서는 바인더매니저를 소환하고. 바인더 매니저가 데이터를 계속해서 받고 소비하도록 스레드를 바인더에서 돌린다.
     #하나는 csv파일 생성 및 업로드
     #하나는 socketio로 앱에서 사용 가능하도록(로컬 앱) 브로드캐스팅
 
