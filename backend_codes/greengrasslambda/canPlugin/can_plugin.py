@@ -4,12 +4,14 @@ import os
 from collections import deque
 from threading import Thread
 from time import sleep
-from .libs.canutil import CanDataType, CanRequestMessage, CanDataConvert
+from libs.canutil import CanDataType, CanRequestMessage, CanDataConvert
+from libs.profile_manager import ProfileManager
 # from .lib.plugin import run_plugin_thread
 
-'''data source
+'''
+data source
 {
-    "data_types" :[
+    "dataTypes" :[
         "ENGINE_LOAD",
         "ENGINE_RPM",
         "VEHICLE_SPEED",
@@ -20,7 +22,7 @@ from .libs.canutil import CanDataType, CanRequestMessage, CanDataConvert
 
 class CanPlugin:
     def __init__(self, data_source:dict) -> None:
-        self.data_list = data_source.get('data_types')
+        self.data_list = data_source.get('dataTypes')
         self.enum_list = [ getattr(CanDataType, x) for x in self.data_list]
         self.req_messages_for_data = [getattr(CanRequestMessage(x), 'message') for x in self.enum_list]
         self.data_len = len(self.data_list)
@@ -67,15 +69,9 @@ def handler():
 
 
 if __name__ == '__main__':
-    data_source = {
-        "data_types" :[
-            "ENGINE_LOAD",
-            "ENGINE_RPM",
-            "VEHICLE_SPEED",
-            "THROTTLE"
-        ]   
-    }
+    pm = ProfileManager()
 
+    data_source = pm.get_profile()
     canplugin = CanPlugin(data_source)
-    print(canplugin.req_messages)
+    print(canplugin.req_messages_for_data)
 
