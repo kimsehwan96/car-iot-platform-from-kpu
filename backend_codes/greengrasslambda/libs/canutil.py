@@ -1,9 +1,11 @@
 from enum import Enum
-
 #CAN 데이터는 특정 PID 가 지정되어있음
 # refer to  : https://en.wikipedia.org/wiki/OBD-II_PIDs
 # 차종별, 차량 메이커별로 다를 수 있으니 우선 테스트부터 진행
 # refer to : https://github.com/skpang/PiCAN-Python-examples/blob/master/obdii_logger.py
+class NotSupportedDataTypeException(Exception):
+    def __init__(self):
+        super().__init__("지원하지 않는 데이터 타입입니다.")
 
 class CanDataType(Enum):
     ENGINE_LOAD = 0x04
@@ -18,7 +20,7 @@ class CanDataType(Enum):
     PID_REPLY = 0x7E8
     
 class CanRequestMessage:
-    def __init__(self, data_type: CanDataType):
+    def __init__(self, data_type: CanDataType) -> None:
         self.data_type = data_type #ENUM
         self.message = [0x02, 
                         0x01, 
@@ -82,8 +84,6 @@ class CalculateData:
     def throttle(recv_msg):
         return round((recv_msg[3] * 100) /255 , 2)
 
-    # 모든 연로에 대한 정보는 밑 로직을 따른다
-    # min Value는 -100이며 (Too Rich), max value는 99.2며 Max value
     @staticmethod
     def fuel_trim_bank(recv_msg):
         return round(((100/128) * recv_msg[3]) - 100 , 2)
@@ -112,8 +112,6 @@ class CalculateData:
     def ambient_air_temperature(recv_msg):
         return recv_msg[3] - 40
 
-    
-    # 각 데이터를 컨버팅하는 로직 필요.    
 
 if __name__ == '__main__':
     req = CanRequestMessage(CanDataType.THROTTLE).message

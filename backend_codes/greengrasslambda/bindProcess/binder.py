@@ -16,6 +16,8 @@ class Binder(BinderBaseClass):
         pass
 
 
+def hanlder(request, context):
+    pass
 
 if __name__ == "__main__":
     b = Binder(is_server=True)

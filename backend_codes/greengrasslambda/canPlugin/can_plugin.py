@@ -4,8 +4,8 @@ import os
 from collections import deque
 from threading import Thread
 from time import sleep
-from libs.canutil import CanDataType, CanRequestMessage, CanDataConvert
-from lib.plugin import run_plugin_thread
+from .libs.canutil import CanDataType, CanRequestMessage, CanDataConvert
+# from .lib.plugin import run_plugin_thread
 
 '''data source
 {
@@ -19,7 +19,7 @@ from lib.plugin import run_plugin_thread
 '''
 
 class CanPlugin:
-    def __init__(self, data_source:dict):
+    def __init__(self, data_source:dict) -> None:
         self.data_list = data_source.get('data_types')
         self.enum_list = [ getattr(CanDataType, x) for x in self.data_list]
         self.req_messages_for_data = [getattr(CanRequestMessage(x), 'message') for x in self.enum_list]
