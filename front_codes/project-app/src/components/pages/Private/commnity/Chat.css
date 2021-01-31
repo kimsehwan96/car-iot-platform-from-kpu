@@ -7,21 +7,20 @@
 }
 
 .root {
-  margin-top: 65px;
   width: 100%;
 }
 
 .ce-chat-list {
-  background-color: rgb(240, 240, 240) !important;
+  background-color: #333 !important;
 }
 
 .ce-chats-container {
-  background-color: rgb(240, 240, 240) !important;
+  background-color: #333 !important;
 }
 
 .ce-active-chat-card {
-  background-color: #cabcdc !important;
-  border: 4px solid #cabcdc !important;
+  background-color: #242424 !important;
+  border: 4px solid #242424 !important;
   border-radius: 0px !important;
 }
 
@@ -40,7 +39,7 @@
 
 .ce-primary-button {
   border-radius: 6px !important;
-  background-color: #7554a0 !important;
+  background-color: #242424 !important;
   position: relative;
   bottom: 1px;
 }
@@ -51,7 +50,7 @@
 }
 
 .ce-settings {
-  background-color: rgb(240, 240, 240) !important;
+  background-color: #333 !important;
 }
 
 .ce-autocomplete-input {
