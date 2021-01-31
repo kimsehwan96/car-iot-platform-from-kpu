@@ -109,7 +109,7 @@ export default function UserApp() {
       <Navbar open={open} handleDrawerClose={handleDrawerClose} />
       <Route path="/app/dashboard" component={Dashboard} />
       <Route path="/app/analysis" component={Analysis} />
-      <Route path="/app/chat" component={Chat} />
+      <Route path="/app/chat" component={Chat} exact/>
     </div>
   </ThemeProvider>
   );
