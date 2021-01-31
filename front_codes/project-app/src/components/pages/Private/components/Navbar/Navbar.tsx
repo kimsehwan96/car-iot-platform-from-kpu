@@ -1,5 +1,5 @@
 import { Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListSubheader, Typography } from '@material-ui/core'
-import { ChevronLeft } from '@material-ui/icons'
+import { ChatBubble, ChevronLeft } from '@material-ui/icons'
 import clsx from 'clsx'
 import React, { FC } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -51,6 +51,26 @@ const Navbar: FC<NavebarProps> = ({ open, handleDrawerClose }) => {
                 </ListItem>
               </NavLink>
             ))}
+            <ListSubheader
+              className={clsx(!open && classes.hide)}
+            >
+              Community
+            </ListSubheader>
+            <NavLink 
+                to="chat" 
+                style={{ textDecoration: 'none', color: "#adacac"}}
+                activeClassName={ 'active' }
+                activeStyle={{ color: '#3f51b5'}}
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    <ChatBubble />
+                  </ListItemIcon>
+                    <Typography>
+                      Chat
+                    </Typography>
+                </ListItem>
+              </NavLink>
         </List>
       </Drawer>
   )

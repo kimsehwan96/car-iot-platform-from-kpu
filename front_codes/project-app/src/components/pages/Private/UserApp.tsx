@@ -8,11 +8,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
 import { setSuccess, signout } from '../../../store/actions/authActions';
 import { Route } from 'react-router-dom';
-import Dashboard from './contents/Dashboard/Dashboard';
-import Analysis from './contents/Analysis';
+import Dashboard from './reports/Dashboard/Dashboard';
+import Analysis from './reports/Analysis';
 import SettingModal from './components/Setting/SettingModal';
 import userImg from './img/userImg.jpg'
 import Navbar from './components/Navbar/Navbar';
+import Chat from './commnity/Chat';
 
 export default function UserApp() {
   const classes = useStyles();
@@ -108,6 +109,7 @@ export default function UserApp() {
       <Navbar open={open} handleDrawerClose={handleDrawerClose} />
       <Route path="/app/dashboard" component={Dashboard} />
       <Route path="/app/analysis" component={Analysis} />
+      <Route path="/app/chat" component={Chat} />
     </div>
   </ThemeProvider>
   );

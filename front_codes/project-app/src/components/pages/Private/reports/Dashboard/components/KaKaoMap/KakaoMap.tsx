@@ -10,7 +10,7 @@ declare global {
 const { kakao } = window;
 
 const KakaoMap: FC = () => {
-  const [option] = useState({
+  const [option, setOption] = useState({
     center : new kakao.maps.LatLng(37.34490572458397, 126.73239490408842),
     level: 3
   });
