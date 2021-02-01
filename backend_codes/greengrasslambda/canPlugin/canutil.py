@@ -1,4 +1,5 @@
 from enum import Enum
+import can
 #CAN 데이터는 특정 PID 가 지정되어있음
 # refer to  : https://en.wikipedia.org/wiki/OBD-II_PIDs
 # 차종별, 차량 메이커별로 다를 수 있으니 우선 테스트부터 진행
@@ -40,7 +41,7 @@ class CanRequestMessage:
 class CanDataConvert: #데이터 컨버팅할 스태틱 메서드들 생성
     # message의 3번째 데이터(인덱스2)가  데이터 타입을 갖고있음
     @staticmethod
-    def convert(recv_msg: list) -> int:
+    def convert(recv_msg: can.Message) -> int:
         data_type = recv_msg.data[2] # 0x17 과 같은 hex.
         try:
             hanlder = getattr(CalculateData, CanDataType(data_type).name) #핸들러를 갖고옴
@@ -71,7 +72,7 @@ class CalculateData:
 
     @staticmethod
     def engine_rpm(recv_msg):
-        return round(((recv_msg.data[3]*256) + recv_msg.data[4]), 2)
+        return round(((recv_msg*256) + recv_msg[4]), 2)
 
     @staticmethod
     def vehicle_speed(recv_msg):

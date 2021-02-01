@@ -34,7 +34,7 @@ class CanPlugin:
 
     def send_request(self) -> list: #return으로 데이터를 받아온다.
         # 우리가 요구한 데이터는 모두 요청 메시지를 전송한다.
-
+        self.return_buffer.clear()
         # 응답에 대한 데이터만 response를 받아야 함
         def is_valid_reply(message) -> bool:
             if message.arbitration_id != CanDataType.PID_REPLY.value:
