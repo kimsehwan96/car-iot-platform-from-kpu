@@ -29,7 +29,6 @@ class CanPlugin:
 
     def send_request(self) -> list: #return으로 데이터를 받아온다.
         # 우리가 요구한 데이터는 모두 요청 메시지를 전송한다.
-
         #덱 초기화
         self.return_buffer.clear()
         # 응답에 대한 데이터만 response를 받아야 함
@@ -45,7 +44,7 @@ class CanPlugin:
         print("message request done.")
         sleep(0.1) #잠깐 기다린다.
 
-        while len(self.recv_buffer) < len(self.data_len): #recv 버퍼가 가득 차기 전까지 수행
+        while len(self.recv_buffer) < self.data_len: #recv 버퍼가 가득 차기 전까지 수행
             recv_data = self.bus.recv()
             if is_valid_reply(recv_data):
                 self.recv_buffer.append(recv_data)
@@ -65,4 +64,3 @@ if __name__=='__main__':
         time.sleep(1)
         print(cp.send_request())
         #테스트 로직
-        

@@ -1,4 +1,5 @@
 from enum import Enum
+import can
 
 class NotSupportedDataTypeException(Exception):
     def __init__(self):
@@ -35,7 +36,7 @@ class CanRequestMessage:
 
 class CanDataConvert: 
     @staticmethod
-    def convert(recv_msg: list) -> int:
+    def convert(recv_msg: can.Message) -> int:
         data_type = recv_msg.data[2] # 0x17 과 같은 hex.
         try:
             hanlder = getattr(CalculateData, CanDataType(data_type).name.lower()) #핸들러를 갖고옴
@@ -56,7 +57,7 @@ class CalculateData:
 
     @staticmethod
     def engine_rpm(recv_msg):
-        return round(((recv_msg.data[3]*256) + recv_msg.data[4]), 2)
+        return round(((recv_msg*256) + recv_msg[4])/4, 2)
 
     @staticmethod
     def vehicle_speed(recv_msg):
