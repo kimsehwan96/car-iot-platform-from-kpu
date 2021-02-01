@@ -3,7 +3,7 @@ import time
 import os
 from collections import deque
 from time import sleep
-from .canutil import CanDataType, CanRequestMessage, CanDataConvert
+from device_codes.canutil import CanDataType, CanRequestMessage, CanDataConvert
 
 DATA_SOURCE = {
     "dataTypes" :[

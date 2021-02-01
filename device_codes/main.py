@@ -1,6 +1,6 @@
 import socket
 from time import sleep
-from .can_plugin import CanPlugin
+from device_codes.can_plugin import CanPlugin
 
 DATA_SOURCE = {
     "dataTypes" :[

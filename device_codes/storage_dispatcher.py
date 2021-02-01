@@ -5,7 +5,7 @@ import sys
 from collections import deque
 from _thread import start_new_thread, allocate_lock
 from datetime import datetime, timedelta, timezone
-from base_dispatcher import BaseDispatcher
+from device_codes.base_dispatcher import BaseDispatcher
 
 DATA_SOURCE = {
     "dataTypes" :[
