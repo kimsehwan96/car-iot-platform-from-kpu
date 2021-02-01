@@ -13,6 +13,8 @@ DATA_SOURCE = {
         "THROTTLE"
     ]
 }
+CHANNEL = 'can0'
+BUS_TYPE = 'socketcan_native'
 
 class CanPlugin:
     def __init__(self, data_source:dict) -> None:
@@ -22,7 +24,7 @@ class CanPlugin:
         self.data_len = len(self.data_list)
         self.recv_buffer = deque()
         self.return_buffer = deque()
-        self.bus = can.interface.Bus(channel='can0', bustype='socketcan_native')
+        self.bus = can.interface.Bus(channel=CHANNEL, bustype=BUS_TYPE)
 
     def send_request(self) -> list:
         self.return_buffer.clear()
@@ -48,8 +50,7 @@ class CanPlugin:
         print("message recv done.")
 
         while self.recv_buffer:
-            self.return_buffer.append(
-                CanDataConvert.convert(self.recv_buffer.popleft()))
+            self.return_buffer.append(CanDataConvert.convert(self.recv_buffer.popleft()))
         
         return self.return_buffer
         #deque가 리턴되며, DATA_SOURCE의 순서대로 저장이 된다

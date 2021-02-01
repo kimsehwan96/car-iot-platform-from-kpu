@@ -20,7 +20,7 @@ class CanDataType(Enum):
     PID_REPLY = 0x7E8
     
 class CanRequestMessage:
-
+    #TODO: change this class as singleton
     def __str__(self):
         return "{}".format(self.message)
 
@@ -33,7 +33,9 @@ class CanRequestMessage:
                         0x00,
                         0x00,
                         0x00,
-                        0x00] 
+                        0x00]
+    def get_type(self):
+        return self.data_type.name
 
 class CanDataConvert: 
     @staticmethod
@@ -42,9 +44,8 @@ class CanDataConvert:
         try:
             hanlder = getattr(CalculateData, CanDataType(data_type).name.lower())
             return hanlder(recv_msg)
-        except AttributeError as e:
-            print("there is no data type like that..")
-            return 0
+        except AttributeError:
+            raise NotSupportedDataTypeException
 
 class CalculateData:
 
