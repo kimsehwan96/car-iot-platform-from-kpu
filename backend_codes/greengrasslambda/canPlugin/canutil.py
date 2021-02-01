@@ -30,7 +30,6 @@ class CanRequestMessage:
                         0x00,
                         0x00,
                         0x00,
-                        0x00, 
                         0x00] #this is can data format.
 
 # req = CanRequestMessage(CanDataType.THROTTLE).message

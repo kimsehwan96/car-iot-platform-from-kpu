@@ -1,0 +1,18 @@
+{
+    "deviceId" : "uuid",
+    "fields" : [
+        "ENGINE_LOAD",
+        "ENGINE_RPM",
+        "VEHICLE_SPEED",
+        "THROTTLE"
+    ],
+    "values" : [
+        1,
+        2,
+        3,
+        4
+    ],
+    "timestamp" : 1612196779.32273,
+    "latitude" : 36.31234,
+    "logtitude" : 124.21241
+}

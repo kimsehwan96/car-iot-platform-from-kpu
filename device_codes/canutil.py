@@ -1,6 +1,8 @@
 from enum import Enum
 import can
 
+DATA_TYPE_INDEX = 2
+
 class NotSupportedDataTypeException(Exception):
     def __init__(self):
         super().__init__("지원하지 않는 데이터 타입입니다.")
@@ -31,15 +33,14 @@ class CanRequestMessage:
                         0x00,
                         0x00,
                         0x00,
-                        0x00, 
                         0x00] 
 
 class CanDataConvert: 
     @staticmethod
     def convert(recv_msg: can.Message) -> int:
-        data_type = recv_msg.data[2] # 0x17 과 같은 hex.
+        data_type = recv_msg.data[DATA_TYPE_INDEX]
         try:
-            hanlder = getattr(CalculateData, CanDataType(data_type).name.lower()) #핸들러를 갖고옴
+            hanlder = getattr(CalculateData, CanDataType(data_type).name.lower())
             return hanlder(recv_msg)
         except AttributeError as e:
             print("there is no data type like that..")
