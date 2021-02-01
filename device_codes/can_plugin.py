@@ -6,9 +6,7 @@ from time import sleep
 from .canutil import CanDataType, CanRequestMessage, CanDataConvert
 
 
-'''
-data source
-{
+DATA_SOURCE = {
     "dataTypes" :[
         "ENGINE_LOAD",
         "ENGINE_RPM",
@@ -16,7 +14,6 @@ data source
         "THROTTLE"
     ]
 }
-'''
 
 class CanPlugin:
     def __init__(self, data_source:dict) -> None:
@@ -59,3 +56,11 @@ class CanPlugin:
                 CanDataConvert.convert(self.recv_buffer.popleft()))
         
         return self.return_buffer
+
+if __name__=='__main__':
+    cp = CanPlugin(DATA_SOURCE)
+    while True:
+        time.sleep(1)
+        print(cp.send_request())
+        #테스트 로직
+        

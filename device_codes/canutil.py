@@ -17,6 +17,10 @@ class CanDataType(Enum):
     PID_REPLY = 0x7E8
     
 class CanRequestMessage:
+
+    def __str__(self):
+        return "{}".format(self.message)
+
     def __init__(self, data_type: CanDataType) -> None:
         self.data_type = data_type #ENUM
         self.message = [0x02, 
@@ -34,7 +38,7 @@ class CanDataConvert:
     def convert(recv_msg: list) -> int:
         data_type = recv_msg.data[2] # 0x17 과 같은 hex.
         try:
-            hanlder = getattr(CalculateData, CanDataType(data_type).name) #핸들러를 갖고옴
+            hanlder = getattr(CalculateData, CanDataType(data_type).name.lower()) #핸들러를 갖고옴
             return hanlder(recv_msg)
         except AttributeError as e:
             print("there is no data type like that..")
@@ -89,3 +93,10 @@ class CalculateData:
     @staticmethod
     def ambient_air_temperature(recv_msg):
         return recv_msg[3] - 40
+
+
+if __name__ == '__main__':
+    msg1 = CanRequestMessage(CanDataType.ENGINE_LOAD)
+    msg2 = CanRequestMessage(CanDataType.ENGINE_COOLANT_TEMP)
+    print(msg1, msg2)
+    

@@ -17,4 +17,3 @@ can_plugin = CanPlugin(DATA_SOURCE)
 while True:
     sleep(1)
     print(can_plugin.send_request())
-
