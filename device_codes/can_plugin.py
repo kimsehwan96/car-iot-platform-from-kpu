@@ -38,7 +38,7 @@ class CanPlugin:
                 return True
 
         for message in self.req_messages_for_data:
-            msg = can.Message(arbitration_id=CanDataType.PID_REQUEST, data = message, extended_id=False)
+            msg = can.Message(arbitration_id=CanDataType.PID_REQUEST.value, data = message, extended_id=False)
             self.bus.send(msg)
         print("message request done.")
         sleep(0.1) #잠깐 기다린다.
