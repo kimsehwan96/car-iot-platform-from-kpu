@@ -1,5 +1,5 @@
 from socket import *
-from device_codes.base_dispatcher import BaseDispatcher
+from base_dispatcher import BaseDispatcher
 
 IPC_PORT = 51234
 IP = "0.0.0.0"

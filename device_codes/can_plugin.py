@@ -3,7 +3,7 @@ import time
 import os
 from collections import deque
 from time import sleep
-from device_codes.canutil import CanDataType, CanRequestMessage, CanDataConvert
+from canutil import CanDataType, CanRequestMessage, CanDataConvert
 
 DATA_SOURCE = {
     "dataTypes" :[
@@ -26,7 +26,7 @@ class CanPlugin:
         self.return_buffer = deque()
         self.bus = can.interface.Bus(channel=CHANNEL, bustype=BUS_TYPE)
 
-    def send_request(self) -> list:
+    def send_request(self) -> deque([float]):
         self.return_buffer.clear()
 
         def is_valid_reply(message) -> bool:

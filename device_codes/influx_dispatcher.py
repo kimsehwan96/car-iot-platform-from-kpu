@@ -1,4 +1,4 @@
-from device_codes.base_dispatcher import BaseDispatcher
+from base_dispatcher import BaseDispatcher
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS, WriteApi
 from collections import deque
