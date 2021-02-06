@@ -6,6 +6,10 @@ from collections import deque
 from _thread import start_new_thread, allocate_lock
 from datetime import datetime, timedelta, timezone
 from base_dispatcher import BaseDispatcher
+from util import Profile
+
+LOCAL_DATA_PATH = os.environ.get('LOCAL_DATA_PATH', '/kpu/raw_data')
+S3_SAVE_BUCKET = os.environ.get('S3_SAVE_BUCKET', 'sehwan-test-bucket')
 
 DATA_SOURCE = {
     "dataTypes": [

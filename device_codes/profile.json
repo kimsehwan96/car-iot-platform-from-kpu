@@ -1,0 +1,9 @@
+{
+  "deviceId" : "sehwan's car",
+  "dataTypes" :[
+        "ENGINE_LOAD",
+        "ENGINE_RPM",
+        "VEHICLE_SPEED",
+        "THROTTLE"
+    ]
+}
