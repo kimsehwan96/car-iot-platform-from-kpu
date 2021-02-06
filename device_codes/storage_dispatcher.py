@@ -8,13 +8,14 @@ from datetime import datetime, timedelta, timezone
 from base_dispatcher import BaseDispatcher
 
 DATA_SOURCE = {
-    "dataTypes" :[
+    "dataTypes": [
         "ENGINE_LOAD",
         "ENGINE_RPM",
         "VEHICLE_SPEED",
         "THROTTLE"
     ]
 }
+
 
 class StorageDispatcher(BaseDispatcher):
     def __init__(self, device_id):
