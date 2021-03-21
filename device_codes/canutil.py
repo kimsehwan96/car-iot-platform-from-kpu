@@ -31,7 +31,16 @@ class CanDataType(Enum):
     PID_REPLY = 0x7E8
 
 
-class CanRequestMessage:
+class MetaSingleton(type):
+    _instances = {}
+    
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instance[cls] = super(MetaSingleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+        
+
+class CanRequestMessage(metaclass=MetaSingleton):
     # TODO: change this class as singleton
     def __str__(self):
         return "{}".format(self.message)
@@ -47,7 +56,7 @@ class CanRequestMessage:
                         0x00,
                         0x00]
 
-    def get_type(self):
+    def get_type(self) -> CanDataType.name:
         return self.data_type.name
 
 
@@ -69,63 +78,63 @@ class CalculateData:
         return recv_msg[3] - 40
 
     @staticmethod
-    def engine_load(recv_msg):
+    def engine_load(recv_msg) -> int:
         return round((100 / 255) * recv_msg[3], 2)
 
     @staticmethod
-    def engine_rpm(recv_msg):
+    def engine_rpm(recv_msg) -> int:
         return round(((recv_msg * 256) + recv_msg[4]) / 4, 2)
 
     @staticmethod
-    def vehicle_speed(recv_msg):
+    def vehicle_speed(recv_msg) -> int:
         return recv_msg[3]
 
     @staticmethod
-    def throttle(recv_msg):
+    def throttle(recv_msg) -> int:
         return round((recv_msg[3] * 100) / 255, 2)
 
     @staticmethod
-    def short_fuel_trim_bank(recv_msg):
+    def short_fuel_trim_bank(recv_msg) -> int:
         return round(((100 / 128) * recv_msg[3]) - 100, 2)
 
     @staticmethod
-    def long_fuel_trim_bank(recv_msg):
+    def long_fuel_trim_bank(recv_msg) -> int:
         return round(((100 / 128) * recv_msg[3]) - 100, 2)
 
     @staticmethod
-    def short_fuel_trim_bank(recv_msg):
+    def short_fuel_trim_bank(recv_msg) -> int:
         return round(((100 / 128) * recv_msg[3]) - 100, 2)
 
     @staticmethod
-    def intake_air_temperature(recv_msg):
+    def intake_air_temperature(recv_msg) -> int:
         return recv_msg[3] - 40
 
     @staticmethod
-    def throttle_position(recv_msg):
+    def throttle_position(recv_msg) -> int:
         return round((100 / 256) * recv_msg[3], 2)
 
     @staticmethod
-    def engine_runtime(recv_msg):
+    def engine_runtime(recv_msg) -> int:
         return 256 * recv_msg[3] + recv_msg[4]
 
     @staticmethod
-    def traveled_distance(recv_msg):
+    def traveled_distance(recv_msg) -> int:
         return 256 * recv_msg[3] + recv_msg[4]
 
     @staticmethod
-    def fuel_tank_level(recv_msg):
+    def fuel_tank_level(recv_msg) -> int:
         return round((100 / 255) * recv_msg[3], 2)
 
     @staticmethod
-    def ambient_air_temperature(recv_msg):
+    def ambient_air_temperature(recv_msg) -> int:
         return recv_msg[3] - 40
 
     @staticmethod
-    def engine_oil_temperature(recv_msg):
+    def engine_oil_temperature(recv_msg) -> int:
         return recv_msg[3] - 40
 
     @staticmethod
-    def transmission_actual_gear(recv_msg):
+    def transmission_actual_gear(recv_msg) -> int:
         return recv_msg[3]
 
 
