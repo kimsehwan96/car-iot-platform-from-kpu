@@ -1,0 +1,18 @@
+{
+  "fields": [
+    "timestamp",
+    "speed",
+    "rpm",
+    "engineLoad",
+    "temperature"
+  ],
+  "values": [
+    [
+      1613300415.215743,
+      0.2,
+      0.1,
+      0.1,
+      9.5
+    ]
+  ]
+}
