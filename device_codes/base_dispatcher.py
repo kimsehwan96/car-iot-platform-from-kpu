@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from util import Profile
+from libs.util import Profile
 
 
 class BaseDispatcher(ABC):
@@ -16,3 +16,6 @@ class BaseDispatcher(ABC):
     # [1, 2, 3, 4] <- relaying data
     # ['rpm', 'speed', 'airTemp', 'oilTemp'] <- 예시 DataTypes
     # 따라서 relay된 데이터를 처리하는 코드는 기본으로 어떤 DataFields를 소모하는지 알고 있어야 함
+
+if __name__ == '__main__':
+    print(Profile())
