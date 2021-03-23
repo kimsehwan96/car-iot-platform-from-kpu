@@ -1,4 +1,5 @@
 from base_dispatcher import BaseDispatcher
+from typing import List
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS, WriteApi
 from collections import deque
@@ -21,19 +22,15 @@ DATA_SOURCE = {
 # TODO: How  to get above resource without hard-coding ?
 
 class InfluxDispatcher(BaseDispatcher):
-    def __init__(self, device_id) -> None:
-        super().__init__(device_id)
-        self.data_source = DATA_SOURCE
-        self.data_types = self.data_source.get('dataTypes')
-        self.client = InfluxDBClient(url=URL, token=TOKEN)
-        self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
+    def __init__(self, data_list) -> None:
+        super().__init__(data_list)
 
-    def make_points(self, data: list) -> list[Point]:
+    def make_points(self, data: list) -> List[Point]:
         point_list = deque([])
         for i, v in enumerate(data):
             point_list.append(
-                Point(self.data_types[i]) \
-                    .tag("user", self.device_id) \
+                Point(self.data_list[i]) \
+                    .tag("user", "admin") \
                     .filed("value", v) \
                     .time(datetime.utcnow(), WritePrecision.NS)
             )
