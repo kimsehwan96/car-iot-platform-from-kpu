@@ -22,11 +22,8 @@ DATA_SOURCE = {
 
 
 class StorageDispatcher(BaseDispatcher):
-    def __init__(self, device_id):
-        super().__init__(device_id)
-        self.data_source = DATA_SOURCE
-        self.queue = deque([])
-        self.minute = None
+    def __init__(self, data_list):
+        super().__init__(data_list)
 
     def write_csv(self, filepath, data):
         pass

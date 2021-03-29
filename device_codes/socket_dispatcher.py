@@ -6,8 +6,8 @@ IP = "0.0.0.0"
 
 
 class SocketDispatcher(BaseDispatcher):
-    def __init__(self, device_id):
-        super().__init__(device_id)
+    def __init__(self, data_list):
+        super().__init__(data_list)
         self.socket = socket(AF_INET, SOCK_DGRAM)  # UDP
 
     def relay(self, data):
