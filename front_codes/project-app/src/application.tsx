@@ -3,6 +3,7 @@ import logging from "./config/logging";
 import { BrowserRouter, Route, Switch, RouteComponentProps } from "react-router-dom";
 import routes from "./config/route";
 
+
 const Application: React.FunctionComponent<{}> = props => {
     useEffect(() => {
         logging.info('Loading application.');
