@@ -13,6 +13,9 @@ def get_cloud_topic():
 
 
 def get_lambda_input_message(event):
+    """
+    IPC용으로 사용하는 mqtt 메시지를 파싱하기 위한 함수. 테스트 예정
+    """
     try:
         message = event
     except Exception as e:
