@@ -41,6 +41,8 @@ class IpcHelper:
             payload=json.dumps(message)
         )
 
+        print(f'message publish done by topic : ,{self.ipc_topic}, message : {message}')
+
     def scheduler_start(self):
         def wrapper():
             while True:
