@@ -16,7 +16,7 @@ def test_plugin(option={}):
     ipc.scheduler_start()
     while True:
         ipc.push_data([randint(0, 100) for x in range(5)])
-        print('data was published')
+        print(f'data was published topic : {TOPIC}')
         sleep(1)
 
 

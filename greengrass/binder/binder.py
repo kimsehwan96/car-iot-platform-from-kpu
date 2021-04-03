@@ -35,7 +35,7 @@ def handler(event, context):
     bind(message)
 
 
-def consumer(message):
+def consumer():
     while True:
         sleep(1)
         print('consumer is running')
