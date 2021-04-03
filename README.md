@@ -9,11 +9,10 @@ url : http://sehwan96.com.s3-website.ap-northeast-2.amazonaws.com/
 front_codes
     - react-app
     README.md
-backend_codes
-    - platfrom code
-    REAMDE.md
-test_codes
-    - 테스트 디렉터리들
+greengrass
+    - python codes..
+provisioner
+    - provisioning  resources..
 ```
 
 - master branch에서 각자 브랜치를 따서 작업한다.
@@ -39,7 +38,7 @@ git push origin feature/back/fix-aws-resources
 
 ## 배포
 
-- front code는 github action 을 이용해 자동을고 deploy 된다. (master 브랜치에 푸시 이벤트 발생 시 마다 S3버킷에 업로드 함)
+- front code는 github action 을 이용해 자동으 deploy 된다. (master 브랜치에 푸시 이벤트 발생 시 마다 S3버킷에 업로드 함)
 
 ```yml
 
@@ -91,14 +90,9 @@ jobs:
 
 ## 사용 기술 스택
 
-1. AWS 
-    - DynamoDB
-    - RDS(MySQL)
+1. AWS
     - Lambda
     - GreenGrass
-    - Appsync
-    - GraphQL
-    - Amplify
     - S3
     - CloudWatch
 
@@ -109,11 +103,7 @@ jobs:
     - webpack
     - yarn
     - npm
-    - Firebase
-    - Grafana
-    - ContextAPI
-    - Redux
-
+   
 3. DevOps
     - Jenkins
     - Serverless(with AWS)
