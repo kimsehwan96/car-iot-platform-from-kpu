@@ -55,3 +55,10 @@ class CanPlugin:
 
         return self.return_buffer
         # deque가 리턴되며, DATA_SOURCE의 순서대로 저장이 된다
+
+
+if __name__ == '__main__':
+    cp = CanPlugin(DATA_SOURCE)
+    while True:
+        time.sleep(1)
+        print(cp.send_request())
