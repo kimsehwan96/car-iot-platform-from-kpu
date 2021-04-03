@@ -92,7 +92,7 @@ jobs:
 
 1. AWS
     - Lambda
-    - GreenGrass
+    - GreenGrasss
     - S3
     - CloudWatch
 

@@ -34,7 +34,27 @@ class IpcHelper:
             return
 
         message = {
-            'payloads': self._buffer
+            'payload': {
+                'fields': [
+                    "engine_load",
+                    "engine_coolant_temp",
+                    "engine_rpm",
+                    "vehicle_speed",
+                    "maf_sensor",
+                    "o2_voltage",
+                    "throttle",
+                    "short_fuel_trim_bank",
+                    "long_fuel_trim_bank",
+                    "intake_air_temperature",
+                    "engine_runtime",
+                    "traveled_distance",
+                    "fuel_tank_level",
+                    "ambient_air_temperature",
+                    "engine_oil_temperature",
+                    "transmission_actual_gear"
+                ],
+                'values': self._buffer
+            }
         }
 
         self._channel.publish(
