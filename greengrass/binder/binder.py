@@ -5,7 +5,7 @@ from _thread import start_new_thread
 
 class BinderManager:
     def __init__(self):
-        self.buffer = []
+        self.buffer = None
 
     def bind(self, message):
         data = message.get('payload')
@@ -18,7 +18,7 @@ class BinderManager:
         # 여기서 디스패쳐 각 스레드를 실행시키면 될 듯. 공유 자원은 락 걸어놓자.
         if self.buffer:
             print("data consume.. ")
-            self.buffer = []
+            self.buffer = None
         else:
             print("no data..")
 
