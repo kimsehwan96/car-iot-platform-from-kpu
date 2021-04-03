@@ -15,6 +15,7 @@ class IpcHelper:
     IPC는 mqtt를 이용해서 우선 진행 해볼 예정.
     가능하다면 unix domain socket?
     """
+
     def __init__(self, ipc_topic, option: {}):
         self.ipc_topic = ipc_topic
         self._channel = greengrasssdk.client('iot-data')
@@ -35,9 +36,9 @@ class IpcHelper:
         message = {
             'payloads': self._buffer
         }
-        
+
         self._channel.publish(
-            topic = self.ipc_topic,
+            topic=self.ipc_topic,
             payload=json.dumps(message)
         )
 
@@ -48,4 +49,5 @@ class IpcHelper:
             while True:
                 self.scheduler()
                 time.sleep(1)
+
         threading.Thread(target=wrapper).start()
