@@ -8,6 +8,7 @@ class BinderManager:
         self.buffer = None
 
     def bind(self, message):
+        print('original message : ', message)
         data = message.get('payload')
         if not data:
             print('no data..')

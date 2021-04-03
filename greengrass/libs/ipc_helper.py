@@ -24,7 +24,7 @@ class IpcHelper:
     def get_topic(self):
         return self.ipc_topic
 
-    def push_data(self, data: List):
+    def push_data(self, data):
         self._buffer = data
 
     def scheduler(self):
@@ -53,7 +53,8 @@ class IpcHelper:
                     "engine_oil_temperature",
                     "transmission_actual_gear"
                 ],
-                'values': self._buffer
+                'values': self._buffer,
+                'timestamp': time.time()
             }
         }
 
