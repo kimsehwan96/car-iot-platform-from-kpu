@@ -18,7 +18,9 @@ class BasePlugin(metaclass=ABCMeta):
 
     @data.setter
     def data(self, data):
+        print('data settter got data : ', data)
         self._buffer = data
+        print('data setter set data to buffer : ', self._buffer)
 
     # p.data = value
 
@@ -26,9 +28,10 @@ class BasePlugin(metaclass=ABCMeta):
     def collect_data(self):
         pass
 
-    def entry(self):
+    def entry(self, option={}):
+        self._option = option
         self._ipc_helper.scheduler_start()
         while True:
             self.collect_data()
-            self._ipc.push_data(self.data)
+            self._ipc_helper.push_data(self.data)
             sleep(1)
