@@ -21,6 +21,7 @@ BUS_TYPE = 'socketcan_native'
 
 
 class CanPlugin:
+    # TODO: inherite base class and refactor below methods !
     def __init__(self, data_source: dict) -> None:
         self.data_list = data_source.get('dataTypes')
         self.enum_list = [getattr(CanDataType, x) for x in self.data_list]
