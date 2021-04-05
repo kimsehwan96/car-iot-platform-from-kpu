@@ -7,5 +7,5 @@ class BaseDispatcher(ABC):
         pass
 
     @abstractmethod
-    def relay(self, data) -> None:
+    def relay(self, data: dict) -> None:
         pass

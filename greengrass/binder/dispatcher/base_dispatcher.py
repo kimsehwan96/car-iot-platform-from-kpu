@@ -10,13 +10,14 @@ class BaseDispatcher(metaclass=ABCMeta):
     def __init__(self):
         pass
 
-    def run(self, *args, **kwargs):
-        start_new_thread(self.relay, args, kwargs=kwargs)
+    def run(self, data: str):
+        start_new_thread(self.relay, (data, ))
 
     @abstractmethod
     def relay(self, data):
         """
         추상메서드로 구현 할 필요 없음. 수정 예정
         공통적으로 사용하는 인터페이스가 될 예정
+        받은 data는 json.loads로 객체화 하기
         """
         pass
