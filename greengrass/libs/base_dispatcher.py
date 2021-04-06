@@ -21,3 +21,5 @@ class BaseDispatcher(Singleton, metaclass=ABCMeta):
         공통적으로 사용하는 인터페이스가 될 예정
         """
         pass
+
+# TODO : 간헐적으로 이전값을 그대로 들고 다시보내는 경우가 있음. 해결해야 함
