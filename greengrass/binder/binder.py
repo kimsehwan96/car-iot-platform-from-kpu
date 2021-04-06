@@ -4,9 +4,10 @@ from time import sleep
 from _thread import start_new_thread
 from dispatcher.test_dispacter import TestDispatcher
 from dispatcher.mqtt_dispatcher import MqttDispatcher
+from dispatcher.websocket_dispatcher import WebSocketDispatcher
 
 
-dispatchers = [TestDispatcher(), MqttDispatcher()]
+dispatchers = [TestDispatcher(), MqttDispatcher(), WebSocketDispatcher()]
 
 
 class BinderManager:

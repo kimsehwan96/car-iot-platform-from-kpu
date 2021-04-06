@@ -16,8 +16,6 @@ class BaseDispatcher(metaclass=ABCMeta):
     @abstractmethod
     def relay(self, data):
         """
-        추상메서드로 구현 할 필요 없음. 수정 예정
-        공통적으로 사용하는 인터페이스가 될 예정
-        받은 data는 json.loads로 객체화 하기
+        각 클래스 구현부에서 달라지는 메서드임.
         """
-        pass
+        raise NotImplementedError("추상 메서드입니다.")
