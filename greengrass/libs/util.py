@@ -1,6 +1,6 @@
 import os
 
-IPC_TOPIC = os.environ.get('IPC_TOPC', 'ipc')
+IPC_TOPIC = os.environ.get('IPC_TOPIC', 'ipc')
 CLOUD_TOPIC = os.environ.get('CLOUD_TOPIC', 'data')
 
 
@@ -10,6 +10,9 @@ def get_ipc_topic():
 
 def get_cloud_topic():
     return CLOUD_TOPIC
+
+def get_fields():
+    pass
 
 
 def get_lambda_input_message(event):

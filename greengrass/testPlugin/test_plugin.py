@@ -9,7 +9,7 @@ def handler(event, context):
 
 class TestPlugin(BasePlugin):
     def collect_data(self):
-        self.data = [randint(0, 100) for x in range(5)]
+        self.data = [randint(0, 100) for x in range(16)]
         print('this is bufferd data: ', self.data)
 
 

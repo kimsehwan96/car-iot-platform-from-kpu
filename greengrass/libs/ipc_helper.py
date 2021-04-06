@@ -28,6 +28,7 @@ class IpcHelper:
             print('no buf')
             return
 
+        # TODO : message를 만드는 메서드 혹은 함수를 별도로 제공해서 개발하기.
         message = {
             'payload': {
                 'fields': [

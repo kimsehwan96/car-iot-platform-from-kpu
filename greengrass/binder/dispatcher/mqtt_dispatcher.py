@@ -16,4 +16,5 @@ class MqttDispatcher(BaseDispatcher):
         print(f'data : {data}')
 
     def relay(self, data: str):
+        print('mqtt dispatcher got relayed data {}'.format(data))
         self.publish(data)
