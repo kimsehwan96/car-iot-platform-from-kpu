@@ -2,10 +2,11 @@ import json
 from libs.util import get_lambda_input_message
 from time import sleep
 from _thread import start_new_thread
-from dispatcher.test_dispacter import TestDispatcher, TestDispatcher2, TestDispatcher3
+from dispatcher.test_dispacter import TestDispatcher
+from dispatcher.mqtt_dispatcher import MqttDispatcher
 
 
-dispatchers = [TestDispatcher(), TestDispatcher2(), TestDispatcher3()]
+dispatchers = [TestDispatcher(), MqttDispatcher()]
 
 
 class BinderManager:

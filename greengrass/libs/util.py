@@ -1,7 +1,7 @@
 import os
 
 IPC_TOPIC = os.environ.get('IPC_TOPC', 'ipc')
-CLOUD_TOPIC = os.environ.get('CLOUD_TOPIC', 'kpu/iot')
+CLOUD_TOPIC = os.environ.get('CLOUD_TOPIC', 'data')
 
 
 def get_ipc_topic():
