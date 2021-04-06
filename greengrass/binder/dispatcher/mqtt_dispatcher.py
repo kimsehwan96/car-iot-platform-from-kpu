@@ -12,9 +12,6 @@ class MqttDispatcher(BaseDispatcher):
     def publish(self, data):
         payload = data
         mqtt.publish(topic=self._topic, payload=payload)
-        print(f'published to cloud with topic {self._topic}')
-        print(f'data : {data}')
 
     def relay(self, data: str):
-        print('mqtt dispatcher got relayed data {}'.format(data))
         self.publish(data)

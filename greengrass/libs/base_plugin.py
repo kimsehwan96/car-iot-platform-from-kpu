@@ -19,11 +19,7 @@ class BasePlugin(Singleton, metaclass=ABCMeta):
 
     @data.setter
     def data(self, data):
-        print('data settter got data : ', data)
         self._buffer = data
-        print('data setter set data to buffer : ', self._buffer)
-
-    # p.data = value
 
     @abstractmethod
     def collect_data(self):
