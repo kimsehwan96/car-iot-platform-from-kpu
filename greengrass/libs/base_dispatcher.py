@@ -1,8 +1,9 @@
 from abc import ABCMeta, abstractmethod
 from _thread import start_new_thread
+from meta_singleton import Singleton
 
 
-class BaseDispatcher(metaclass=ABCMeta):
+class BaseDispatcher(Singleton, metaclass=ABCMeta):
     """
     받은 데이터를 각 용도에 맞게 consume할 소비자 클래스의 베이스 클래스
     """
