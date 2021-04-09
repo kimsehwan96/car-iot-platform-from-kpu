@@ -4,7 +4,7 @@ from _thread import start_new_thread
 
 class BaseDispatcher(metaclass=ABCMeta):
     """
-    받은 데이터를 각 용도에 맞게 consume할 소비자 클래스의 베이스 클래스
+    받은 데이터를 각 용도에 맞게 consume 할 소비자 클래스의 베이스 클래스
     """
 
     def __init__(self):

@@ -14,15 +14,15 @@ def handler(event, context):
 def run(dirname, port):
     server_addr = ("", port)
 
-    class handler_class(SimpleHTTPRequestHandler):
+    class Handler(SimpleHTTPRequestHandler):
 
         def __init__(self, *args, **kwargs):
-            super(handler_class, self).__init__(*args, directory=dirname, **kwargs)
+            super(Handler, self).__init__(*args, directory=dirname, **kwargs)
 
         def send_error(self, code, message=None):
             pass
 
-    with ThreadingHTTPServer(server_addr, handler_class) as httpd:
+    with ThreadingHTTPServer(server_addr, Handler) as httpd:
         sa = httpd.socket.getsockname()
         serve_message = f'Start http server on {sa[0]}:{sa[1]} for {dirname} dir'
         print(serve_message)
