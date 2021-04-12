@@ -2,12 +2,13 @@ import json
 from libs.util import get_lambda_input_message
 from time import sleep
 from _thread import start_new_thread
-from dispatcher.test_dispacter import TestDispatcher
+from dispatcher.test_dispatcher import TestDispatcher
 from dispatcher.mqtt_dispatcher import MqttDispatcher
 from dispatcher.websocket_dispatcher import WebSocketDispatcher
+from dispatcher.influx_dispatcher import InfluxDispatcher
 
 
-dispatchers = [TestDispatcher(), MqttDispatcher(), WebSocketDispatcher()]
+dispatchers = [TestDispatcher(), MqttDispatcher(), WebSocketDispatcher(), InfluxDispatcher()]
 
 
 class BinderManager:

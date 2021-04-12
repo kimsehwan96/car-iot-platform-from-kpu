@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import json
 
 from threading import Lock
 from flask import Flask, render_template, session, request, \
@@ -27,8 +28,24 @@ def index():
     return render_template('index.html', async_mode=socketio.async_mode)
 
 
+@app.route('/oilPrice')
+def oil_proce():
+    """
+    오늘 전국 주유소 평균 유가정보를 제공하는 API
+    프론트 코드 및 내부적으로 소비할 API임
+    """
+    return json.dumps({
+        'price': 1500
+    })
+
+
 @socketio.on('buffered_data', namespace='/binder')
 def uiapp_broadcast(data):
+    """
+    실시간 데이터를 송신하는 부분.
+    buffered_data 라는 이벤트 수신시 localhost/binder 로 실시간 데이터를 보냄.
+    buffered_data이벤트 및 data는 파이썬 코드 내에서 (websocket_dispatcher)에서 보낸다.
+    """
     print(' -  - - - - - - - -- - - this is socketio data ', data)
     emit('rtdata', data, broadcast=True)
 
