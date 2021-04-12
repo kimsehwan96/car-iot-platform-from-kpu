@@ -7,10 +7,6 @@ from http.server import (
 from threading import Thread
 
 
-def handler(event, context):
-    pass
-
-
 def run(dirname, port):
     server_addr = ("", port)
 
@@ -31,6 +27,14 @@ def run(dirname, port):
         except KeyboardInterrupt:
             sys.exit(0)
 
+
+def handler(event, context):
+    pass
+
+
+dirname = 'app'
+port = 8888
+Thread(target=run, args=(dirname, port)).start()
 
 if __name__ == '__main__':
     dirname = 'app'
