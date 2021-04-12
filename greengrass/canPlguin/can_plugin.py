@@ -1,4 +1,5 @@
 import can
+import subprocess
 from libs import util
 from libs.plugin import run_plugin_thread
 from libs.ipc_helper import IpcHelper
@@ -30,8 +31,10 @@ class CanPlugin:
         self.recv_buffer = deque()
         self.return_buffer = deque()
         self.bus = can.interface.Bus(channel=CHANNEL, bustype=BUS_TYPE)
+        if not subprocess.check_call(['/sbin/ip', 'link', 'set', 'can0', 'up', 'type', 'can', 'bitrate', '500000']):
+            print('failed to init can device')
 
-    def send_request(self) -> deque([float]):
+    def send_request(self) -> deque[[float]]:
         self.return_buffer.clear()
 
         def is_valid_reply(message) -> bool:

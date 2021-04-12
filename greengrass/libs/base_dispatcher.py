@@ -2,7 +2,6 @@ from abc import ABCMeta, abstractmethod
 from _thread import start_new_thread
 from meta_singleton import Singleton
 
-
 """
 relay 되는 데이터의 형태
 
@@ -29,6 +28,7 @@ relay 되는 데이터의 형태
     'timestamp': 1618150407.851798
 }
 """
+
 
 class BaseDispatcher(Singleton, metaclass=ABCMeta):
     """

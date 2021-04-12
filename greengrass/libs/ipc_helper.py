@@ -4,7 +4,6 @@ import threading
 import greengrasssdk
 
 
-
 class IpcHelper:
     """
     IPC는 mqtt를 이용해서 우선 진행 해볼 예정.

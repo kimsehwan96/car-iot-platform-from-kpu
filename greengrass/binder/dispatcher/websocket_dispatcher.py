@@ -36,7 +36,6 @@ class WebSocketDispatcher(BaseDispatcher):
             self.connect()
         try:
             socketio.emit('buffered_data', data, namespace='/binder')
-            print(f'---------- emit socketio data -------- {data}')
         except Exception as e:
             print('socketio emit error ', e)
 

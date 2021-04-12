@@ -60,7 +60,6 @@ class InfluxDispatcher(BaseDispatcher):
         return point_queue
 
     def relay(self, data: str):
-        print('mqtt dispatcher got relayed data {}'.format(data))
         points = self.make_points(data)
         for point in points:
             self.write_api.write(BUCKET, ORG, point)
