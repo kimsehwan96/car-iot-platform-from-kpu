@@ -5,6 +5,8 @@ from .meta_singleton import Singleton
 from typing import List
 from time import sleep
 
+# TODO : fix option's structure.
+
 
 class BasePlugin(Singleton, metaclass=ABCMeta):
     def __init__(self, option={}):
