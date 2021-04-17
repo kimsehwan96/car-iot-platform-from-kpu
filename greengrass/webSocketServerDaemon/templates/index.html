@@ -3,7 +3,7 @@
 <body>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
-    const binder = io("http://localhost:5000/binder");
+    const binder = io("http://3.34.87.77:5000/binder");
 
         binder.on('rtdata', (data) => {
             console.log('binder buffered: ', data);

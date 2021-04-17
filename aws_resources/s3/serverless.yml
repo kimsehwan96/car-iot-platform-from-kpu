@@ -1,0 +1,57 @@
+service: kpu-gradutation-team-rawdata
+
+provider:
+  name: aws
+  stage: ${opt:stage, self:custom.defaultStage}
+  stackName: ${self:service}-${self:provider.stage}
+  rawDataBucket: ${self:service}-${self:provider.stage}
+
+custom:
+  custom.defaultStage: dev
+
+resources:
+  Description: "KPU graduation team's rawdata bucket for realtime car data !"
+  Resources:
+    rawDataBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.rawDataBucket}
+        AccessControl: Private
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+        #크로스 오리진 정책 설정. 모든 아이피에서 접근  가능.
+    rawDataBucketAllowPublicPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: ${self:provider.rawDataBucket}
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - "s3:DeleteObject"
+                - "s3:GetObject"
+                - "s3:ListBucket"
+                - "s3:PutObject"
+                #버킷에 객체를 삽입, 삭제, 리스트 가능한 권한 설정.
+              Resource:
+                - arn:aws:s3:::${self:provider.rawDataBucket}
+                - arn:aws:s3:::${self:provider.rawDataBucket}/*
+                #버킷내 모든 리소스를 누구나 접근 가능
+              Principal: "*" #모든 사용자가 접근 가능하도록 정의
+          
+Outputs:
+  rawDataBucket:
+    Value:
+      Ref: rawDataBucket
