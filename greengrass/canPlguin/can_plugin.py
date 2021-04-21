@@ -98,17 +98,8 @@ def handler(event, context):
 cp = CanPlugin(TEST_FIELDS)
 
 
-def can_plugin(option={}):
-    ipc = IpcHelper(TOPIC, option=option)
-    ipc.scheduler_start()
-    while True:
-        ipc.push_data(cp.send_request())
-        print(f'data was published topic : {TOPIC}')
-        sleep(1)
-
-
 def run():
-    run_plugin_thread(can_plugin)
+    run_plugin_thread(cp.entry)
 
 
 if __name__ == '__main__':
