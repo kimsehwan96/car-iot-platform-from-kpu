@@ -34,6 +34,9 @@ OPTION = {
     'busType': 'socketcan_native'
 }
 
+# TODO:
+# add description in Korean
+
 
 class CanPlugin(BasePlugin):
     # TODO: inherite base class and refactor below methods !
@@ -51,7 +54,10 @@ class CanPlugin(BasePlugin):
         if not subprocess.check_call(['/sbin/ip', 'link', 'set', 'can0', 'up', 'type', 'can', 'bitrate', '500000']):
             print('failed to init can device')
 
-    def send_request(self) -> deque[[float]]:
+    # TODO:
+    # 1. set return_buffer & recv_buffer with property
+
+    def _send_request(self) -> deque[[float]]:
         self.return_buffer.clear()
 
         def is_valid_reply(message) -> bool:
@@ -79,6 +85,10 @@ class CanPlugin(BasePlugin):
 
         return self.return_buffer
         # deque가 리턴되며, DATA_SOURCE의 순서대로 저장이 된다
+
+    def collect_data(self):
+        self.data = self._send_request()
+        print('this is bufferd data: ', self.data)
 
 
 def handler(event, context):
