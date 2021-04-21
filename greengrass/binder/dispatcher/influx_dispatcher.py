@@ -1,9 +1,11 @@
-from .base_dispatcher import BaseDispatcher
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS, WriteApi
+import json
 from collections import deque
 from datetime import datetime
-import json
+
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+from .base_dispatcher import BaseDispatcher
 
 TOKEN = 'Pm8wq9ftXpdI-F8ikJDtA3zlbdc1MnRVWkQRGM1-Zq7eBJ0rXFBJCE_haxIlheg3ja2uVSgUTOG_Q3aoOzfvgA=='
 BUCKET = 'car-raw-data'

@@ -1,6 +1,7 @@
-from libs.util import get_cloud_topic
-from .base_dispatcher import BaseDispatcher
 import greengrasssdk
+from libs.util import get_cloud_topic
+
+from .base_dispatcher import BaseDispatcher
 
 mqtt = greengrasssdk.client('iot-data')
 

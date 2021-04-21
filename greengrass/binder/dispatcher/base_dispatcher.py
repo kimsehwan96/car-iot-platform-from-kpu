@@ -1,5 +1,5 @@
-from abc import ABCMeta, abstractmethod
 from _thread import start_new_thread
+from abc import ABCMeta, abstractmethod
 
 
 class BaseDispatcher(metaclass=ABCMeta):

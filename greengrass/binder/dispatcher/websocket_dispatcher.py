@@ -1,6 +1,8 @@
-import socketio
-from .base_dispatcher import BaseDispatcher
 from time import sleep
+
+import socketio
+
+from .base_dispatcher import BaseDispatcher
 
 socketio = socketio.Client()
 

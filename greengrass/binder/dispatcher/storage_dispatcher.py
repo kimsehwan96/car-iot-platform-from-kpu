@@ -2,12 +2,11 @@
 # Make csv files
 # Save csv file in local
 # Upload csv file to S3
-import csv
-import pandas
 import os
 import time
+from datetime import datetime, timezone
+
 from .base_dispatcher import BaseDispatcher
-from datetime import datetime, timedelta, timezone
 
 """
 relay 되는 데이터의 형태
