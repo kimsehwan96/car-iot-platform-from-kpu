@@ -9,7 +9,9 @@ from time import sleep
 
 
 class BasePlugin(Singleton, metaclass=ABCMeta):
-    def __init__(self, fields: [str], option={}):
+    def __init__(self, fields: [str], option=None):
+        if option is None:
+            option = {}
         self.topic = get_ipc_topic()
         self._option = option
         self._ipc_helper = IpcHelper(self.topic, fields, option=option)

@@ -26,14 +26,14 @@ def handler(event, context):
 
 
 class TestPlugin(BasePlugin):
-    def __init__(self):
-        super().__init__(TEST_FIELDS, option={})
+    def __init__(self, fields):
+        super().__init__(fields, option={})
     def collect_data(self):
         self.data = [randint(0, 100) for x in range(16)]
         print('this is bufferd data: ', self.data)
 
 
-tp = TestPlugin()
+tp = TestPlugin(TEST_FIELDS)
 
 
 def run():

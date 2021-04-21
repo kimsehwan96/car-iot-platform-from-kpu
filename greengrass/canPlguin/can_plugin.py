@@ -47,7 +47,7 @@ class SocketCanInitFailedException(Exception):
 
 class CanPlugin(BasePlugin):
     # TODO: inherite base class and refactor below methods !
-    def __init__(self, fields: [str], option: dict = {}) -> None:
+    def __init__(self, fields: [str], option=None) -> None:
         super().__init__(fields, option=option)
         self.data_list = fields
         self.enum_list = [
