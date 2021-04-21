@@ -10,10 +10,12 @@ class IpcHelper:
     가능하다면 unix domain socket?
     """
 
-    def __init__(self, ipc_topic, option: {}):
+    def __init__(self, ipc_topic, fields: [str], option: {}):
         self.ipc_topic = ipc_topic
         self._channel = greengrasssdk.client('iot-data')
         self._buffer = []
+        self._fields = fields
+        self._message = {}
 
     def get_topic(self):
         return self.ipc_topic
@@ -21,37 +23,22 @@ class IpcHelper:
     def push_data(self, data):
         self._buffer = data
 
+    def _make_message(self) -> dict:
+        return {
+            'payload': {
+                'fields' : self._fields,
+                'values' : self._buffer,
+                'timestamp': time.time()
+            }
+        }
+
     def scheduler(self):
         buf_len = len(self._buffer)
         if buf_len == 0:
             print('no buf')
             return
 
-        # TODO : message를 만드는 메서드 혹은 함수를 별도로 제공해서 개발하기.
-        message = {
-            'payload': {
-                'fields': [
-                    "engine_load",
-                    "engine_coolant_temp",
-                    "engine_rpm",
-                    "vehicle_speed",
-                    "maf_sensor",
-                    "o2_voltage",
-                    "throttle",
-                    "short_fuel_trim_bank",
-                    "long_fuel_trim_bank",
-                    "intake_air_temperature",
-                    "engine_runtime",
-                    "traveled_distance",
-                    "fuel_tank_level",
-                    "ambient_air_temperature",
-                    "engine_oil_temperature",
-                    "transmission_actual_gear"
-                ],
-                'values': self._buffer,
-                'timestamp': time.time()
-            }
-        }
+        message = self._make_message()
 
         self._channel.publish(
             topic=self.ipc_topic,
