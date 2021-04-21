@@ -1,7 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
+import {useEffect} from 'react';
+import io from 'socket.io-client';
+
+
 
 function App() {
+  const socket = io('http://3.34.87.77:5000/binder');
+
+  useEffect(() => {
+    socket.on('rtdata', data => console.log(data));
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +26,7 @@ function App() {
         >
           Learn React
         </a>
+
       </header>
     </div>
   );
