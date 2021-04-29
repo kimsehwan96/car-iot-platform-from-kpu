@@ -116,10 +116,9 @@ class StorageDispatcher(BaseDispatcher):
                 writer = csv.writer(f)
                 if is_first_write:
                     writer.writerow(data.get('fields'))
-                    return
                 writer.writerow(self.merge_values_timestamp(data))
 
-        if os.path.exists(abs_path):
+        if not os.path.exists(abs_path):
             write_row_data(is_first_write=True)
             return
         write_row_data()
