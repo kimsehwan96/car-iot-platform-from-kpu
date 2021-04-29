@@ -6,9 +6,9 @@ from dispatcher.test_dispatcher import TestDispatcher
 from dispatcher.mqtt_dispatcher import MqttDispatcher
 from dispatcher.websocket_dispatcher import WebSocketDispatcher
 from dispatcher.influx_dispatcher import InfluxDispatcher
+from dispatcher.storage_dispatcher import StorageDispatcher
 
-
-dispatchers = [TestDispatcher(), MqttDispatcher(), WebSocketDispatcher(), InfluxDispatcher()]
+dispatchers = [TestDispatcher(), MqttDispatcher(), WebSocketDispatcher(), StorageDispatcher()]
 
 
 class BinderManager:
