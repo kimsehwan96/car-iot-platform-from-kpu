@@ -8,7 +8,7 @@ from time import sleep
 # TODO : fix option's structure.
 
 
-class BasePlugin(Singleton, metaclass=ABCMeta):
+class BasePlugin(metaclass=ABCMeta):
     def __init__(self, fields: [str], option=None):
         if option is None:
             option = {}
