@@ -5,7 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index.route');
 
 class App{
     constructor() {
@@ -13,8 +13,6 @@ class App{
         this.app.setup();
     }
     setup(){
-        this.app.set('views', path.join(__dirname, 'views'));
-        this.app.set('view engine', 'jade');
         this.app.use(logger('dev'));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
@@ -22,7 +20,6 @@ class App{
         this.app.use(express.static(path.join(__dirname, 'public')));
 
         this.app.use('/', indexRouter);
-        this.app.use('/api', require('./routes/api'));
 
 // catch 404 and forward to error handler
         this.app.use(function(req, res, next) {
