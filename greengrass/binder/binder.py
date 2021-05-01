@@ -8,7 +8,12 @@ from dispatcher.websocket_dispatcher import WebSocketDispatcher
 from dispatcher.influx_dispatcher import InfluxDispatcher
 from dispatcher.storage_dispatcher import StorageDispatcher
 
-dispatchers = [TestDispatcher(), MqttDispatcher(), WebSocketDispatcher(), StorageDispatcher()]
+dispatchers = [
+    TestDispatcher(),
+    MqttDispatcher(),
+    WebSocketDispatcher()
+    #StorageDispatcher()
+]
 
 
 class BinderManager:
