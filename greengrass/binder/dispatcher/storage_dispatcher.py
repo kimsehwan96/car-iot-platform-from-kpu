@@ -160,8 +160,6 @@ class StorageDispatcher(BaseDispatcher):
         try:
             print('-' * 50)
             print('upload thread called!')
-            if not self._prev_local_dir_path:
-                return
             Thread(target=self._copy_to_s3,
                    args=deepcopy(([filepath],
                                   [filepath]))).start()
