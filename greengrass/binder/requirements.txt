@@ -1,5 +1,5 @@
 greengrasssdk
-
+boto3
 influxdb-client
 pandas
 flask==1.1.1
