@@ -100,7 +100,7 @@ class StorageDispatcher(BaseDispatcher):
         values.append(timestamp)
         return values
 
-    def _prepare_min_file_dir(self, minute_dt: datetime) -> None:
+    def _prepare_min_file_dir_name(self, minute_dt: datetime) -> str:
         """
         주어진 분에 해당하는 dt 객체를 사용하여
         데이터 저장할 공간에 디렉터리 생성
@@ -108,11 +108,8 @@ class StorageDispatcher(BaseDispatcher):
         now_dir = []
         now_dir.extend(map(lambda x: str(getattr(minute_dt, x)).zfill(2), ['year', 'month', 'day', 'hour', 'minute']))
         now_dir_path = '/'.join(now_dir)  # 2021/05/01/22/01
-        self.local_dirpath = os.path.join(LOCAL_DATA_PATH, now_dir_path)  # /kpu/rawdata/2021/05/01/22/01
-        try:
-            os.makedirs(self.local_dirpath, exist_ok=True)
-        except Exception as e:
-            print('Unexpected Error occured in prepare file :', e)
+
+        return os.path.join(LOCAL_DATA_PATH, now_dir_path) # /kpu/rawdata/2021/05/01/05/06
 
     def _prepare_min_file_name(self, minute_dt: datetime) -> str:
         """
@@ -157,7 +154,7 @@ class StorageDispatcher(BaseDispatcher):
                 s3 = None
             print("no internet connection !!")
 
-    def run_upload_thread(self):
+    def run_upload_thread(self, filepath:str):
         """
         1분마다 데이터 업로드를 수행할 스레드
         """
@@ -167,8 +164,8 @@ class StorageDispatcher(BaseDispatcher):
             if not self._prev_local_dir_path:
                 return
             Thread(target=self._copy_to_s3,
-                   args=deepcopy(([(os.path.join(self._prev_local_dir_path, self._current_file_name))],
-                                  [(os.path.join(self._prev_local_dir_path, self._current_file_name))]))).start()
+                   args=deepcopy(([filepath],
+                                  [filepath]))).start()
         except Exception as e:
             print('-' * 50)
             print('upload thread error occcured ', e)
@@ -180,10 +177,21 @@ class StorageDispatcher(BaseDispatcher):
         if not self._cur_dt: # 최초에 cur_dt가 없을 때 dt 설정
             self._cur_dt = cur_dt
         if (cur_dt - self._cur_dt).seconds >= 60:
-            # 시간이 바뀐 상태임. 업로드 필요
-            pass
-        now_file_name = self._prepare_min_file_name(cur_dt)
-        self._current_file_name = now_file_name
+            # 시간이 바뀐것이기 때문에 업로드 로직을 수행함
+            print('-' * 100)
+            print('time changed !')
+            upload_file_path = os.path.join(
+                self._prepare_min_file_dir_name(cur_dt),
+                self._prepare_min_file_name(cur_dt)
+            )
+            self.run_upload_thread(upload_file_path)
+            # 시간이 바뀐것을 반영하기 위해 self._cur_dt 업데이트
+            self._cur_dt = cur_dt
+        try:
+            os.makedirs(self._prepare_min_file_dir_name(self._cur_dt), exist_ok=True)
+        except Exception as e:
+            print('Unexpected Error occured in prepare file :', e)
+        self._current_file_name = self._prepare_min_file_name(self._cur_dt)
         self._write_csv(self._current_file_name, relayed_data)
 
 
