@@ -7,6 +7,7 @@ from datetime import datetime, timezone, timedelta
 # from .base_dispatcher import BaseDispatcher
 from _thread import start_new_thread
 from threading import Thread
+from copy import deepcopy
 from abc import ABCMeta, abstractmethod
 from typing import List
 from libs.util import check_connected_to_internet
@@ -83,8 +84,9 @@ class StorageDispatcher(BaseDispatcher):
         if not os.path.exists(LOCAL_DATA_PATH):
             os.makedirs(LOCAL_DATA_PATH)
         self._current_file_name = None
-        self._prev_min_dt = None
-        self._cur_min_dt = None
+        self._cur_dt = None
+        self._prev_dt = None
+        self._upload_file_path = None  # /kpu/rawdata/2021/05/01/05/06/2021-05-01:05:06:00Z.csv
 
     @staticmethod
     def convert_timestamp_to_datetime(timestamp) -> datetime:
@@ -98,28 +100,26 @@ class StorageDispatcher(BaseDispatcher):
         values.append(timestamp)
         return values
 
-    def _prepare_min_file_name(self, minute_dt: datetime) -> str:
+    def _prepare_min_file_dir(self, minute_dt: datetime) -> None:
         """
         주어진 분에 해당하는 dt 객체를 사용하여
-        데이터 저장할 공간에 디렉터리 생성 & csv 파일명 생성
-        리턴 : csv 파일명
+        데이터 저장할 공간에 디렉터리 생성
         """
         now_dir = []
         now_dir.extend(map(lambda x: str(getattr(minute_dt, x)).zfill(2), ['year', 'month', 'day', 'hour', 'minute']))
-        now_dir_path = '/'.join(now_dir)
-        self.local_dirpath = os.path.join(LOCAL_DATA_PATH, now_dir_path)
+        now_dir_path = '/'.join(now_dir)  # 2021/05/01/22/01
+        self.local_dirpath = os.path.join(LOCAL_DATA_PATH, now_dir_path)  # /kpu/rawdata/2021/05/01/22/01
         try:
             os.makedirs(self.local_dirpath, exist_ok=True)
         except Exception as e:
             print('Unexpected Error occured in prepare file :', e)
-        return '{}.csv'.format(minute_dt.strftime('%Y-%m-%dT%H:%M:00Z'))
 
-    def is_min_changes(self) -> bool:
-        td = self._cur_min_dt - self._prev_min_dt
-        if td.seconds >= 60:
-            return True
-        self._prev_min_dt = self._cur_min_dt
-        return False
+    def _prepare_min_file_name(self, minute_dt: datetime) -> str:
+        """
+        dt 객체를 입력받아 현재 분에 해당하는 파일명을 생성함.
+        리턴 : '2021-05-01:05:06:00Z.csv'
+        """
+        return '{}.csv'.format(minute_dt.strftime('%Y-%m-%dT%H:%M:00Z'))
 
     def _write_csv(self, filepath: str, data: dict) -> None:
         abs_path = os.path.join(self.local_dirpath, filepath)
@@ -137,6 +137,9 @@ class StorageDispatcher(BaseDispatcher):
         write_row_data()
 
     def _copy_to_s3(self, files, objects):
+        """
+        1분마다 데이터 업로드를 수행할 스레드가 호출하는 함수. 로컬에있는 파일을 S3에 업로드하는 코드
+        """
         global s3
         if s3:
             for f, o in zip(files, objects):
@@ -155,22 +158,32 @@ class StorageDispatcher(BaseDispatcher):
             print("no internet connection !!")
 
     def run_upload_thread(self):
+        """
+        1분마다 데이터 업로드를 수행할 스레드
+        """
         try:
+            print('-' * 50)
             print('upload thread called!')
-            Thread(target=self.copy_to_s3, args=deepcopy(([self._current_file_name],
-                                                          [self._current_file_name]))).start()
+            if not self._prev_local_dir_path:
+                return
+            Thread(target=self._copy_to_s3,
+                   args=deepcopy(([(os.path.join(self._prev_local_dir_path, self._current_file_name))],
+                                  [(os.path.join(self._prev_local_dir_path, self._current_file_name))]))).start()
         except Exception as e:
+            print('-' * 50)
             print('upload thread error occcured ', e)
 
     def relay(self, data: str):
-        # 분단위 시간이 바뀌었으면 먼저  self._current_file_name에 있던 내용을 업로드하는 스레드 호출, 이후 self._current_file_name 업데이트.
-        if self.is_min_changes():
-            self.run_upload_thread()
-            # 스레드 호출후 블록하지 않는다. 다음 로직 이어서 수행
         relayed_data = json.loads(data)
         timestamp = relayed_data.get('timestamp', time.time())
         cur_dt = self.convert_timestamp_to_datetime(timestamp)
-        self._current_file_name = self._prepare_min_file_name(cur_dt)
+        if not self._cur_dt: # 최초에 cur_dt가 없을 때 dt 설정
+            self._cur_dt = cur_dt
+        if (cur_dt - self._cur_dt).seconds >= 60:
+            # 시간이 바뀐 상태임. 업로드 필요
+            pass
+        now_file_name = self._prepare_min_file_name(cur_dt)
+        self._current_file_name = now_file_name
         self._write_csv(self._current_file_name, relayed_data)
 
 
