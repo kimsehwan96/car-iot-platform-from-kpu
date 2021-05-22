@@ -178,8 +178,8 @@ class StorageDispatcher(BaseDispatcher):
             print('-' * 100)
             print('time changed !')
             upload_file_path = os.path.join(
-                self._prepare_min_file_dir_name(cur_dt),
-                self._prepare_min_file_name(cur_dt)
+                self._prepare_min_file_dir_name(self._cur_dt),
+                self._prepare_min_file_name(self._cur_dt)
             )
             self.run_upload_thread(upload_file_path)
             # 시간이 바뀐것을 반영하기 위해 self._cur_dt 업데이트
