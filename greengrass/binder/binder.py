@@ -11,8 +11,8 @@ from dispatcher.storage_dispatcher import StorageDispatcher
 dispatchers = [
     TestDispatcher(),
     MqttDispatcher(),
-    WebSocketDispatcher()
-    #StorageDispatcher()
+    WebSocketDispatcher(),
+    StorageDispatcher()
 ]
 
 
