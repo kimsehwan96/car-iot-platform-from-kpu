@@ -119,16 +119,15 @@ class StorageDispatcher(BaseDispatcher):
         return '{}.csv'.format(minute_dt.strftime('%Y-%m-%dT%H:%M:00Z'))
 
     def _write_csv(self, filepath: str, data: dict) -> None:
-        abs_path = os.path.join(self.local_dirpath, filepath)
 
         def write_row_data(is_first_write=False):
-            with open(abs_path, 'a') as f:
+            with open(filepath, 'a') as f:
                 writer = csv.writer(f)
                 if is_first_write:
                     writer.writerow(data.get('fields'))
                 writer.writerow(self.merge_values_timestamp(data))
 
-        if not os.path.exists(abs_path):
+        if not os.path.exists(filepath):
             write_row_data(is_first_write=True)
             return
         write_row_data()
@@ -192,7 +191,10 @@ class StorageDispatcher(BaseDispatcher):
         except Exception as e:
             print('Unexpected Error occured in prepare file :', e)
         self._current_file_name = self._prepare_min_file_name(self._cur_dt)
-        self._write_csv(self._current_file_name, relayed_data)
+        self._write_csv(
+            os.path.join(self._prepare_min_file_dir_name(self._cur_dt), self._prepare_min_file_name(self._cur_dt))
+            , relayed_data
+        )
 
 
 if __name__ == '__main__':
