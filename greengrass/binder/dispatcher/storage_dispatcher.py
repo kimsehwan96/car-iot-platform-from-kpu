@@ -2,11 +2,24 @@ import os
 import time
 import csv
 import json
+import boto3
 from datetime import datetime, timezone, timedelta
 # from .base_dispatcher import BaseDispatcher
 from _thread import start_new_thread
+from threading import Thread
 from abc import ABCMeta, abstractmethod
 from typing import List
+from libs.util import check_connected_to_internet
+
+RAW_DATA_BUCKET = os.environ.get('RAW_DATA_BUCKET_NAME', 'kpu-gradutation-team-rawdata-dev')
+
+try:
+    if check_connected_to_internet():
+        s3 = boto3.resource('s3')
+    else:
+        s3 = None
+except Exception as e:
+    print('error occured when making s3 resources.. ', e)
 
 
 class BaseDispatcher(metaclass=ABCMeta):
@@ -124,12 +137,36 @@ class StorageDispatcher(BaseDispatcher):
         write_row_data()
 
     def _copy_to_s3(self, files, objects):
-        pass
+        global s3
+        if s3:
+            for f, o in zip(files, objects):
+                try:
+                    s3.meta.client.upload_file(f, RAW_DATA_BUCKET, o)
+                except Exception as e:
+                    print('error occured when upload local file {}'.format(e))
+            print('s3 upload completed')
+        else:
+            try:
+                s3 = boto3.resource('s3')
+                print("try to make s3 resource")
+            except Exception as e:
+                print("retry make s3 resource failed {}".format(e))
+                s3 = None
+            print("no internet connection !!")
 
-    def _save_and_upload(self, values):
-        pass
+    def run_upload_thread(self):
+        try:
+            print('upload thread called!')
+            Thread(target=self.copy_to_s3, args=deepcopy(([self._current_file_name],
+                                                          [self._current_file_name]))).start()
+        except Exception as e:
+            print('upload thread error occcured ', e)
 
     def relay(self, data: str):
+        # 분단위 시간이 바뀌었으면 먼저  self._current_file_name에 있던 내용을 업로드하는 스레드 호출, 이후 self._current_file_name 업데이트.
+        if self.is_min_changes():
+            self.run_upload_thread()
+            # 스레드 호출후 블록하지 않는다. 다음 로직 이어서 수행
         relayed_data = json.loads(data)
         timestamp = relayed_data.get('timestamp', time.time())
         cur_dt = self.convert_timestamp_to_datetime(timestamp)
