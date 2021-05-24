@@ -8,13 +8,13 @@ socketio = socketio.Client()
 
 
 class WebSocketDispatcher(BaseDispatcher):
-    def __init__(self):
+    def __init__(self) -> None:
         self.is_init = False
         self.threshold = 5
         self.timeout = 5
 
     # TODO: connect 메서드를 리팩터링하기.
-    def connect(self):
+    def connect(self) -> None:
         if self.is_init:
             return
         try:
@@ -33,7 +33,7 @@ class WebSocketDispatcher(BaseDispatcher):
 
                 self.is_init = False
 
-    def emit(self, data):
+    def emit(self, data) -> None:
         if not self.is_init:
             self.connect()
         try:
@@ -41,5 +41,5 @@ class WebSocketDispatcher(BaseDispatcher):
         except Exception as e:
             print('socketio emit error ', e)
 
-    def relay(self, data: str):
+    def relay(self, data: str) -> None:
         self.emit(data)

@@ -22,7 +22,7 @@ class BasePlugin(metaclass=ABCMeta):
         return self._buffer
 
     @data.setter
-    def data(self, data):
+    def data(self, data) -> None:
         self._buffer = data
 
     @abstractmethod

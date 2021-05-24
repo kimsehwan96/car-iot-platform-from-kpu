@@ -10,17 +10,17 @@ class IpcHelper:
     가능하다면 unix domain socket?
     """
 
-    def __init__(self, ipc_topic, fields: [str], option: {}):
+    def __init__(self, ipc_topic: str, fields: [str], option: {}) -> None:
         self.ipc_topic = ipc_topic
         self._channel = greengrasssdk.client('iot-data')
         self._buffer = []
         self._fields = fields
         self._message = {}
 
-    def get_topic(self):
+    def get_topic(self) -> str:
         return self.ipc_topic
 
-    def push_data(self, data):
+    def push_data(self, data) -> None:
         self._buffer = data
 
     def _make_message(self) -> dict:
@@ -32,7 +32,7 @@ class IpcHelper:
             }
         }
 
-    def scheduler(self):
+    def scheduler(self) -> None:
         buf_len = len(self._buffer)
         if buf_len == 0:
             print('no buf')
@@ -47,7 +47,7 @@ class IpcHelper:
 
         print(f'message publish done by topic : ,{self.ipc_topic}, message : {message}')
 
-    def scheduler_start(self):
+    def scheduler_start(self) -> None:
         def wrapper():
             while True:
                 self.scheduler()

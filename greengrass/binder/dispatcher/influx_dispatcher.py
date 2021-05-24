@@ -7,6 +7,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 from .base_dispatcher import BaseDispatcher
 
+
 TOKEN = 'Pm8wq9ftXpdI-F8ikJDtA3zlbdc1MnRVWkQRGM1-Zq7eBJ0rXFBJCE_haxIlheg3ja2uVSgUTOG_Q3aoOzfvgA=='
 BUCKET = 'car-raw-data'
 ORG = 'kpu'
@@ -47,7 +48,7 @@ class InfluxDispatcher(BaseDispatcher):
         self.client = InfluxDBClient(url=URL, token=TOKEN)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
 
-    def make_points(self, data: str):
+    def make_points(self, data: str) -> deque([Point]):
         dict_data = json.loads(data)
         point_queue = deque([])
         fields = dict_data.get('fields')
@@ -61,7 +62,7 @@ class InfluxDispatcher(BaseDispatcher):
             )
         return point_queue
 
-    def relay(self, data: str):
+    def relay(self, data: str) -> None:
         points = self.make_points(data)
         for point in points:
             self.write_api.write(BUCKET, ORG, point)

@@ -12,10 +12,10 @@ def run(dirname, port):
 
     class Handler(SimpleHTTPRequestHandler):
 
-        def __init__(self, *args, **kwargs):
+        def __init__(self, *args, **kwargs) -> None:
             super(Handler, self).__init__(*args, directory=dirname, **kwargs)
 
-        def send_error(self, code, message=None):
+        def send_error(self, code, message=None) -> None:
             pass
 
     with ThreadingHTTPServer(server_addr, Handler) as httpd:
@@ -28,7 +28,7 @@ def run(dirname, port):
             sys.exit(0)
 
 
-def handler(event, context):
+def handler(event, context) -> None:
     pass
 
 

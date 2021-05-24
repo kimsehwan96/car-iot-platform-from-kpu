@@ -65,7 +65,7 @@ class CanPlugin(BasePlugin):
         self._retry_count = 5
         self._init_can()
 
-    def _init_can(self):
+    def _init_can(self) -> None:
         if not subprocess.check_call(INIT_COMMAND.split(' ')):
             print('failed to init can device')
             self._can_ready = False
@@ -90,7 +90,7 @@ class CanPlugin(BasePlugin):
 
         self.return_buffer.clear()
 
-        def is_valid_reply(message) -> bool:
+        def is_valid_reply(message: can.Message) -> bool:
             if message.arbitration_id != CanDataType.PID_REPLY.value:
                 return False
             else:
@@ -124,12 +124,12 @@ class CanPlugin(BasePlugin):
         return self.return_buffer
         # deque가 리턴되며, DATA_SOURCE의 순서대로 저장이 된다
 
-    def collect_data(self):
+    def collect_data(self) -> None:
         self.data = self._send_request()
         print('this is bufferd data: ', self.data)
 
 
-def handler(event, context):
+def handler(event, context) -> None:
     pass
 
 

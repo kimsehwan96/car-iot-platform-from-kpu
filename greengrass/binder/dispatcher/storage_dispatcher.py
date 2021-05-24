@@ -28,14 +28,14 @@ class BaseDispatcher(metaclass=ABCMeta):
     받은 데이터를 각 용도에 맞게 consume 할 소비자 클래스의 베이스 클래스
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
-    def run(self, data: str):
+    def run(self, data: str) -> None:
         start_new_thread(self.relay, (data,))
 
     @abstractmethod
-    def relay(self, data):
+    def relay(self, data) -> None:
         """
         각 클래스 구현부에서 달라지는 메서드임.
         """
@@ -132,7 +132,7 @@ class StorageDispatcher(BaseDispatcher):
             return
         write_row_data()
 
-    def _copy_to_s3(self, files, objects):
+    def _copy_to_s3(self, files: List[str], objects: List[str]) -> None:
         """
         1분마다 데이터 업로드를 수행할 스레드가 호출하는 함수. 로컬에있는 파일을 S3에 업로드하는 코드
         """
@@ -153,7 +153,7 @@ class StorageDispatcher(BaseDispatcher):
                 s3 = None
             print("no internet connection !!")
 
-    def run_upload_thread(self, filepath:str):
+    def run_upload_thread(self, filepath: str) -> None:
         """
         1분마다 데이터 업로드를 수행할 스레드
         """
@@ -167,7 +167,7 @@ class StorageDispatcher(BaseDispatcher):
             print('-' * 50)
             print('upload thread error occcured ', e)
 
-    def relay(self, data: str):
+    def relay(self, data: str) -> None:
         relayed_data = json.loads(data)
         timestamp = relayed_data.get('timestamp', time.time())
         cur_dt = self.convert_timestamp_to_datetime(timestamp)

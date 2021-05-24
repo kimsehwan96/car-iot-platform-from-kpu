@@ -33,7 +33,7 @@ class CanDataType(Enum):
 
 class CanRequestMessage:
     # TODO: change this class as singleton
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}".format(self.message)
 
     def __init__(self, data_type: CanDataType) -> None:
@@ -52,6 +52,9 @@ class CanRequestMessage:
 
 
 class CanDataConvert:
+    def __init__(self):
+        pass
+
     @staticmethod
     def convert(recv_msg: can.Message) -> int:
         data_type = recv_msg.data[DATA_TYPE_INDEX]
@@ -63,6 +66,9 @@ class CanDataConvert:
 
 
 class CalculateData:
+
+    def __init__(self):
+        pass
 
     @staticmethod
     def engine_coolant_temp(recv_msg) -> int:

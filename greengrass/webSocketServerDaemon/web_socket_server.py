@@ -24,12 +24,12 @@ thread_lock = Lock()
 
 
 @app.route('/')
-def index():
+def index() -> None:
     return render_template('index.html', async_mode=socketio.async_mode)
 
 
 @app.route('/oilPrice')
-def oil_proce():
+def oil_proce() -> None:
     """
     오늘 전국 주유소 평균 유가정보를 제공하는 API
     프론트 코드 및 내부적으로 소비할 API임
@@ -40,7 +40,7 @@ def oil_proce():
 
 
 @socketio.on('buffered_data', namespace='/binder')
-def uiapp_broadcast(data):
+def uiapp_broadcast(data) -> None:
     """
     실시간 데이터를 송신하는 부분.
     buffered_data 라는 이벤트 수신시 localhost/binder 로 실시간 데이터를 보냄.
@@ -50,7 +50,7 @@ def uiapp_broadcast(data):
     emit('rtdata', data, broadcast=True)
 
 
-def handler(event, context):
+def handler(event, context) -> None:
     pass
 
 
