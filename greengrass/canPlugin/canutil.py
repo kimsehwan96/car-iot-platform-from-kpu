@@ -36,7 +36,7 @@ class CanRequestMessage:
     def __str__(self) -> str:
         return "{}".format(self.message)
 
-    def __init__(self, data_type: CanDataType) -> None:
+    def __init__(self, data_type) -> None:
         self.data_type = data_type  # ENUM
         self.message = [0x02,
                         0x01,
@@ -47,7 +47,7 @@ class CanRequestMessage:
                         0x00,
                         0x00]
 
-    def get_type(self) -> CanDataType.name:
+    def get_type(self):
         return self.data_type.name
 
 
@@ -56,13 +56,15 @@ class CanDataConvert:
         pass
 
     @staticmethod
-    def convert(recv_msg: can.Message) -> int:
+    def convert(recv_msg) -> int:
         data_type = recv_msg.data[DATA_TYPE_INDEX]
         try:
             handler = getattr(CalculateData, CanDataType(data_type).name.lower())
             return handler(recv_msg)
         except AttributeError:
             raise NotSupportedDataTypeException
+        except Exception as e:
+            print('error occur : ', e)
 
 
 class CalculateData:
@@ -75,11 +77,11 @@ class CalculateData:
         return recv_msg[3] - 40
 
     @staticmethod
-    def engine_load(recv_msg) -> int:
+    def engine_load(recv_msg) -> float:
         return round((100 / 255) * recv_msg[3], 2)
 
     @staticmethod
-    def engine_rpm(recv_msg) -> int:
+    def engine_rpm(recv_msg) -> float:
         return round(((recv_msg * 256) + recv_msg[4]) / 4, 2)
 
     @staticmethod
@@ -87,19 +89,19 @@ class CalculateData:
         return recv_msg[3]
 
     @staticmethod
-    def throttle(recv_msg) -> int:
+    def throttle(recv_msg) -> float:
         return round((recv_msg[3] * 100) / 255, 2)
 
     @staticmethod
-    def short_fuel_trim_bank(recv_msg) -> int:
+    def short_fuel_trim_bank(recv_msg) -> float:
         return round(((100 / 128) * recv_msg[3]) - 100, 2)
 
     @staticmethod
-    def long_fuel_trim_bank(recv_msg) -> int:
+    def long_fuel_trim_bank(recv_msg) -> float:
         return round(((100 / 128) * recv_msg[3]) - 100, 2)
 
     @staticmethod
-    def short_fuel_trim_bank(recv_msg) -> int:
+    def short_fuel_trim_bank(recv_msg) -> float:
         return round(((100 / 128) * recv_msg[3]) - 100, 2)
 
     @staticmethod
@@ -107,7 +109,7 @@ class CalculateData:
         return recv_msg[3] - 40
 
     @staticmethod
-    def throttle_position(recv_msg) -> int:
+    def throttle_position(recv_msg) -> float:
         return round((100 / 256) * recv_msg[3], 2)
 
     @staticmethod
@@ -119,7 +121,7 @@ class CalculateData:
         return 256 * recv_msg[3] + recv_msg[4]
 
     @staticmethod
-    def fuel_tank_level(recv_msg) -> int:
+    def fuel_tank_level(recv_msg) -> float:
         return round((100 / 255) * recv_msg[3], 2)
 
     @staticmethod

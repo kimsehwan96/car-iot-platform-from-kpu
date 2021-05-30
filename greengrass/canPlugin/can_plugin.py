@@ -6,6 +6,7 @@ from collections import deque
 from time import sleep
 from canutil import CanDataType, CanRequestMessage, CanDataConvert
 from libs.base_plugin import BasePlugin
+from typing import List
 
 TOPIC = util.get_ipc_topic()
 
@@ -47,7 +48,7 @@ class SocketCanInitFailedException(Exception):
 
 class CanPlugin(BasePlugin):
     # TODO: inherite base class and refactor below methods !
-    def __init__(self, fields: [str], option=None) -> None:
+    def __init__(self, fields: List[str], option=None) -> None:
         super().__init__(fields, option=option)
         self.data_list = fields
         self.enum_list = [
@@ -62,47 +63,37 @@ class CanPlugin(BasePlugin):
         self._channel = option.get('channel', 'can0')
         self._bus_type = option.get('busType', 'socketcan_native')
         self.bus = can.interface.Bus(channel=self._channel, bustype=self._bus_type)
-        self._retry_count = 5
         self._init_can()
 
     def _init_can(self) -> None:
-        if not subprocess.check_call(INIT_COMMAND.split(' ')):
+        if not subprocess.check_call(INIT_COMMAND.split()):
             print('failed to init can device')
             self._can_ready = False
         else:
             self._can_ready = True
-
-    def _retry_can_init(self) -> None:
-        for _ in range(self._retry_count):
-            self._init_can()
-            if self._can_ready:
-                print('socket can init successfully')
-                break
-        print('socket can retry failed...')
-        raise SocketCanInitFailedException
+            print('init success')
 
     # TODO:
     # 1. set return_buffer & recv_buffer with property
 
-    def _send_request(self) -> deque[[float]]:
-        if not self._init_can():
-            self._retry_can_init()
-
+    def _send_request(self):
         self.return_buffer.clear()
 
-        def is_valid_reply(message: can.Message) -> bool:
+        def is_valid_reply(message) -> bool:
             if message.arbitration_id != CanDataType.PID_REPLY.value:
                 return False
             else:
                 return True
-
-        for message in self.req_messages_for_data:
-            msg = can.Message(
-                arbitration_id=CanDataType.PID_REQUEST.value,
-                data=message,
-                extended_id=False
-            )
-            self.bus.send(msg)
+        try:
+            for message in self.req_messages_for_data:
+                msg = can.Message(
+                    arbitration_id=CanDataType.PID_REQUEST.value,
+                    data=message,
+                    extended_id=False
+                )
+                self.bus.send(msg)
+        except Exception as e:
+            print('error occur when send message ', e)
         print("message request done.")
         sleep(0.1)
 
