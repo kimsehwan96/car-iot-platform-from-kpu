@@ -1,3 +1,4 @@
 greengrasssdk
-
-can
+boto3
+requests
+python-can

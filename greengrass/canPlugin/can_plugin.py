@@ -50,7 +50,7 @@ class CanPlugin(BasePlugin):
     # TODO: inherite base class and refactor below methods !
     def __init__(self, fields: List[str], option=None) -> None:
         super().__init__(fields, option=option)
-        self.data_list = fields
+        self.data_list = [x.upper() for x in fields]
         self.enum_list = [
             getattr(CanDataType, x) for x in self.data_list
         ]
@@ -62,8 +62,8 @@ class CanPlugin(BasePlugin):
         self.return_buffer = deque()
         self._channel = option.get('channel', 'can0')
         self._bus_type = option.get('busType', 'socketcan_native')
-        self.bus = can.interface.Bus(channel=self._channel, bustype=self._bus_type)
         self._init_can()
+        self.bus = can.interface.Bus(channel=self._channel, bustype=self._bus_type)
 
     def _init_can(self) -> None:
         if not subprocess.check_call(INIT_COMMAND.split()):
@@ -124,7 +124,10 @@ def handler(event, context) -> None:
     pass
 
 
-cp = CanPlugin(TEST_FIELDS)
+try:
+    cp = CanPlugin(TEST_FIELDS, OPTION)
+except Exception as e:
+    print('failed to make can plugin :', e)
 
 
 def run():
