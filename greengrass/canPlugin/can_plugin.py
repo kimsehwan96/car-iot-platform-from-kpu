@@ -1,4 +1,4 @@
-import can
+mport can
 import subprocess
 from libs import util
 from libs.plugin import run_plugin_thread
@@ -11,22 +11,22 @@ from typing import List
 TOPIC = util.get_ipc_topic()
 
 TEST_FIELDS = [
-    'engine_load',
-    'engine_coolant_temp',
-    'engine_rpm',
-    'vehicle_speed',
-    'maf_sensor',
-    'o2_voltage',
-    'throttle',
-    'short_fuel_trim_bank',
-    'long_fuel_trim_bank',
-    'intake_air_temperature',
-    'engine_runtime',
-    'traveled_distance',
-    'fuel_tank_level',
-    'ambient_air_temperature',
-    'engine_oil_temperature',
-    'transmission_actual_gear'
+    'engine_load', #o
+    'engine_coolant_temp', #x
+    'engine_rpm', # o
+    'vehicle_speed', #o
+#    'maf_sensor' #x static 메소드도 없음 !
+#    'o2_voltage', #x
+    'throttle', #o
+    'short_fuel_trim_bank', #o
+#    'long_fuel_trim_bank' #x
+ #   'intake_air_temperature', #
+    'engine_runtime', #o
+    'traveled_distance', #o
+    'fuel_tank_level', #o
+    'ambient_air_temperature' #o
+#    'engine_oil_temperature', #x
+#    'transmission_actual_gear' #x
 ]
 
 OPTION = {
@@ -62,7 +62,7 @@ class CanPlugin(BasePlugin):
         self.return_buffer = deque()
         self._channel = option.get('channel', 'can0')
         self._bus_type = option.get('busType', 'socketcan_native')
-        self._init_can()
+        # self._init_can()
         self.bus = can.interface.Bus(channel=self._channel, bustype=self._bus_type)
 
     def _init_can(self) -> None:
@@ -78,33 +78,38 @@ class CanPlugin(BasePlugin):
 
     def _send_request(self):
         self.return_buffer.clear()
-
+        print("버퍼 초기화")
         def is_valid_reply(message) -> bool:
             if message.arbitration_id != CanDataType.PID_REPLY.value:
                 return False
             else:
                 return True
-        try:
-            for message in self.req_messages_for_data:
-                msg = can.Message(
-                    arbitration_id=CanDataType.PID_REQUEST.value,
-                    data=message,
-                    extended_id=False
-                )
-                self.bus.send(msg)
-        except Exception as e:
-            print('error occur when send message ', e)
-        print("message request done.")
-        sleep(0.1)
-
+        for message in self.req_messages_for_data:
+            msg = can.Message(arbitration_id=CanDataType.PID_REQUEST.value, data = message, extended_id=False)
+ #           print("this is will send can msg " , msg)
+            self.bus.send(msg)
+            sleep(0.01)
+            while True:
+                recv_data = self.bus.recv()
+                if is_valid_reply(recv_data):
+                    self.recv_buffer.append(recv_data)
+                    print('catch data : ', recv_data)
+                    break
+                print("Not reply data, throw away : {}".format(recv_data))
+                sleep(0.01)
+                continue
+        print("message recv done.")
         while len(self.recv_buffer) < self.data_len:
             recv_data = self.bus.recv()
+            print('데이터 받음 ,', recv_data)
             if is_valid_reply(recv_data):
                 self.recv_buffer.append(recv_data)
             else:
                 print("Not reply data, throw away : {}".format(recv_data))
+        print('-'*100)
         print("message recv done.")
-
+        print("this buffer will be processed !!!!!!!!! ", self.recv_buffer)
+        print('-'*100)
         while self.recv_buffer:
             self.return_buffer.append(
                 CanDataConvert.convert(
@@ -116,8 +121,11 @@ class CanPlugin(BasePlugin):
         # deque가 리턴되며, DATA_SOURCE의 순서대로 저장이 된다
 
     def collect_data(self) -> None:
-        self.data = self._send_request()
-        print('this is bufferd data: ', self.data)
+        try:
+            self.data = list(self._send_request())
+            print('this is bufferd data: ', self.data)
+        except Exception as e:
+            print('error occured when collect data ', e)
 
 
 def handler(event, context) -> None:

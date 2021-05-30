@@ -60,7 +60,7 @@ class CanDataConvert:
         data_type = recv_msg.data[DATA_TYPE_INDEX]
         try:
             handler = getattr(CalculateData, CanDataType(data_type).name.lower())
-            return handler(recv_msg)
+            return handler(recv_msg.data)
         except AttributeError:
             raise NotSupportedDataTypeException
         except Exception as e:
@@ -82,7 +82,7 @@ class CalculateData:
 
     @staticmethod
     def engine_rpm(recv_msg) -> float:
-        return round(((recv_msg * 256) + recv_msg[4]) / 4, 2)
+        return round(((recv_msg[3] * 256) + recv_msg[4]) / 4, 2)
 
     @staticmethod
     def vehicle_speed(recv_msg) -> int:

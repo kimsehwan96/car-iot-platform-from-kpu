@@ -33,6 +33,7 @@ class IpcHelper:
         }
 
     def scheduler(self) -> None:
+        print('this is buf  ,', self._buffer)
         buf_len = len(self._buffer)
         if buf_len == 0:
             print('no buf')
