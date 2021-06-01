@@ -16,22 +16,18 @@ class CanDataType(Enum):
     차량 제조사별 확장 PID 및 다른 PID가 존재할 수 있다. 확인 필요
     """
     ENGINE_LOAD = 0x04
-    ENGINE_COOLANT_TEMP = 0x05
-    ENGINE_RPM = 0x0C
-    VEHICLE_SPEED = 0x0D
-    MAF_SENSOR = 0x10
-    O2_VOLTAGE = 0x14
-    THROTTLE = 0x11
     SHORT_FUEL_TRIM_BANK = 0x06
-    LONG_FUEL_TRIM_BANK = 0x08
+    LONG_FUEL_TRIM_BANK = 0x07
+    INTAKE_MANIFOLD_ABSOLUTE_PRESSURE = 0x0b
+    ENGINE_RPM = 0x0C
+    VEHICLE_SPEED = 0x0d
     INTAKE_AIR_TEMPERATURE = 0x0F
+    MAF_SENSOR = 0x10
+    THROTTLE = 0x11
     ENGINE_RUNTIME = 0x1F
-    TRAVELED_DISTANCE = 0x31
+    TRAVELED_DISTANCE = 0x31 # since Error code cleared !
     FUEL_TANK_LEVEL = 0x2F
     AMBIENT_AIR_TEMPERATURE = 0x46
-    ENGINE_OIL_TEMPERATURE = 0x5C
-    TRANSMISSION_ACTUAL_GEAR = 0xA4
-    ENGINE_FUEL_RATE = 0x5E
 
     # Request & Response
     PID_REQUEST = 0x7DF
@@ -85,8 +81,8 @@ class CalculateData:
         pass
 
     @staticmethod
-    def engine_coolant_temp(recv_msg) -> int:
-        return recv_msg[3] - 40
+    def maf_sensor(recv_msg):
+        return round((recv[3] * 256 + recv_msg[4])/100, 2)
 
     @staticmethod
     def engine_load(recv_msg) -> float:
@@ -140,20 +136,9 @@ class CalculateData:
     def ambient_air_temperature(recv_msg) -> int:
         return recv_msg[3] - 40
 
-    @staticmethod
-    def engine_oil_temperature(recv_msg) -> int:
-        return recv_msg[3] - 40
-
-    @staticmethod
-    def transmission_actual_gear(recv_msg) -> int:
-        return recv_msg[3]
-
-    @staticmethod
-    def engine_fuel_rate(recv_msg) -> float:
-        return round(((256 * recv_msg[3]) + recv_msg[4])/20, 2)
-
 
 if __name__ == '__main__':
     msg1 = CanRequestMessage(CanDataType.ENGINE_LOAD)
     msg2 = CanRequestMessage(CanDataType.ENGINE_COOLANT_TEMP)
     print(msg1, msg2)
+

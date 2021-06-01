@@ -12,23 +12,15 @@ from typing import List
 TOPIC = util.get_ipc_topic()
 
 TEST_FIELDS = [
-    'engine_load',  # o
-    #    'engine_coolant_temp', #x
-    'engine_rpm',  # o
-    'vehicle_speed',  # o
-    #    'maf_sensor' #x static 메소드도 없음 !
-    #    'o2_voltage', #x
-    'throttle',  # o
-    'short_fuel_trim_bank',  # o
-    #    'long_fuel_trim_bank' #x
-    #   'intake_air_temperature', #
-    'engine_runtime',  # o
-    'traveled_distance',  # o
-    'fuel_tank_level',  # o
-    'ambient_air_temperature',  # o
-    #    'engine_oil_temperature', #x
-    #    'transmission_actual_gear' #x
-    'engine_fuel_rate'  # 테스트 필요
+    'engine_load',
+    'engine_rpm',
+    'vehicle_speed',
+    'throttle',
+    'short_fuel_trim_bank',
+    'engine_runtime',
+    'traveled_distance',
+    'fuel_tank_level',
+    'ambient_air_temperature'
 ]
 
 OPTION = {
@@ -70,7 +62,7 @@ class CanPlugin(BasePlugin):
         self.bus = can.interface.Bus(channel=self._channel, bustype=self._bus_type)
 
     def _init_can(self) -> None:
-        os.system('INIT_COMMAND')
+        os.system(INIT_COMMAND)
         print('socket can init complete')
 
     # TODO:

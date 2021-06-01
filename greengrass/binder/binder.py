@@ -12,7 +12,8 @@ dispatchers = [
     TestDispatcher(),
     MqttDispatcher(),
     WebSocketDispatcher(),
-    StorageDispatcher()
+    StorageDispatcher(),
+    # InfluxDispatcher()
 ]
 
 

@@ -1,0 +1,46 @@
+2019's K3 (from Kia)
+
+0x1 Monitor status since DTCs cleared.
+0x3 Fuel system status
+0x4 Calculated engine load
+0x6 Short term fuel trim—Bank 1
+0x7 Long term fuel trim—Bank 1
+0xb Intake manifold absolute pressure
+0xc Engine speed
+0xd Vehicle speed
+0xe Timing advance
+0xf Intake air temperature
+0x10 Mass air flow sensor (MAF) air flow rate
+0x11 Throttle position
+0x13 Oxygen sensors present (in 2 banks)
+0x15 Oxygen Sensor 2
+0x1c OBD standards this vehicle conforms to
+0x1f Run time since engine start
+0x20
+
+0x21 Distance traveled with malfunction indicator lamp (MIL) on
+0x2c Commanded EGR
+0x2d EGR Error
+0x2e Commanded evaporative purge
+0x2f Fuel Tank Level Input
+0x30 Warm-ups since codes cleared
+0x31 Distance traveled since codes cleared
+0x32 Evap. System Vapor Pressure
+0x33 Absolute Barometric Pressure
+0x34 Oxygen Sensor 1
+0x3c Catalyst Temperature
+0x40
+
+0x41 Monitor status this drive cycle
+0x42 Control module voltage
+0x43 Absolute load value
+0x44 Commanded Air-Fuel Equivalence Ratio (AFR)
+0x45 Relative throttle position
+0x46 Ambient air temperature
+0x47 Absolute throttle position B
+0x49 Accelerator pedal position D
+0x4a Accelerator pedal position E
+0x4c Commanded throttle actuator
+0x51 Fuel Type
+0x56 Long term secondary oxygen sensor
+0x60
