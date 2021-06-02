@@ -120,7 +120,8 @@ class StorageDispatcher(BaseDispatcher):
 
     def _write_csv(self, filepath: str, data: dict) -> None:
         def merge_fields_and_timestamp(fields: list) -> list:
-            return fields.append('timestamp')
+            fields.append('timestamp')
+            return fields
 
         def write_row_data(is_first_write=False):
             with open(filepath, 'a') as f:

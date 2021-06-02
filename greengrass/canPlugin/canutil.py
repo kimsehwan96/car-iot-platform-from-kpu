@@ -92,28 +92,28 @@ class CalculateData:
         pass
 
     @classmethod
-    def average_fuel_efficiency(cls, recv_msg):
+    def average_fuel_efficiency(cls, recv_msg) -> float:
         cls.avg_buf += cls.present_fuel_efficiency
         count += 1
         cls.average_fuel_efficiency = avg_buf / count
         return cls.average_fuel_efficiency
 
     @classmethod
-    def short_term_fuel_efficiency(cls, recv_msg):
+    def short_term_fuel_efficiency(cls, recv_msg) -> float:
         cls.present_fuel_efficiency = cls.speed * (1 / 3600) * (1 / cls.maf) * 14.7 * 710
         return cls.present_fuel_efficiency
 
     @staticmethod
-    def oxygen_sensor(recv_msg):
+    def oxygen_sensor(recv_msg) -> float:
         # we can make two data. first one is ratio, the other is mA
         return round((256 * recv_msg[3] + recv_msg[4]) * (2 / 65536), 2)
 
     @staticmethod
-    def intake_manifold_absolute_pressure(recv_msg):
+    def intake_manifold_absolute_pressure(recv_msg) -> int:
         return recv_msg[3]
 
     @classmethod
-    def maf_sensor(cls, recv_msg):
+    def maf_sensor(cls, recv_msg) -> float:
         cal = round((recv_msg[3] * 256 + recv_msg[4]) / 100, 2)
         cls.maf = cal
         return cal
