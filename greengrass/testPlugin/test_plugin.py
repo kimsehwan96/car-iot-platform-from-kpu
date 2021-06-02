@@ -4,21 +4,19 @@ from libs.base_plugin import BasePlugin
 
 TEST_FIELDS = [
     'engine_load',
-    'engine_coolant_temp',
     'engine_rpm',
+    'intake_manifold_absolute_pressure',
     'vehicle_speed',
-    'maf_sensor',
-    'o2_voltage',
     'throttle',
     'short_fuel_trim_bank',
-    'long_fuel_trim_bank',
-    'intake_air_temperature',
     'engine_runtime',
     'traveled_distance',
     'fuel_tank_level',
     'ambient_air_temperature',
-    'engine_oil_temperature',
-    'transmission_actual_gear'
+    'maf_sensor',
+    'oxygen_sensor',
+    'short_term_fuel_efficiency',
+    'average_fuel_efficiency'
 ]
 
 
