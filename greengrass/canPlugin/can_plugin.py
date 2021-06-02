@@ -24,6 +24,8 @@ TEST_FIELDS = [
     'ambient_air_temperature',
     'maf_sensor',
     'oxygen_sensor',
+    'short_term_fuel_efficiency',
+    'average_fuel_efficiency'
 ]
 
 OPTION = {
@@ -122,7 +124,9 @@ class CanPlugin(BasePlugin):
             print('this is bufferd data: ', self.data)
             try:
                 fe = self.cal_fuel_efficiency()
-                print('km per liter :',fe)
+                print('*'*100)
+                print('km per liter :', fe)
+                print('*' * 100)
             except Exception as e:
                 print('exception occuerd whene cal fe ', e)
         except Exception as e:
