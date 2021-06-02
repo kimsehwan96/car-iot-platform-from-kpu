@@ -94,8 +94,8 @@ class CalculateData:
     @classmethod
     def average_fuel_efficiency(cls, recv_msg) -> float:
         cls.avg_buf += cls.present_fuel_efficiency
-        count += 1
-        cls.average_fuel_efficiency = avg_buf / count
+        cls.count += 1
+        cls.average_fuel_efficiency = cls.avg_buf / cls.count
         return cls.average_fuel_efficiency
 
     @classmethod
