@@ -119,12 +119,14 @@ class StorageDispatcher(BaseDispatcher):
         return '{}.csv'.format(minute_dt.strftime('%Y-%m-%dT%H:%M:00Z'))
 
     def _write_csv(self, filepath: str, data: dict) -> None:
+        def merge_fields_and_timestamp(fields: list) -> list:
+            return fields.append('timestamp')
 
         def write_row_data(is_first_write=False):
             with open(filepath, 'a') as f:
                 writer = csv.writer(f)
                 if is_first_write:
-                    writer.writerow(data.get('fields'))
+                    writer.writerow(merge_fields_and_timestamp(data.get('fields')))
                 writer.writerow(self.merge_values_timestamp(data))
 
         if not os.path.exists(filepath):

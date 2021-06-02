@@ -14,13 +14,16 @@ TOPIC = util.get_ipc_topic()
 TEST_FIELDS = [
     'engine_load',
     'engine_rpm',
+    'intake_manifold_absolute_pressure',
     'vehicle_speed',
     'throttle',
     'short_fuel_trim_bank',
     'engine_runtime',
     'traveled_distance',
     'fuel_tank_level',
-    'ambient_air_temperature'
+    'ambient_air_temperature',
+    'maf_sensor',
+    'oxygen_sensor',
 ]
 
 OPTION = {
@@ -117,8 +120,25 @@ class CanPlugin(BasePlugin):
         try:
             self.data = list(self._send_request())
             print('this is bufferd data: ', self.data)
+            try:
+                fe = self.cal_fuel_efficiency()
+                print('km per liter :',fe)
+            except Exception as e:
+                print('exception occuerd whene cal fe ', e)
         except Exception as e:
             print('error occured when collect data ', e)
+
+    # TODO : Calculate Fuel Efficiency before relay.
+    def cal_fuel_efficiency(self):
+        """
+        https://stackoverflow.com/questions/44794181/fuel-consumption-and-mileage-from-obd2-port-parameters
+        """
+        maf = self.data[self.data_list.index('MAF_SENSOR')]
+        speed = self.data[self.data_list.index('VEHICLE_SPEED')]
+
+        fuel_efficiency = speed * (1/3600) * (1/maf) * 14.7 * 710
+
+        return fuel_efficiency
 
 
 def handler(event, context) -> None:

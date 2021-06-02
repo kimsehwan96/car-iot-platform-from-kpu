@@ -27,6 +27,7 @@ class CanDataType(Enum):
     ENGINE_RUNTIME = 0x1F
     TRAVELED_DISTANCE = 0x31 # since Error code cleared !
     FUEL_TANK_LEVEL = 0x2F
+    OXYGEN_SENSOR = 0x34
     AMBIENT_AIR_TEMPERATURE = 0x46
 
     # Request & Response
@@ -74,11 +75,21 @@ class CanDataConvert:
         except Exception as e:
             print('error occur : ', e)
 
-
+# cal fef https://www.sciencedirect.com/science/article/pii/S2352484719308649
+# https://stackoverflow.com/questions/44794181/fuel-consumption-and-mileage-from-obd2-port-parameters
 class CalculateData:
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def oxygen_sensor(recv_msg):
+        # we can make two data. first one is ratio, the other is mA
+        return round((256 * recv_msg[3] + recv_msg[4]) * (2/65536), 2)
+
+    @staticmethod
+    def intake_manifold_absolute_pressure(recv_msg):
+        return recv_msg[3]
 
     @staticmethod
     def maf_sensor(recv_msg):
