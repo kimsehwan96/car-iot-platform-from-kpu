@@ -95,12 +95,12 @@ class CalculateData:
     def average_fuel_efficiency(cls, recv_msg) -> float:
         cls.avg_buf += cls.present_fuel_efficiency
         count += 1
-        cls.average_fuel_efficiency = avg_buf / count
+        cls.average_fuel_efficiency = round(avg_buf / count, 2)
         return cls.average_fuel_efficiency
 
     @classmethod
     def short_term_fuel_efficiency(cls, recv_msg) -> float:
-        cls.present_fuel_efficiency = cls.speed * (1 / 3600) * (1 / cls.maf) * 14.7 * 710
+        cls.present_fuel_efficiency = round(cls.speed * (1 / 3600) * (1 / cls.maf) * 14.7 * 710, 2)
         return cls.present_fuel_efficiency
 
     @staticmethod
