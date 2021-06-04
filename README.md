@@ -4,6 +4,10 @@
 
 ![demoapp](https://user-images.githubusercontent.com/59886140/120753149-b1b86880-c545-11eb-93bd-1b18a441f2a6.gif)
 
+## 전체적인 아키텍쳐
+
+![](./images/arch.png)
+
 ## 사용 기술 스택
 
 1. AWS
