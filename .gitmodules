@@ -1,3 +1,6 @@
 [submodule "realtime_dashboard"]
 	path = realtime_dashboard
 	url = https://github.com/kwhong95/kpu_sp_rt_dashboard.git
+[submodule "cloud_realtime_dashboard"]
+	path = cloud_realtime_dashboard
+	url = https://github.com/kimsehwan96/kpu_sp_rt_dashboard.git
