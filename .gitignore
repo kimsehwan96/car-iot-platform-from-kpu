@@ -146,3 +146,6 @@ node_modules/
 .DS_Store
 
 .idea/*
+
+# serverless deploying outputs
+.serverless

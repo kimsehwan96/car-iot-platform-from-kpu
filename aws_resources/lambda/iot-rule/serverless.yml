@@ -1,0 +1,50 @@
+service: cloud-connected-disconnected
+
+provider:
+  name: aws
+  runtime: python3.7
+  memorySize: 128
+  timeout: 3
+  stage: ${opt:stage, self:custom.defaultStage}
+  stackName: ${self:service}-${self:provider.stage}
+  ruleName: cloud_event_iotcore
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - dynamodb:Query
+#        - dynamodb:Scan
+#        - dynamodb:GetItem
+#        - dynamodb:PutItem
+#        - dynamodb:UpdateItem
+#        - dynamodb:DeleteItem
+#        - dynamodb:DescribeTable
+#      Resource: "*"
+
+custom:
+  custom.defaultStage: dev
+
+package:
+  individually: true
+
+plugins:
+  - serverless-python-requirements
+
+functions:
+  IotDisconnectedRule:
+    name: disconnected-rule
+    handler: disconnected.handler
+    environment:
+      PYTHONPATH: /opt:/opt/python
+    events:
+      - iot:
+          name: ${self:provider.ruleName}_disconnected_rule
+          sql: "SELECT topic(5) as client_id FROM '$aws/events/presence/disconnected/+'"
+  IotConnectedRule:
+    name: iotcore-connected-rule
+    handler: connected.handler
+    environment:
+      PYTHONPATH: /opt:/opt/python
+    events:
+      - iot:
+          name: ${self:provider.ruleName}_connected_rule
+          sql: "SELECT topic(5) as client_id FROM '$aws/events/presence/connected/+'"

@@ -1,5 +1,15 @@
 # 산기대 졸업작품 팀 레포지토리
 
+
+## Cloud Realtime Dasboard
+
+링크 : https://dashboard.driving-mate.com
+
+## 프로모션(랜딩)페이지
+
+링크 : https://www.driving-mate.com
+
+
 ## 실시간 차량 주행 정보 모니터링 (진행중)
 
 ![demoapp](https://user-images.githubusercontent.com/59886140/120753149-b1b86880-c545-11eb-93bd-1b18a441f2a6.gif)
