@@ -91,7 +91,14 @@ class StorageDispatcher(BaseDispatcher):
     @staticmethod
     def convert_timestamp_to_datetime(timestamp) -> datetime:
         dt = datetime.fromtimestamp(timestamp, timezone.utc)
-        return datetime(dt.year, dt.month, dt.day, dt.hour, dt.minute, tzinfo=timezone.utc)
+        return datetime(
+            dt.year,
+            dt.month,
+            dt.day,
+            dt.hour,
+            dt.minute,
+            tzinfo=timezone.utc
+        )
 
     @staticmethod
     def merge_values_timestamp(data: dict) -> List[float or int]:
@@ -106,10 +113,15 @@ class StorageDispatcher(BaseDispatcher):
         데이터 저장할 공간에 디렉터리 생성
         """
         now_dir = []
-        now_dir.extend(map(lambda x: str(getattr(minute_dt, x)).zfill(2), ['year', 'month', 'day', 'hour', 'minute']))
+        now_dir.extend(
+            map(
+                lambda x: str(getattr(minute_dt, x)).zfill(2),
+                ['year', 'month', 'day', 'hour', 'minute']
+            )
+        )
         now_dir_path = '/'.join(now_dir)  # 2021/05/01/22/01
 
-        return os.path.join(LOCAL_DATA_PATH, now_dir_path) # /kpu/rawdata/2021/05/01/05/06
+        return os.path.join(LOCAL_DATA_PATH, now_dir_path)  # /kpu/rawdata/2021/05/01/05/06
 
     def _prepare_min_file_name(self, minute_dt: datetime) -> str:
         """
@@ -174,7 +186,7 @@ class StorageDispatcher(BaseDispatcher):
         relayed_data = json.loads(data)
         timestamp = relayed_data.get('timestamp', time.time())
         cur_dt = self.convert_timestamp_to_datetime(timestamp)
-        if not self._cur_dt: # 최초에 cur_dt가 없을 때 dt 설정
+        if not self._cur_dt:  # 최초에 cur_dt가 없을 때 dt 설정
             self._cur_dt = cur_dt
         if (cur_dt - self._cur_dt).seconds >= 60:
             # 시간이 바뀐것이기 때문에 업로드 로직을 수행함
@@ -193,7 +205,10 @@ class StorageDispatcher(BaseDispatcher):
             print('Unexpected Error occured in prepare file :', e)
         self._current_file_name = self._prepare_min_file_name(self._cur_dt)
         self._write_csv(
-            os.path.join(self._prepare_min_file_dir_name(self._cur_dt), self._prepare_min_file_name(self._cur_dt))
+            os.path.join(
+                self._prepare_min_file_dir_name(self._cur_dt),
+                self._prepare_min_file_name(self._cur_dt)
+            )
             , relayed_data
         )
 

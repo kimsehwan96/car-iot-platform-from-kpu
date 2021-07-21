@@ -1,5 +1,4 @@
 from enum import Enum
-import can
 
 DATA_TYPE_INDEX = 2
 
@@ -70,7 +69,10 @@ class CanDataConvert:
     def convert(recv_msg) -> int:
         data_type = recv_msg.data[DATA_TYPE_INDEX]
         try:
-            handler = getattr(CalculateData, CanDataType(data_type).name.lower())
+            handler = getattr(
+                CalculateData,
+                CanDataType(data_type).name.lower()
+            )
             return handler(recv_msg.data)
         except AttributeError:
             raise NotSupportedDataTypeException
@@ -100,7 +102,9 @@ class CalculateData:
 
     @classmethod
     def short_term_fuel_efficiency(cls, recv_msg) -> float:
-        cls.present_fuel_efficiency = round(cls.speed * (1 / 3600) * (1 / cls.maf) * 14.7 * 710, 2)
+        cls.present_fuel_efficiency = round(
+            cls.speed * (1 / 3600) * (1 / cls.maf) * 14.7 * 710, 2
+        )
         return cls.present_fuel_efficiency
 
     @staticmethod
@@ -141,10 +145,6 @@ class CalculateData:
 
     @staticmethod
     def long_fuel_trim_bank(recv_msg) -> float:
-        return round(((100 / 128) * recv_msg[3]) - 100, 2)
-
-    @staticmethod
-    def short_fuel_trim_bank(recv_msg) -> float:
         return round(((100 / 128) * recv_msg[3]) - 100, 2)
 
     @staticmethod

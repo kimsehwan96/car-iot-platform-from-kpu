@@ -1,6 +1,5 @@
 import can
 import os
-import subprocess
 from libs import util
 from libs.plugin import run_plugin_thread
 from collections import deque
@@ -64,7 +63,10 @@ class CanPlugin(BasePlugin):
         self._channel = option.get('channel', 'can0')
         self._bus_type = option.get('busType', 'socketcan_native')
         self._init_can()
-        self.bus = can.interface.Bus(channel=self._channel, bustype=self._bus_type)
+        self.bus = can.interface.Bus(
+            channel=self._channel,
+            bustype=self._bus_type
+        )
 
     def _init_can(self) -> None:
         os.system(INIT_COMMAND)
@@ -84,7 +86,11 @@ class CanPlugin(BasePlugin):
                 return True
 
         for message in self.req_messages_for_data:
-            msg = can.Message(arbitration_id=CanDataType.PID_REQUEST.value, data=message, extended_id=False)
+            msg = can.Message(
+                arbitration_id=CanDataType.PID_REQUEST.value,
+                data=message,
+                extended_id=False
+            )
             #           print("this is will send can msg " , msg)
             self.bus.send(msg)
             sleep(0.01)
@@ -124,7 +130,7 @@ class CanPlugin(BasePlugin):
             print('this is bufferd data: ', self.data)
             try:
                 fe = self.cal_fuel_efficiency()
-                print('*'*100)
+                print('*' * 100)
                 print('km per liter :', fe)
                 print('*' * 100)
             except Exception as e:
@@ -140,7 +146,7 @@ class CanPlugin(BasePlugin):
         maf = self.data[self.data_list.index('MAF_SENSOR')]
         speed = self.data[self.data_list.index('VEHICLE_SPEED')]
 
-        fuel_efficiency = speed * (1/3600) * (1/maf) * 14.7 * 710
+        fuel_efficiency = speed * (1 / 3600) * (1 / maf) * 14.7 * 710
 
         return fuel_efficiency
 
